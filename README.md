@@ -122,4 +122,4 @@ Visitante ↔ Visita_guiada
 Tienda ↔ Producto (con tabla intermedia) 
 
 
-![Diagrama del museo](diagrama.png)
+![Diagrama del museo](images/diagrama.png)
