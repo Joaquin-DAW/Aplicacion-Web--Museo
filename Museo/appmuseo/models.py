@@ -46,7 +46,7 @@ class Entrada(models.Model):
     codigo = models.CharField(max_length=10, unique=True)
     precio = models.DecimalField(max_digits=6, decimal_places=2)
     tipo = models.CharField(max_length=50, choices=[('adulto', 'Adulto'), ('niño', 'Niño')])
-    fecha_compra = models.DateField(auto_now_add=True)
+    fecha_compra = models.DateField(auto_now_add=True)                                      #"auto_now_add" permite establecer la fecha y hora del momento en el que se crea el registro automáticamente
     visitante = models.OneToOneField(Visitante, on_delete=models.CASCADE)  # OneToOne con Visitante
 
 class Tienda(models.Model):
