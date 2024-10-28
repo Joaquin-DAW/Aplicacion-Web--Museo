@@ -17,7 +17,7 @@ class Exposicion(models.Model):
     fecha_fin = models.DateField(blank=True, null=True)
     descripcion = models.TextField(blank=True)
     capacidad = models.IntegerField(default=60)                                            #"default" nos permite dar un valor por defecto al campo en caso de que no se proporcione ninguno
-    museo = models.OneToOneField(Museo, on_delete=models.CASCADE)  # OneToOne con Museo
+    museo = models.ForeignKey(Museo, on_delete=models.CASCADE)  # ManyToOne con Museo
 
 class Obra(models.Model):
     titulo = models.CharField(max_length=200, verbose_name="Título de la obra")
@@ -25,14 +25,14 @@ class Obra(models.Model):
     fecha_creacion = models.DateField(null=True, blank=True)
     tipo = models.CharField(max_length=50, choices=[('pintura', 'Pintura'), ('escultura', 'Escultura')], default='pintura')
                                                                                             #"choices" nos permite definir un conjunto de opciones para seleccionar
-    Imagen = models.ImageField(upload_to='obras/', blank=True, null=True)                   #"upload_to" nos permite especificar donde se almacenara los archivos subidos de un tipo ImageField o FileField  
+    imagen = models.ImageField(upload_to='obras/', blank=True, null=True)                   #"upload_to" nos permite especificar donde se almacenara los archivos subidos de un tipo ImageField o FileField  
     exposicion = models.ForeignKey(Exposicion, on_delete=models.CASCADE)  # ManyToOne con Exposicion
 
 class Artista(models.Model):
     nombre_completo = models.CharField(max_length=150)                                      #"max_length" nos permite definir la longitud máxima que tendra un campo
     fecha_nacimiento = models.DateField(blank=True, null=True)
     biografia = models.TextField()
-    nacionalidad = models.CharField(max_length=50, choices=[('española', 'Española'), ('italiana', 'Italiana')], blank=True)
+    nacionalidad = models.CharField(max_length=50, choices=[('espanola', 'Española'), ('italiana', 'Italiana')], blank=True)
     obras = models.ForeignKey(Obra, on_delete=models.CASCADE)  # ManyToOne con Obra
 
 class Visitante(models.Model):
@@ -45,7 +45,7 @@ class Visitante(models.Model):
 class Entrada(models.Model):
     codigo = models.CharField(max_length=10, unique=True)
     precio = models.DecimalField(max_digits=6, decimal_places=2)
-    tipo = models.CharField(max_length=50, choices=[('adulto', 'Adulto'), ('niño', 'Niño')])
+    tipo = models.CharField(max_length=50, choices=[('adulto', 'Adulto'), ('nino', 'Niño')])
     fecha_compra = models.DateField(auto_now_add=True)                                      #"auto_now_add" permite establecer la fecha y hora del momento en el que se crea el registro automáticamente
     visitante = models.OneToOneField(Visitante, on_delete=models.CASCADE)  # OneToOne con Visitante
 
@@ -80,8 +80,8 @@ class Guia(models.Model):
 
 class VisitaGuiada(models.Model):
     duracion = models.DurationField()
-    nombre_guia = models.CharField(max_length=100)
+    nombre_visita_guia = models.CharField(max_length=100)
     capacidad_maxima = models.IntegerField(default=20)
-    idioma = models.CharField(max_length=50, choices=[('español', 'Español'), ('inglés', 'Inglés')])
+    idioma = models.CharField(max_length=50, choices=[('espanol', 'Español'), ('ingles', 'Inglés')])
     guias = models.ManyToManyField(Guia)  # ManyToMany con Guia
     visitantes = models.ManyToManyField(Visitante)  # ManyToMany con Visitante
