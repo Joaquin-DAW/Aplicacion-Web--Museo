@@ -19,6 +19,12 @@ class Exposicion(models.Model):
     capacidad = models.IntegerField(default=60)                                            #"default" nos permite dar un valor por defecto al campo en caso de que no se proporcione ninguno
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE)  # ManyToOne con Museo
 
+class Artista(models.Model):
+    nombre_completo = models.CharField(max_length=150)                                      #"max_length" nos permite definir la longitud máxima que tendra un campo
+    fecha_nacimiento = models.DateField(blank=True, null=True)
+    biografia = models.TextField()
+    nacionalidad = models.CharField(max_length=50, choices=[('espanola', 'Española'), ('italiana', 'Italiana')], blank=True)
+
 class Obra(models.Model):
     titulo = models.CharField(max_length=200, verbose_name="Título de la obra")
     autor = models.CharField(max_length=100, blank=True)
@@ -27,13 +33,7 @@ class Obra(models.Model):
                                                                                             #"choices" nos permite definir un conjunto de opciones para seleccionar
     imagen = models.ImageField(upload_to='obras/', blank=True, null=True)                   #"upload_to" nos permite especificar donde se almacenara los archivos subidos de un tipo ImageField o FileField  
     exposicion = models.ForeignKey(Exposicion, on_delete=models.CASCADE)  # ManyToOne con Exposicion
-
-class Artista(models.Model):
-    nombre_completo = models.CharField(max_length=150)                                      #"max_length" nos permite definir la longitud máxima que tendra un campo
-    fecha_nacimiento = models.DateField(blank=True, null=True)
-    biografia = models.TextField()
-    nacionalidad = models.CharField(max_length=50, choices=[('espanola', 'Española'), ('italiana', 'Italiana')], blank=True)
-    obras = models.ForeignKey(Obra, on_delete=models.CASCADE)  # ManyToOne con Obra
+    artista = models.ForeignKey(Artista, on_delete=models.CASCADE)        # ManyToOne con Artista
 
 class Visitante(models.Model):
     nombre = models.CharField(max_length=100)

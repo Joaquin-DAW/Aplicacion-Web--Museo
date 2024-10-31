@@ -1,0 +1,21 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>Museo</title>
+    </head>
+    <body>
+        <h1>Obras</h1>
+        {% for obra in obras %}
+            <div>
+                <h2>Titulo: {{obra.titulo}}</h2>
+                <h2>Artista: {{obra.artista.nombre_completo}}</h2>
+                <h2>Fecha en la que se realizo: {{obra.fecha_creacion}}</h2>
+                <h2>Tipo: {{obra.tipo}}</h2>
+                <h2>Imagen: {{obra.imagen}}</h2>
+                <h2>Exposicion: {{obra.exposicion.titulo}}
+
+            </div>
+            <br><br>
+        {% endfor %}
+    </body>
+</html>
