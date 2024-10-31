@@ -1,0 +1,19 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>Museo</title>
+    </head>
+    <body>
+        <h1>Museos</h1>
+        {% for museo in museos %}
+            <div>
+                <h2>Nombre: {{museo.nombre}}</h2>
+                <h2>Ubicación: {{museo.ubicacion}}</h2>
+                <h2>Fecha fundación: {{museo.fecha_fundacion}}</h2>
+                <h2>Descripción: {{museo.descripcion}}</h2>
+                <h2>Exposicion: {{museo.exposicion.titulo}}
+            </div>
+            <br><br>
+        {% endfor %}
+    </body>
+</html>

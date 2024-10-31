@@ -6,10 +6,39 @@
     <h2>Listado de enlaces</h2>
     
     <div>
-        <h3>1- Crear una URL que muestre una lista de todas las obras con sus datos correspondientes
+        <h3>1- Listado de Obras: Crear una URL que muestre una lista de todas las obras con sus datos correspondientes.
         </h3>
         <a href="{% url 'listar_obras' %}">Url de obras</a>
     </div>
+
+    <div>
+        <h3>2- Listado de Museos: Crear una URL que liste todos los museos que tienen alguna exposición en curso (fecha de fin mayor o igual a hoy).</h3>
+        <a href="{% url 'listar_museos' %}">Url de Museos</a>
+    </div>
+
+    Exposiciones por Capacidad y Fecha: Crear una URL que reciba dos parámetros, una capacidad mínima y una fecha, y devuelva todas las exposiciones que superen esa capacidad y tengan fecha de inicio a partir de la fecha ingresada.
+
+    Obras por Tipo de Arte y Artista: Crear una URL que filtre obras de un tipo específico (pintura o escultura) y de un artista en particular, usando una consulta con filtros en cadena (AND).
+
+    Buscar Visitante por Correo Electrónico: Crear una URL que reciba como parámetro el correo electrónico de un visitante y devuelva la información de su última visita guiada. Optimiza para traer solo los campos necesarios.
+
+    Tiendas y su Inventario Total: Crear una URL que devuelva la lista de tiendas con el inventario total disponible de cada una (usa aggregate para sumar). Si alguna tienda tiene inventario total igual a None, debe ser excluida.
+
+    Artistas por Nacionalidad: Crear una URL que reciba un parámetro de tipo string que represente una nacionalidad (ej., “espanola”) y devuelva todos los artistas de esa nacionalidad ordenados por fecha de nacimiento, de más reciente a más antiguo.
+
+    Productos con Ventas Limitadas: Crear una URL que devuelva los productos que se encuentran en tiendas con menos de 50 unidades vendidas y estén disponibles en stock (con un límite de 10 resultados ordenados por nombre de producto).
+
+    Guias Disponibles y Especializados: Crear una URL que devuelva todos los guías disponibles y especializados en un área específica (parametrizado). Los resultados deben estar agrupados por el museo al que pertenecen.
+
+    Visitantes de un Museo: Crear una URL que reciba como parámetro el id de un museo y devuelva la lista de visitantes que han realizado visitas a ese museo. Debe mostrar los visitantes en orden alfabético por nombre.
+
+    Productos en Almacén Nulo: Crear una URL que liste todos los productos que están en alguna tienda, pero no tienen una ubicación de almacén especificada (ubicación_almacen = None).
+
+    Obras en Exposiciones Actuales: Crear una URL que devuelva una lista de todas las obras en exposiciones que estén en curso en la fecha actual. La consulta debe incluir los datos de la exposición y optimizarse para traer solo la información de obras y exposiciones.
+
+    Listado de Visitantes con Entrada de Niño o Adulto: Crear una URL que devuelva una lista de visitantes que han comprado entradas de tipo “niño” o “adulto” (utilizando filtro OR).
+
+    Promedio de Edad de Visitantes: Crear una URL que devuelva el promedio de edad de los visitantes que visitaron un museo específico.
 
     </body>
 </html>
