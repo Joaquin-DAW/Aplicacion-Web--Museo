@@ -22,3 +22,9 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('',include("appmuseo.urls"))
 ]
+
+from django.conf.urls import handler400,handler404,handler403,handler500
+handler404 = "appmuseo.views.error_400"
+handler503 = "appmuseo.views.error_403"
+handler503 = "appmuseo.views.error_404"
+handler500 = "appmuseo.views.error_500"

@@ -283,6 +283,61 @@
     }
 },
 {
+    "model": "appmuseo.visitante",
+    "pk": 4,
+    "fields": {
+        "nombre": "Carlos Martínez",
+        "correo_electronico": "carlos.martinez@example.com",
+        "edad": 34,
+        "fecha_visita": "2023-11-02",
+        "museo": 1
+    }
+},
+{
+    "model": "appmuseo.visitante",
+    "pk": 5,
+    "fields": {
+        "nombre": "Laura Pérez",
+        "correo_electronico": "laura.perez@example.com",
+        "edad": 22,
+        "fecha_visita": "2023-11-05",
+        "museo": 1
+    }
+},
+{
+    "model": "appmuseo.visitante",
+    "pk": 6,
+    "fields": {
+        "nombre": "David Ruiz",
+        "correo_electronico": "david.ruiz@example.com",
+        "edad": 40,
+        "fecha_visita": "2023-11-06",
+        "museo": 1
+    }
+},
+{
+    "model": "appmuseo.visitante",
+    "pk": 7,
+    "fields": {
+        "nombre": "Sofía Morales",
+        "correo_electronico": "sofia.morales@example.com",
+        "edad": 27,
+        "fecha_visita": "2023-11-08",
+        "museo": 1
+    }
+},
+{
+    "model": "appmuseo.visitante",
+    "pk": 8,
+    "fields": {
+        "nombre": "Miguel Torres",
+        "correo_electronico": "miguel.torres@example.com",
+        "edad": 30,
+        "fecha_visita": "2023-11-10",
+        "museo": 1
+    }
+},
+{
     "model": "appmuseo.entrada",
     "pk": 1,
     "fields": {
@@ -313,6 +368,61 @@
         "tipo": "nino",
         "fecha_compra": "2023-11-01",
         "visitante": 3
+    }
+},
+{
+    "model": "appmuseo.entrada",
+    "pk": 4,
+    "fields": {
+        "codigo": "ENTR234567",
+        "precio": "15.00",
+        "tipo": "adulto",
+        "fecha_compra": "2023-11-01",
+        "visitante": 4
+    }
+},
+{
+    "model": "appmuseo.entrada",
+    "pk": 5,
+    "fields": {
+        "codigo": "ENTR345678",
+        "precio": "10.00",
+        "tipo": "adulto",
+        "fecha_compra": "2023-11-04",
+        "visitante": 5
+    }
+},
+{
+    "model": "appmuseo.entrada",
+    "pk": 6,
+    "fields": {
+        "codigo": "ENTR456789",
+        "precio": "12.50",
+        "tipo": "adulto",
+        "fecha_compra": "2023-11-05",
+        "visitante": 6
+    }
+},
+{
+    "model": "appmuseo.entrada",
+    "pk": 7,
+    "fields": {
+        "codigo": "ENTR567890",
+        "precio": "14.00",
+        "tipo": "adulto",
+        "fecha_compra": "2023-11-07",
+        "visitante": 7
+    }
+},
+{
+    "model": "appmuseo.entrada",
+    "pk": 8,
+    "fields": {
+        "codigo": "ENTR678901",
+        "precio": "13.50",
+        "tipo": "adulto",
+        "fecha_compra": "2023-11-09",
+        "visitante": 8
     }
 },
 {
@@ -357,6 +467,36 @@
     }
 },
 {
+    "model": "appmuseo.producto",
+    "pk": 4,
+    "fields": {
+        "nombre": "Postales del museo",
+        "descripcion": "Conjunto de postales con imágenes de las obras más destacadas.",
+        "precio": "5.00",
+        "stock": 200
+    }
+},
+{
+    "model": "appmuseo.producto",
+    "pk": 5,
+    "fields": {
+        "nombre": "Catálogo de exposiciones",
+        "descripcion": "Catálogo en color que recopila las exposiciones pasadas y futuras del museo.",
+        "precio": "15.00",
+        "stock": 100
+    }
+},
+{
+    "model": "appmuseo.producto",
+    "pk": 6,
+    "fields": {
+        "nombre": "Taza del museo",
+        "descripcion": "Taza con el logo del museo, perfecta para los amantes del arte.",
+        "precio": "10.00",
+        "stock": 80
+    }
+},
+{
     "model": "appmuseo.inventario",
     "pk": 1,
     "fields": {
@@ -390,6 +530,42 @@
         "fecha_ultima_venta": "2023-10-27",
         "stock_inicial": 170,
         "ubicacion_almacen": "Estantería C, Sección 1"
+    }
+},
+{
+    "model": "appmuseo.inventario",
+    "pk": 4,
+    "fields": {
+        "producto": 4,
+        "tienda": 1,
+        "cantidad_vendida": 0,
+        "fecha_ultima_venta": null,
+        "stock_inicial": 50,
+        "ubicacion_almacen": "Estantería B, Sección 1"
+    }
+},
+{
+    "model": "appmuseo.inventario",
+    "pk": 5,
+    "fields": {
+        "producto": 5,
+        "tienda": 1,
+        "cantidad_vendida": 0,
+        "fecha_ultima_venta": null,
+        "stock_inicial": 75,
+        "ubicacion_almacen": "Estantería C, Sección 2"
+    }
+},
+{
+    "model": "appmuseo.inventario",
+    "pk": 6,
+    "fields": {
+        "producto": 6,
+        "tienda": 1,
+        "cantidad_vendida": 10,
+        "fecha_ultima_venta": "2023-11-01",
+        "stock_inicial": 100,
+        "ubicacion_almacen": "Estantería D, Sección 4"
     }
 },
 {
@@ -437,7 +613,7 @@
             1
         ],
         "visitantes": [
-            1
+            1, 2, 4
         ]
     }
 },
@@ -453,7 +629,7 @@
             2
         ],
         "visitantes": [
-            2
+            3, 5, 6
         ]
     }
 },
@@ -469,7 +645,7 @@
             3
         ],
         "visitantes": [
-            3
+            7, 8
         ]
     }
 }

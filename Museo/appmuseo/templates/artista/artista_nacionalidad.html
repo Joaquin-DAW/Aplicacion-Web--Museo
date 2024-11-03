@@ -1,0 +1,25 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>Museo</title>
+    </head>
+    <body>
+        <h1>Artistas con nacionalidad Española </h1>
+        {% for artista in artistas %}
+            <div>
+                <h2>Nombre: {{artista.nombre_completo}}</h2>
+                <h2>Fecha nacimiento: {{artista.fecha_nacimiento}}</h2>
+                <h2>Biografía: {{artista.biografia}}</h2>
+                <h2>Nacionalidad: {{artista.get_nacionalidad_display}}</h2> <!-- Para mostrar la nacionalidad de manera correcta, es decir "Española" y 
+                                                                            no "espanola", debemos usar el método "get_atributo_display()", con este método
+                                                                            podemos acceder al "valor entendible por el ser humano" que definimos en el modelo. -->
+                <h2>Obras:</h2>
+                    <ul>
+                        {% for obras in artista.obras_artista.all %}
+                            <li><h3>{{ obras.titulo }}</h3></li>
+                        {% endfor %}
+                    </ul>
+            <br><br>
+        {% endfor %}
+    </body>
+</html>

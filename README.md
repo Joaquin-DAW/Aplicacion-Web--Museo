@@ -123,3 +123,71 @@ Tienda ↔ Producto (con tabla intermedia)
 
 
 ![Diagrama del museo](images/diagrama.png)
+
+
+
+URLs del proyecto:
+
+1- Listado de Museo: Crear una URL que liste todos los datos de museo.
+
+Usamos prefetch_related en lugar de select_releted porque.
+Esto tambien estaria usando una relación reversa.
+
+
+
+2- Listado de Exposiciones por año: Crear una URL que muestre una lista de todas las exposiciones para un año concreto.
+
+Usa una relacion reversa al acceder a las obras de cada exposición y a sus artistas.
+
+
+
+3- Listado de Obras de un artista específico que se encuentren en una exposición concreta.
+
+Filtro AND y dos parametros en la URL.
+
+
+
+4- Listado de visitantes con una edad mayor a un número concreto, ordenados alfabéticamente.
+
+Usamos un parametro entero, filtro y gt para sacar las edades superiores. También el order by para ordenar el resultado.
+
+
+
+5- Listado de artistas con nacionalidad española, ordenados por fecha de nacimiento descendente.
+
+Usamos un filtro y un parametro de tipo str.
+
+
+
+6- Listado de guias que hablen francés o inglés.
+
+Usamos dos parametros y el filtro OR. Al usar un filtro OR debemos usar Q y | para este tipo de filtros. La Q se usa como condicional y la | indicar que solo se necedita que se cumpla una de las dos condiciones.
+Usamos icontains en el filtro para que el idioma coincida parcialmente, permitiendo búsquedas como "francés" o "inglés" sin distinguir entre mayúsculas, minúsculas o palabras tildadas.
+
+
+
+7- Media del precio de los productos que se venden en la tienda.
+
+Usamos aggregate para generar un atributo nuevo.
+Para sacar la media usamos la función Avg, que viene de average en ingles, nos permite saber la media aritmética de un conjutno de valores.
+
+
+
+8 - Primer visitante que acudio al museo en 2023.
+
+Usamos un limit para sacar solo 1 [:1] y con un order by por fecha_visita sacamos al prmer visitante de ese año. Podríamos sacar el último añadiendo un "-" al parametro de "fecha_visita" del order_by
+
+
+
+9 - Productos que aún no se hayan vendido.
+
+Filter con la tabla intermedia de inventario, que es la que guarda la fecha de la ultima venta.
+Debemos filtrar por la "fecha_ultima_venta" y no por la cantidad vendida porque de fecha si que tenemos un valor null, compatible con la condición de None
+Este filtro nos mostrará los productos que no tienen una ultima fecha de venta, por lo cual, nunca se han vendido.
+
+
+
+10 - Visitantes que se encuentren por debajo de la media de edad de todos los visitantes del museo.
+
+Usamos la combinación de un filtro y un aggregate, con el aggregate sacamos la media de la edad de los visitantes y lo guardamos en el atributo "edad_media"
+Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usamos filter el atributo de edad, seguido de lt para indicar los que sean menores a la media, y lo igualamos al atributo de "edad_media"

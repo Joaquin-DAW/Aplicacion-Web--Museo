@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Museo</title>
+</head>
+<body>
+    <h1>Visitantes con edad menor que la media ({{ edad_media }})</h1>
+    <ul>
+        {% for visitante in visitantes %}
+        <div>
+        <h2>Nombre: {{visitante.nombre}}</h2>
+        <h2>Correo electrónico: {{visitante.correo_electronico}}</h2>
+        <h2>Edad: {{visitante.edad}}</h2>
+        <h2>Fecha visita: {{visitante.fecha_visita}}</h2>
+        <h2>Museo: {{visitante.museo.nombre}}</h2>
+        <h2>Fecha compra entrada: {{visitante.entradas.fecha_compra}}</h2>
+        <h2>Visita guiada:</h2>
+            <ul>
+                {% for visitaguiada in visitante.visita_guiada_visitante.all %}
+                    <li><h3>{{ visitaguiada.nombre_visita_guia }}</h3></li>
+                {% endfor %}
+            </ul>
+    <br><br>
+        {% endfor %}
+    </ul>
+</body>
+</html>
