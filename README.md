@@ -195,10 +195,10 @@ Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usam
 
 Templates del proyecto:
 
-1. **`{% if %}` y `{% if-else %}`**:  
+1. `{% if %}` y `{% if-else %}`:  
    - Usados en `artista_nacionalidad.html`, `exposicion_anyo.html`, y `visitante_edad.html` para manejar condiciones.
 
-2. **`{% for ... empty %}`**:  
+2. `{% for ... empty %}`:  
    - Usados en las mismas plantillas para mostrar mensajes cuando no hay elementos en la lista.
 
 3. **`{% include %}`**:  
