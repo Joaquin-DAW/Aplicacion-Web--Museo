@@ -190,4 +190,22 @@ Este filtro nos mostrará los productos que no tienen una ultima fecha de venta,
 10 - Visitantes que se encuentren por debajo de la media de edad de todos los visitantes del museo.
 
 Usamos la combinación de un filtro y un aggregate, con el aggregate sacamos la media de la edad de los visitantes y lo guardamos en el atributo "edad_media"
-Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usamos filter el atributo de edad, seguido de lt para indicar los que sean menores a la media, y lo igualamos al atributo de "edad_media"
+Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usamos filter el atributo de edad, seguido de lt para indicar los que sean menores a la media, y lo igualamos al atributo de "edad_media".
+
+
+Templates del proyecto:
+
+1. **`{% if %}` y `{% if-else %}`**:  
+   - Usados en `artista_nacionalidad.html`, `exposicion_anyo.html`, y `visitante_edad.html` para manejar condiciones.
+
+2. **`{% for ... empty %}`**:  
+   - Usados en las mismas plantillas para mostrar mensajes cuando no hay elementos en la lista.
+
+3. **`{% include %}`**:  
+   - Usado en todas las plantillas de lista (`artista_nacionalidad.html`, `exposicion_anyo.html`, etc.) para incluir plantillas parciales.
+
+4. **`{% block %}`**:  
+   - Definido en `principal.html` y usado en todas las plantillas para personalizar secciones.
+
+5. **`{% load static %}` y `{% static %}`**:  
+   - Usados en `principal.html` para cargar archivos estáticos.
