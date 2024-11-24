@@ -193,7 +193,7 @@ Usamos la combinación de un filtro y un aggregate, con el aggregate sacamos la 
 Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usamos filter el atributo de edad, seguido de lt para indicar los que sean menores a la media, y lo igualamos al atributo de "edad_media".
 
 
-    Templates usados del proyecto:
+   **Templates usados del proyecto:**
 
 1. **`{% if %}` y `{% if-else %}`**:  
    - Usados en `artista_nacionalidad.html`, `exposicion_anyo.html`, `obra_artista_exposicion.html`, `primer_visitante_2023.html`, `guia_nacional.html` para manejar condiciones y mostrar el número de resultados que devolvía.
@@ -211,7 +211,7 @@ Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usam
    - Usados en `principal.html` para cargar archivos estáticos de la carpeta static, como el css, javascript y el logo.
 
 
-   Operadores usados en el proyecto
+   **Operadores usados en el proyecto**
 
 1. **Operador de comparación (`>=`)**:
    - Usado en `obra_artista_exposicion.html` y `visitante_edad.html` para comprobar si un valor es mayor o igual que otro.
@@ -229,34 +229,35 @@ Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usam
    - Usado en `primer_visitante_2023.html` para negar una variable de una condición.
 
 
-   Filtros usados en el proyecto
+   **Filtros usados en el proyecto**
 
 1. **date** 
-   - Formatea fechas según el formato que le pasemos. Ejemplo: {{ fecha|date:"d/m/Y" }}
+   - Formatea fechas según el formato que le pasemos. Ejemplo: {{ fecha|date:"d/m/Y" }}. Usado en `_artista.html`, `_exposicion_.html`, `_museo.html`, 
+   `_obra.html`, `_visitante.html`
 
 2. **capfirst** 
-   - Convierte en mayúscula la primera letra del valor. `obra_artista_exposicion.html`
+   - Convierte en mayúscula la primera letra del valor. Usado en `_obra.html`
 
 3. **yesno**
-   - Convierte valores booleanos (True/False/None) al texto predeterminado que le pasemos, el primero será True, el segundo False y el tercero None.
+   - Convierte valores booleanos (True/False/None) al texto predeterminado que le pasemos, el primero será True, el segundo False y el tercero None. Usado en `_guia_.html`, 
 
 4. **floatformat** 
-   - Redondea números decimales según el número de decimales que indiquemos.
+   - Redondea números decimales según el número de decimales que indiquemos. Usado en `precio_medio.html`
 
 5. **length**
-   - Devuelve la longitu del valor que le pasemo (número de caracteres en un string o elementos en una lista).
+   - Devuelve la longitu del valor que le pasemo (número de caracteres en un string o elementos en una lista). Usado en `artista_nacionalidad.html`, `exposicion_anyo.html`, `guia_nacional.html`, `obra_artista_exposicion.html`
 
 6. **title**
-   - Convierte el texto a formato título, poniendo en mayúscula la primera letra de cada palabra.
+   - Convierte el texto a formato título, poniendo en mayúscula la primera letra de cada palabra. Usado en `_guia_.html`
 
 7. **urlize**
-   - Convierte texto plano que contiene URLs en enlaces.
+   - Convierte texto plano que contiene URLs en enlaces. Usado en `_visitante.html`
 
 8. **deafult**
-   - Devuelve un valor predeterminado si el valor original es vacío o None.
+   - Devuelve un valor predeterminado si el valor original es vacío o None. Usado en `_producto.html`
 
 9. **add**
-   - Suma un valor numérico al valor original.
+   - Suma un valor numérico al valor original. Usado en `_exposicion_.html`
 
 10. **cut**
-   - Elimina todas las apariciones de un valor específico, que le indiquemos, en el texto.
+   - Elimina todas las apariciones de un valor específico, que le indiquemos, en el texto. Usado en `_visitante.html`
