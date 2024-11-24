@@ -1,6 +1,6 @@
 {% extends 'principal.html' %}
 {% block cabecera %}
-  <h1>Visitantes con edad menor que la media ({{ edad_media }})</h1>
+  <h1>Visitantes con edad menor que la media ({{ edad_media|floatformat:0 }})</h1>
 {% endblock %}
 {% block contenido %}
   {% for visitante in visitantes %}

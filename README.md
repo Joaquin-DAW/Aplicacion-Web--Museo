@@ -242,7 +242,7 @@ Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usam
    - Convierte valores booleanos (True/False/None) al texto predeterminado que le pasemos, el primero será True, el segundo False y el tercero None. Usado en `_guia_.html`, 
 
 4. **floatformat** 
-   - Redondea números decimales según el número de decimales que indiquemos. Usado en `precio_medio.html`
+   - Redondea números decimales según el número de decimales que indiquemos. Usado en `precio_medio.html`, `visitante_menor_media.html`
 
 5. **length**
    - Devuelve la longitu del valor que le pasemo (número de caracteres en un string o elementos en una lista). Usado en `artista_nacionalidad.html`, `exposicion_anyo.html`, `guia_nacional.html`, `obra_artista_exposicion.html`
