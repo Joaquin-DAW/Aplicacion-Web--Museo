@@ -1,26 +1,16 @@
-<!DOCTYPE>
-<html>
-    <head>
-        <title>Museo</title>
-    </head>
-    <body>
-        <h1>Exposiciones del año {{ year }}</h1>
-        {% for exposicion in exposiciones %}
-            <div>
-                <h2>Titulo: {{exposicion.titulo}}</h2>
-                <h2>Fecha inicio: {{exposicion.fecha_inicio}}</h2>
-                <h2>Fecha fin: {{exposicion.fecha_fin}}</h2>
-                <h2>Descripción: {{exposicion.descripcion}}</h2>
-                <h2>Capacidad: {{exposicion.capacidad}}</h2>
-                <h2>Museo en el que se realiza: {{exposicion.museo.nombre}}</h2>
-                <h2>Obras expuestas:<h2>
-                    <ul>
-                        {% for obra in exposicion.obras_exposicion.all %}
-                            <li>{{ obra.titulo }} - Artista: {{obra.artista.nombre_completo}}</li>
-                        {% endfor %}
-                    </ul>
-            </div>
-            <br><br>
-        {% endfor %}
-    </body>
-</html>
+{% extends 'principal.html' %}
+{% block cabecera %}
+  <h1>Exposiciones del año {{ year }}</h1>
+{% endblock %}
+{% block contenido %}
+  {% if exposiciones %}
+    <h2>Se encontraron {{ exposiciones|length }} exposiciones del año 2023.</h2><br /> <!-- Calculamos la cantidad de exposiciones que hay en el año 2023-->
+  {% else %}
+    <h2>No hay artistas con esa nacionalidad.</h2><br />
+  {% endif %}
+  {% for exposicion in exposiciones %}
+    {% include 'exposicion/_exposicion.html' %}
+  {% empty %}
+    <h2>No hay exposiciones disponibles en este momento.</h2>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,16 @@
+<ul>
+<li>
+    <strong>{{ producto.nombre }}</strong>: {{ producto.precio }} € (Stock: {{ producto.stock }})<br>
+    <strong>{{ producto.descripcion}}</strong><br>
+    {% for inventario in producto.inventario_producto.all %}
+    <strong>Cantidad Vendida: </strong>{{ inventario.cantidad_vendida|default:"Ninguno" }}<br> <!-- Con el campo default podemos configurar un mensaje para cuando
+                                                                                                el valor este vacío o sea None-->
+    {% endfor %}
+    <strong>Tiendas:</strong>
+        {% for tienda in producto.tiendas.all %}
+            {{ tienda.nombre }}
+            <br>
+        {% endfor %}
+    <br>
+</li>
+</ul>

@@ -1,0 +1,17 @@
+<div>
+  <h2>Nombre: {{ artista.nombre_completo }}</h2>
+  <h2>Fecha nacimiento: {{ artista.fecha_nacimiento|date:"d/m/Y" }}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
+  <h2>Biografía: {{ artista.biografia }}</h2>
+  <h2>Nacionalidad: {{ artista.get_nacionalidad_display }}</h2> <!--  Para mostrar la nacionalidad de manera correcta, es decir "Española" y 
+                                                                no "espanola", debemos usar el método "get_atributo_display()", con este método
+                                                                podemos acceder al "valor entendible por el ser humano" que definimos en el modelo.  -->
+  <h2>Obras:</h2>
+  <ul>
+    {% for obras in artista.obras_artista.all %}
+      <li>
+        <h3>{{ obras.titulo }}</h3>
+      </li>
+    {% endfor %}
+  </ul>
+  <br /><br />
+</div>

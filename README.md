@@ -193,19 +193,70 @@ Usamos la combinación de un filtro y un aggregate, con el aggregate sacamos la 
 Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usamos filter el atributo de edad, seguido de lt para indicar los que sean menores a la media, y lo igualamos al atributo de "edad_media".
 
 
-Templates del proyecto:
+    Templates usados del proyecto:
 
-1. `{% if %}` y `{% if-else %}`:  
-   - Usados en `artista_nacionalidad.html`, `exposicion_anyo.html`, y `visitante_edad.html` para manejar condiciones.
+1. **`{% if %}` y `{% if-else %}`**:  
+   - Usados en `artista_nacionalidad.html`, `exposicion_anyo.html`, `obra_artista_exposicion.html`, `primer_visitante_2023.html`, `guia_nacional.html` para manejar condiciones y mostrar el número de resultados que devolvía.
 
-2. `{% for ... empty %}`:  
-   - Usados en las mismas plantillas para mostrar mensajes cuando no hay elementos en la lista.
+2. **`{% for ... empty %}`**:  
+   - Usados en `artista_nacionalidad.html`, `exposicion_anyo.html`, `guia_nacional.html`, `lista.html`, `obra_artista_exposicion.html`, `precio_medio.html`, `productos.html`, `visitaguiada_visitantes_media.html`, `primer_visitante_2023.html`, `visitante_edad.html` y `visitante_menor_media.html` para mostrar mensajes cuando no hay elementos en la lista.
 
 3. **`{% include %}`**:  
-   - Usado en todas las plantillas de lista (`artista_nacionalidad.html`, `exposicion_anyo.html`, etc.) para incluir plantillas parciales.
+   - Usado en todas las plantillas de lista (`artista_nacionalidad.html`, `exposicion_anyo.html`, `guia_nacional.html`, `lista.html`, `obra_artista_exposicion.html`, `precio_medio.html`, `productos.html`, `visitaguiada_visitantes_media.html`, `primer_visitante_2023.html`, `visitante_edad.html`, `visitante_menor_media.html` y `principal.html`) para incluir plantillas parciales.
 
 4. **`{% block %}`**:  
-   - Definido en `principal.html` y usado en todas las plantillas para personalizar secciones.
+   - Usado en `principal.html` y usado en todas las plantillas para personalizar secciones.
 
-5. **`{% load static %}` y `{% static %}`**:  
-   - Usados en `principal.html` para cargar archivos estáticos.
+5. **`{% load static %}` **:  
+   - Usados en `principal.html` para cargar archivos estáticos de la carpeta static, como el css, javascript y el logo.
+
+
+   Operadores usados en el proyecto
+
+1. **Operador de comparación (`>=`)**:
+   - Usado en `obra_artista_exposicion.html` y `visitante_edad.html` para comprobar si un valor es mayor o igual que otro.
+
+2. **Operador de comparación (`<`)**:
+   - Usado en `visitante_edad.html` para comprobar si un valor es menor que otro.
+
+3. **Operador lógico (`and`)**:
+   - Usado en `visitante_edad.html` para realizar una comparación que debía cumplir dos condiciones.
+
+4. **Operador de pertenencia (`in`)**:
+   - Usado en `artista_nacionalidad.html`, `exposicion_anyo.html`, `guia_nacional.html`, `lista.html`, `obra_artista_exposicion.html`, `precio_medio.html`, `productos.html`, `visitaguiada_visitantes_media.html`, `primer_visitante_2023.html`, `visitante_edad.html` y `visitante_menor_media.html` .Comprobamos si un valor está en una lista.
+
+5. **Operador lógico (`not`)**:
+   - Usado en `primer_visitante_2023.html` para negar una variable de una condición.
+
+
+   Filtros usados en el proyecto
+
+1. **date** 
+   - Formatea fechas según el formato que le pasemos. Ejemplo: {{ fecha|date:"d/m/Y" }}
+
+2. **capfirst** 
+   - Convierte en mayúscula la primera letra del valor. `obra_artista_exposicion.html`
+
+3. **yesno**
+   - Convierte valores booleanos (True/False/None) al texto predeterminado que le pasemos, el primero será True, el segundo False y el tercero None.
+
+4. **floatformat** 
+   - Redondea números decimales según el número de decimales que indiquemos.
+
+5. **length**
+   - Devuelve la longitu del valor que le pasemo (número de caracteres en un string o elementos en una lista).
+
+6. **title**
+   - Convierte el texto a formato título, poniendo en mayúscula la primera letra de cada palabra.
+
+7. **urlize**
+   - Convierte texto plano que contiene URLs en enlaces.
+
+8. **deafult**
+   - Devuelve un valor predeterminado si el valor original es vacío o None.
+
+9. **add**
+   - Suma un valor numérico al valor original.
+
+10. **cut**
+   - Elimina todas las apariciones de un valor específico, que le indiquemos, en el texto.

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Q, Avg
+from datetime import date
 from .models import Museo,Obra,Exposicion, Visitante, Artista, Guia, Producto
 
 #Index donde podremos acceder a todas las URLs.
@@ -7,7 +8,8 @@ def index(request):
     return render(request, 'index.html')
 
 #Esta vista saca todos los datos de museo y accede a todos los modelos relacionados con el mismo para poder sacar información sobre ellos.
-#Usamos prefetch_related en lugar de select_releted porque, aunque no haya ninguna relación ManyToMany, son relaciones reversas, ya que la foreingKey se encuentra en los otros modelos.
+#Usamos prefetch_related en lugar de select_releted porque, aunque no haya ninguna relación ManyToMany, son relaciones reversas, ya que la foreingKey 
+#se encuentra en los otros modelos.
 #Esto tambien estaria usando una relación reversa.
 def listar_museos(request):
     museos = (Museo.objects.prefetch_related("exposiciones","visitantes","tienda","guias")).all()
@@ -32,7 +34,9 @@ def listar_obras_artista_exposicion(request, artista, exposicion):
 #Usamos un parametro entero, filtro y gt para sacar las edades superiores. También el order by para ordenar el resultado.
 def listar_visitantes_edad(request, edad):
     visitantes = Visitante.objects.select_related("museo").prefetch_related("entradas", "visita_guiada_visitante").filter(edad__gt=edad).order_by("nombre").all()
-    return render(request, "visitante/visitante_edad.html", {"visitantes": visitantes, "edad": edad})
+    temp_alta1 = date(2023, 11, 2)
+    temp_alta2 = date(2023, 11, 27)
+    return render(request, "visitante/visitante_edad.html", {"visitantes": visitantes, "edad": edad, "temp_alta1":temp_alta1, "temp_alta2":temp_alta2}) 
 
 #Esta vista saca todos los datos de artistas de una nacionalidad concreta. Ordenados por fecha de nacimiento de manera descendente (por eso ponemos el "-" delante "fecha_nacimiento")
 #Usamos un filtro y un parametro de tipo str.

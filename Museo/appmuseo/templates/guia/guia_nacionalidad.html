@@ -1,29 +1,17 @@
-<!DOCTYPE>
-<html>
-    <head>
-        <title>Museo</title>
-    </head>
-    <body>
-        <h1>Guias que hablen {{idioma1}} o {{idioma2}}</h1>
-        {% for guia in guias %}
-            <div>
-                <h2>Nombre: {{guia.nombre}}</h2>
-                <h2>Idiomas: {{guia.idiomas}}</h2>
-                <h2>Especialidad: {{guia.especialidad}}</h2>
-                <h2>Disponibilidad: {% if guia.disponibilidad == True%} 
-                                    Disponible{% else %}
-                                    No disponible{% endif %}</h2> <!-- Creo una condición if con disponibilidad porque el valor que tiene guardado
-                                                                    es booleano, por lo que devuelve un tru o un false, lo cual es poco entendible a 
-                                                                    nivel humano, con este if, controlo que devuelva 
-                                                                    "disponible" si tiene un valor true o "no disponible" si su valor es false-->
-                <h2>Museo: {{guia.museo.nombre}}</h2> 
-                <h2>Visita guiada:</h2>
-                <ul>
-                    {% for visitaguiada in guia.visita_guiada_guia.all %}
-                        <li><h3>{{ visitaguiada.nombre_visita_guia }}</h3></li>
-                    {% endfor %}
-                </ul>
-            <br><br>
-        {% endfor %}
-    </body>
-</html>
+{% extends 'principal.html' %}
+{% block cabecera %}
+  <h1>Guias que hablen {{ idioma1 }} o {{ idioma2 }}</h1>
+{% endblock %}
+{% block contenido %}
+  {% if guias %}
+    <h2>Se encontraron {{ guias|length }} guias que hablen {{ idioma1 }} o {{ idioma2 }}.</h2><br /> <!-- Calculamos el total de guias que encontramos que 
+                                                                                                      hablen esos dos idiomas-->
+  {% else %}
+    <h2>No hay guias que hablen {{ idioma1 }} o {{ idioma2 }}.</h2><br />
+  {% endif %}
+  {% for guia in guias %}
+    {% include 'guia/_guia.html' %}
+  {% empty %}
+    <h2>No hay guias disponibles en este momento.</h2>
+  {% endfor %}
+{% endblock %}

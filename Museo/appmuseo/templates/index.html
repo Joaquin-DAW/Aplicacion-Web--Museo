@@ -1,68 +1,11 @@
-<html>
-    <head></head>
-    <body>
-    <h1>Aplicación de Museo</h1>
+{% extends "principal.html" %}
 
-    <h2>Listado de enlaces</h2>
-    
-    <div>
-        <h3>1- Listado de Museo: Crear una URL que liste todos los datos de museo.</h3>
-        <a href="{% url 'listar_museos' %}">Url del museo</a>
-    </div>
+{% load static %}
 
-    <div>
-        <h3>2- Listado de Exposiciones por año: Crear una URL que muestre una lista de todas las exposiciones para un año concreto.
-        </h3>
-        <a href="{% url 'exposiciones_por_anyo' 2023 %}">Url de exposiciones del año 2023</a>
-    </div>
+{% block link_css_menu %}
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock %}
 
-    <div>
-        <h3>3- Listado de Obras de un artista específico que se encuentren en una exposición concreta.
-        </h3>
-        <a href="{% url 'obras_por_artista_exposicion' "Leonardo da Vinci" "Renacimiento Italiano" %}">Url de obras de Leonardo da Vinci en la exposición Renacimiento Italiano</a>
-    </div>
-
-    <div>
-        <h3>4- Listado de visitantes con una edad mayor a un número concreto, ordenados alfabéticamente
-        </h3>
-        <a href="{% url 'visitantes_edad' 30 %}">Url de visitantes con edad superior a 30</a>
-    </div>
-
-    <div>
-        <h3>5- Listado de artistas con nacionalidad española, ordenados por fecha de nacimiento descendente
-        </h3>
-        <a href="{% url 'artistas_nacionalidad' "espanola" %}">Url de arstistas españoles por fecha de nacimiento descendente</a>
-    </div>
-
-    <div>
-        <h3>6- Listado de guias que hablen francés o inglés.
-        </h3>
-        <a href="{% url 'guias_idiomas' "francés" "inglés" %}">Url de guias que hablan francés o inglés</a>
-    </div>
-
-    <div>
-        <h3>7- Media del precio de los productos que se venden en la tienda.
-        </h3>
-        <a href="{% url 'media_precio' %}">Url de la media del precio de los productos de la tienda</a>
-    </div>
-
-    <div>
-        <h3>8 - Primer visitante que acudio al museo en 2023.
-        </h3>
-        <a href="{% url 'primer_visitante_2023' %}">Url que muestre la primera persona que visitio el museo en 2023</a>
-    </div>
-
-    <div>
-        <h3>9 - Productos que aún no se hayan vendido
-        </h3>
-        <a href="{% url 'productos_sin_vender' %}">Url que muestra los productos que no se han vendido</a>
-    </div>
-
-    <div>
-        <h3>10 - Visitantes que se encuentren por debajo de la media de edad de todos los visitantes del museo
-        </h3>
-        <a href="{% url 'visitantes_menor_media' %}">Url que muestra a los visitantes con menos edad que la media</a>
-    </div>
-    <br>
-    </body>
-</html>
+{% block link_css_footer %}
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+{% endblock %}

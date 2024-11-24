@@ -1,24 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Primer Visitante de 2023</title>
-</head>
-<body>
-    <h1>Primer Visitante de 2023</h1>
-    {% for visitante in visitantes %}
-        <h2>Nombre: {{ visitante.nombre }}</h2>
-        <h2>Correo Electrónico: {{ visitante.correo_electronico }}</h2>
-        <h2>Edad: {{ visitante.edad }}</h2>
-        <h2>Fecha de Visita: {{ visitante.fecha_visita }}</h2>
-        <h2>Museo: {{visitante.museo.nombre}}</h2>
-                <h2>Fecha compra entrada: {{visitante.entradas.fecha_compra}}</h2>
-                <h2>Visita guiada:</h2>
-                    <ul>
-                        {% for visitaguiada in visitante.visita_guiada_visitante.all %}
-                            <li><h3>{{ visitaguiada.nombre_visita_guia }}</h3></li>
-                        {% endfor %}
-                    </ul>
-            <br><br>
-    {% endfor %}
-</body>
-</html>
+{% extends 'principal.html' %}
+{% block cabecera %}
+  <h1>Primer Visitante de 2023</h1>
+{% endblock %}
+{% block contenido %}
+  {% for visitante in visitantes %}
+    {% if not visitante.edad >= 18 %}
+      <p>{{ visitante.nombre }} es menor de edad.</p>
+    {% else %}
+      <p>{{ visitante.nombre }} es mayor de edad.</p><br />
+    {% endif %}
+    {% include 'visitante/_visitante.html' %}
+  {% empty %}
+    <h2>No hay visitantes disponibles en este momento.</h2>
+  {% endfor %}
+{% endblock %}

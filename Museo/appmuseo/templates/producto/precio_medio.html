@@ -1,27 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Museo</title>
-</head>
-<body>
-    <h1>Media del precio de productos es: {{ media }}</h1>
-    <h2>Lista de Productos:</h2>
-    <ul>
-        {% for producto in productos %}
-            <li>
-                <strong>{{ producto.nombre }}</strong>: {{ producto.precio }} (Stock: {{ producto.stock }})<br>
-                <strong>{{ producto.descripcion}}</strong><br>
-                {% for inventario in producto.inventario_producto.all %}
-                <strong>Cantidad Vendida: </strong>{{ inventario.cantidad_vendida }}<br>
-                {% endfor %}
-                <strong>Tiendas:</strong>
-                    {% for tienda in producto.tiendas.all %}
-                        {{ tienda.nombre }}
-                        <br>
-                    {% endfor %}
-                <br>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'principal.html' %}
+{% block cabecera %}
+  <h1>Media del precio de productos es: {{ media|floatformat:2 }}</h1> <!-- Redondeamos la cantidad de decimales que nos devuelve la media a 2-->
+{% endblock %}
+{% block contenido %}
+  <h2>Lista de Productos:</h2>
+  {% for producto in productos %}
+    {% include 'producto/_producto.html' %}
+  {% empty %}
+    <h2>No hay productos disponibles en este momento.</h2>
+  {% endfor %}
+{% endblock %}

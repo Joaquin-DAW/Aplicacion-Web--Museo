@@ -1,0 +1,22 @@
+{% load static %}
+<html>
+    <head>
+        <title>Museo Online </title>
+
+        <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+
+        <script src="{% static 'javascript/cambio_color.js' %}"></script>
+    </head>
+    <body>
+        <h1><img src="{% static  'img/logo.jpg' %}" alt="Logo del museo" width="75vh"> Museo</h1>
+        {% include "estructura/menu.html" %}
+
+        {% block cabecera %}
+        {% endblock %}
+
+        {% block contenido %}
+        {% endblock %}
+
+        {% include "estructura/footer.html" %}
+    </bodY>
+</html>

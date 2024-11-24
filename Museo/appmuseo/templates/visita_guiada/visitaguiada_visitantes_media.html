@@ -1,30 +1,8 @@
-<!DOCTYPE>
-<html>
-    <head>
-        <title>Museo</title>
-    </head>
-    <body>
-        <h1>Visita guiada: {{visitas_guiadas.nombrenombre_visita_guia}} </h1>
-        {% for visita_guiada in visitas_guiadas %}
-            <div>
-                <h2>Nombre de la visita: {{visita_guiada.nombre_visita_guia}}</h2>
-                <h2>Duración: {{visita_guiada.duracion}}</h2>
-                <h2>Capacidad máxima: {{visita_guiada.capacidad_maxima}}</h2>
-                <h2>Idioma: {{visita_guiada.idioma}}</h2>
-                <h2>Guias:<h2>
-                    <ul>
-                        {% for guia in visita_guiada.guias.all %}
-                            <li>{{ guia.nombre }}</li>
-                        {% endfor %}
-                    </ul>
-                <h2>Visitantes:<h2>
-                    <ul>
-                        {% for visitante in visita_guiada.visitantes.all %}
-                            <li>{{ visitante.nombre }}</li>
-                        {% endfor %}
-                    </ul>
-            </div>
-            <br><br>
-        {% endfor %}
-    </body>
-</html>
+{% extends 'principal.html' %}
+{% block contenido %}
+  {% for visita_guiada in visitas_guiadas %}
+    {% include 'visita_guiada/_visita.html' %}
+  {% empty %}
+    <h2>No hay visitas guiadas disponibles en este momento.</h2>
+  {% endfor %}
+{% endblock %}

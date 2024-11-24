@@ -1,0 +1,18 @@
+<ul>
+<h2>Nombre: {{ visitante.nombre }}</h2>
+<h2>Correo Electrónico: {{ visitante.correo_electronico|urlize }}</h2> <!-- Convertimos la URL del proyecto en un enlace que al pulsar nos manda a nuestro correo-->
+<h2>Edad: {{ visitante.edad }}</h2>
+<h2>Fecha de Visita: {{ visitante.fecha_visita|date:"d/m/Y" }}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
+<h2>Museo: {{visitante.museo.nombre}}</h2>
+        <h2>Fecha compra entrada: {{visitante.entradas.fecha_compra|date:"d/m/Y"}}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
+        <h2>Visita guiada:</h2>
+            <ul>
+                {% for visitaguiada in visitante.visita_guiada_visitante.all %}
+                    <li><h3>Nombre visita: {{ visitaguiada.nombre_visita_guia }}</h3></li>
+                    <li><h3>Duración visita: {{ visitaguiada.duracion|cut:":00" }}</h3></li> <!-- Eliminamos la aparición de los segundos en la duración de la visita
+                    su valor original era 1:30:00, pero el valor de los segundos no aportaba nada, con cut y poniendo el elemento que queremos eliminar, se encargará
+                    de quitar todas sus apariciones en ese valor-->
+                {% endfor %}
+            </ul>
+    <br><br>
+</ul>
