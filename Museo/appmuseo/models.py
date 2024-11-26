@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Museo(models.Model):
-    nombre = models.CharField(max_length=100, unique=True, verbose_name="Nombre del museo") #"Unique" si esta en "true" indica que el valor de ese campo no puede repetirse en la base de datos
+    nombre = models.CharField(max_length=200, unique=True, verbose_name="Nombre del museo") #"Unique" si esta en "true" indica que el valor de ese campo no puede repetirse en la base de datos
                                                                                             #"Verbose_name" nos permite poner un nombre más entendible a nivel humano para el campo         
     ubicacion = models.CharField(max_length=200, blank=True, null=True)                     #"blank" si esta en "true" nos permite que el campo quede vacío en los formularios
                                                                                             #"null" si esta en "true" nos permite que el campo acepte un valor null en la base de datos

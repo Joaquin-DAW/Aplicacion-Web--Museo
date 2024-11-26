@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'appmuseo',
     'django_seed',
     'debug_toolbar',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [

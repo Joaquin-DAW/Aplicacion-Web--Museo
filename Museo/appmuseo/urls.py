@@ -25,4 +25,6 @@ urlpatterns = [
     path('visitante',views.primer_visitante_2023, name='primer_visitante_2023'),
     path('producto_sin_vender',views.productos_sin_vender, name='productos_sin_vender'),
     path('visitantes_media',views.visitantes_menor_media, name='visitantes_menor_media'),
+    
+    path('museo/create/',views.museo_create,name='museo_create')
 ]

@@ -1,0 +1,90 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+
+<form action = "{% url 'museo_create' %}" method = "post"> 
+
+    {% csrf_token %} 
+
+<div class="mb-4">
+    <label for="{{ formulario.nombre.id_for_label }}" class="form-label">{{ formulario.nombre.label }}: </label>
+    <input  name="{{ formulario.nombre.html_name }}" 
+            type="text" 
+            class="form-control {% if formulario.nombre.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+            id="{{ formulario.nombre.id_for_label }}"
+            maxlength="{{ formulario.nombre.field.max_length }}"
+            {% if formulario.nombre.field.required %}
+                required
+            {% endif %}
+            value="{% if formulario.is_bound %}{{ formulario.nombre.value }}{% endif %}"
+    />
+    {% if formulario.nombre.help_text %}
+    <div class="form-text">
+        {{ formulario.nombre.help_text }}
+    </div>
+    {% endif %}
+    <div class="invalid-feedback">
+        {% for error in formulario.nombre.errors %} 
+            {{ error }}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="mb-4">
+    <label for="{{ formulario.descripcion.id_for_label }}" class="form-label">{{ formulario.descripcion.label }}: </label>
+    <textarea name="{{ formulario.descripcion.html_name }}" 
+              class="form-control {% if formulario.descripcion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+              id="{{ formulario.descripcion.id_for_label }}"
+              >{% if formulario.is_bound %}{{ formulario.descripcion.value }}{% endif %}</textarea>
+    <div class="invalid-feedback">
+        {% for error in formulario.descripcion.errors %} 
+            {{ error }}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="mb-4">
+    <label for="{{ formulario.fecha_fundacion.id_for_label }}" class="form-label">{{ formulario.fecha_fundacion.label }}: </label>
+    <input  name="{{ formulario.fecha_fundacion.html_name }}" 
+            type="date" 
+            class="form-control {% if formulario.fecha_fundacion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+            id="{{ formulario.fecha_fundacion.id_for_label }}"
+            value="{% if formulario.is_bound %}{{ formulario.fecha_fundacion.value|stringformat:'Y-m-d' }}{% endif %}"
+    />
+    {% if formulario.fecha_fundacion.help_text %}
+    <div class="form-text">
+        {{ formulario.fecha_fundacion.help_text }}
+    </div>
+    {% endif %}
+    <div class="invalid-feedback">
+        {% for error in formulario.fecha_fundacion.errors %} 
+            {{ error }}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="mb-4">
+    <label for="{{ formulario.ubicacion.id_for_label }}" class="form-label">{{ formulario.ubicacion.label }}: </label>
+    <input  name="{{ formulario.ubicacion.html_name }}" 
+            type="text" 
+            class="form-control {% if formulario.ubicacion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+            id="{{ formulario.ubicacion.id_for_label }}"
+            maxlength="{{ formulario.ubicacion.field.max_length }}"
+            value="{% if formulario.is_bound %}{{ formulario.ubicacion.value }}{% endif %}"
+    />
+    <div class="invalid-feedback">
+        {% for error in formulario.ubicacion.errors %} 
+            {{ error }}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="mb-4">
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</div>
+
+</form>
+
+{% endblock %}

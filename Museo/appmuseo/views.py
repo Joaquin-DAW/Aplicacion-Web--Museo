@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.db.models import Q, Avg
 from datetime import date
 from .models import Museo,Obra,Exposicion, Visitante, Artista, Guia, Producto
+from .forms import *
 
 #Index donde podremos acceder a todas las URLs.
 def index(request):
@@ -87,6 +88,24 @@ def visitantes_menor_media(request):
     visitantes = Visitante.objects.select_related("museo").prefetch_related("entradas", 
     "visita_guiada_visitante").filter(edad__lt=edad_media)
     return render(request, "visitante/visitante_menor_media.html", {"visitantes": visitantes, "edad_media": edad_media})
+
+
+#Aqui vamos a crear lo que corresponda a los formularios.
+
+def museo_create(request):
+    if request.method == "POST":
+        formulario = MuseoModelForm(request.POST)
+        if formulario.is_valid():
+            try:
+                # Guarda el libro en la base de datos
+                formulario.save()
+                return redirect("museo_lista")
+            except Exception as error:
+                print(error)
+    else:
+        formulario = MuseoModelForm()
+          
+    return render(request, 'museo/create.html',{"formulario":formulario}) 
 
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.

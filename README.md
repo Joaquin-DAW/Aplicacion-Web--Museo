@@ -261,3 +261,7 @@ Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usam
 
 10. **cut**
    - Elimina todas las apariciones de un valor específico, que le indiquemos, en el texto. Usado en `_visitante.html`
+
+
+
+Crear, actualizar y borrar por Post, leer por Get
