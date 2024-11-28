@@ -1,29 +1,38 @@
-<div>
-    <h2>Nombre: {{museo.nombre}}</h2>
-    <h2>Ubicación: {{museo.ubicacion}}</h2>
-    <h2>Fecha fundación: {{museo.fecha_fundacion|date:"d/m/Y"}}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
-    <h2>Descripción: {{museo.descripcion}}</h2>
-    <h2>Exposiciones:<h2>
-        <ul>
-            {% for exposicion in museo.exposiciones.all %}
-                <li>{{ exposicion.titulo }}</li>
-            {% endfor %}
-        </ul>
-    <h2>Visitantes:<h2>
-        <ul>
-            {% for visitante in museo.visitantes.all %}
-                <li>{{ visitante.nombre }}</li>
-            {% endfor %}
-        </ul>
-    <h2>Tienda:<h2>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{% url 'listar_museos' %}">{{ museo.nombre|capfirst }}</a>
+        </h5>
+        <h6 class="card-subtitle mb-2 text-muted">Ubicación: {{ museo.ubicacion }}</h6>
+        <p class="card-text">Fecha de Fundación: {{ museo.fecha_fundacion|date:"d-m-Y" }}</p>
+        <p class="card-text">{{ museo.descripcion }}</p>
+        <div>
+            <p class="card-text">Exposiciones:</p>
             <ul>
-                    <li>{{ museo.tienda.nombre }}</li>
-            </ul>
-    <h2>Guias:<h2>
-            <ul>
-                {% for guia in museo.guias.all %}
-                    <li>{{ guia.nombre }}</li>
+                {% for exposicion in museo.exposiciones.all %}
+                    <li class="card-text">{{ exposicion.titulo }}</li>
                 {% endfor %}
             </ul>
+        </div>
+        {% load bootstrap_icons %}
+        <div class="row btn-group">
+            <div class="mb-2">
+                <button type="button" 
+                        class="btn btn-outline-primary"> 
+                        <a href="{% url 'museo_editar' museo.id %}">
+                            <span>{% bs_icon 'pencil' %}</span>
+                        </a>
+                </button>
+
+            </div>
+            <div class="mb-2">
+                <form action="{% url 'museo_eliminar' museo.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                        <span>{% bs_icon 'trash' %}</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-<br><br>

@@ -1,0 +1,23 @@
+{% extends "principal.html" %}
+{% block contenido %}
+<h1>Resultados de Búsqueda</h1>
+
+<p>{{ mensaje_busqueda }}</p>
+
+{% if museos %}
+    <ul>
+        {% for museo in museos %}
+            <li>
+                <strong>{{ museo.nombre }}</strong><br>
+                Ubicación: {{ museo.ubicacion }}<br>
+                Fecha de Fundación: {{ museo.fecha_fundacion }}<br>
+                Descripción: {{ museo.descripcion }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No se encontraron museos con los criterios de búsqueda.</p>
+{% endif %}
+
+<a href="{% url 'museo_buscar_avanzado' %}" class="btn btn-secondary">Nueva búsqueda</a>
+{% endblock %}

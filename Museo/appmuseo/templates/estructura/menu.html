@@ -1,6 +1,6 @@
 <nav>
     <ul class="menu">
-        <li><a href="{% url 'listar_museos' %}">Listado de Museo</a></li>
+        <!--
         <li><a href="{% url 'exposiciones_por_anyo' 2023 %}">Exposiciones del año 2023</a></li>
         <li>
             <a href="{% url 'obras_por_artista_exposicion' 'Leonardo da Vinci' 'Renacimiento Italiano' %}">
@@ -21,7 +21,9 @@
         <li><a href="{% url 'media_precio' %}">Media del precio de productos de la tienda</a></li>
         <li><a href="{% url 'primer_visitante_2023' %}">Primera persona que visitó el museo en 2023</a></li>
         <li><a href="{% url 'productos_sin_vender' %}">Productos sin vender</a></li>
-        <li><a href="{% url 'visitantes_menor_media' %}">Visitantes con menos edad que la media</a></li>
-        <li><a class="dropdown-item" href="{% url 'museo_create' %}">Crear Museo</a></li>
+        <li><a href="{% url 'visitantes_menor_media' %}">Visitantes con menos edad que la media</a></li>-->
+        <li><a href="{% url 'listar_museos' %}">Listado de Museo</a></li>
+        <li><a href="{% url 'museo_create' %}">Crear Museo</a></li>
+        <li><a href="{% url 'museo_buscar_avanzado' %}">Busqueda avanzada museo</a></li>
     </ul>
 </nav>

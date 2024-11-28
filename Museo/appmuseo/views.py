@@ -3,6 +3,7 @@ from django.db.models import Q, Avg
 from datetime import date
 from .models import Museo,Obra,Exposicion, Visitante, Artista, Guia, Producto
 from .forms import *
+from django.contrib import messages
 
 #Index donde podremos acceder a todas las URLs.
 def index(request):
@@ -90,8 +91,10 @@ def visitantes_menor_media(request):
     return render(request, "visitante/visitante_menor_media.html", {"visitantes": visitantes, "edad_media": edad_media})
 
 
+
 #Aqui vamos a crear lo que corresponda a los formularios.
 
+#Creación de museo.
 def museo_create(request):
     if request.method == "POST":
         formulario = MuseoModelForm(request.POST)
@@ -106,6 +109,88 @@ def museo_create(request):
         formulario = MuseoModelForm()
           
     return render(request, 'museo/create.html',{"formulario":formulario}) 
+
+#Busqueda avanzada de museo.
+def museo_buscar_avanzado(request):
+
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaMuseoForm(request.GET)
+
+        if formulario.is_valid():
+            
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            QSmuseos = Museo.objects.all()
+            
+            nombre_descripcion = formulario.cleaned_data.get('nombre_descripcion')
+            ubicacion = formulario.cleaned_data.get('ubicacion')
+            fecha_desde = formulario.cleaned_data.get('fecha_desde')
+            fecha_hasta = formulario.cleaned_data.get('fecha_hasta')
+
+            # Filtro por texto en nombre o descripción
+            if nombre_descripcion:
+                QSmuseos = QSmuseos.filter(Q(nombre__icontains=nombre_descripcion) | Q(descripcion__icontains=nombre_descripcion))
+                mensaje_busqueda += "Nombre o descripción contienen: "+ nombre_descripcion+"\n"
+            
+            # Filtro por texto en ubicación 
+            if ubicacion:
+                QSmuseos = QSmuseos.filter(ubicacion__icontains=ubicacion)
+                mensaje_busqueda += "Nombre o descripción contienen:"+ ubicacion+"\n"
+
+            # Filtro por fecha desde
+            if fecha_desde:
+                QSmuseos = QSmuseos.filter(fecha_fundacion__gte=fecha_desde)
+                mensaje_busqueda += "Fecha de fundación mayor o igual a "+fecha_desde+"\n"
+
+            # Filtro por fecha hasta
+            if fecha_hasta:
+                QSmuseos = QSmuseos.filter(fecha_fundacion__lte=fecha_hasta)
+                mensaje_busqueda += "Fecha de fundación menor o igual a " +fecha_hasta+"\n"
+                
+            museos = QSmuseos.all()
+
+            return render(request, 'museo/lista_busqueda.html',
+                {"museos": museos, "mensaje_busqueda": mensaje_busqueda }
+            )
+    else:
+        formulario = BusquedaAvanzadaMuseoForm(None)
+
+    return render(request, 'museo/busqueda_avanzada.html', {"formulario": formulario})
+
+
+def museo_editar(request,museo_id):
+    museo = Museo.objects.get(id=museo_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = MuseoModelForm(datosFormulario,instance = museo)
+    
+    if (request.method == "POST"):
+       
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado el museo'+formulario.cleaned_data.get('nombre')+" correctamente")
+                return redirect('listar_museos')  
+            except Exception as error:
+                print(error)
+                
+    return render(request, 'museo/actualizar.html',{"formulario":formulario,"museo":museo})
+
+
+def museo_eliminar(request,museo_id):
+    museo = Museo.objects.get(id=museo_id)
+    try:
+        museo.delete()
+        messages.success(request, "Se ha elimnado el museo "+museo.nombre+" correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('museo_lista')
+
+
 
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.

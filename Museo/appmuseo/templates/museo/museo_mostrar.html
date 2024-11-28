@@ -1,0 +1,13 @@
+{% extends "principal.html" %}
+
+{% block cabecera_extra %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'javascript/principal.js' %}" ></script>
+{% endblock %}
+
+{% block contenido %}
+    <h1 class="display-3">Museo: {{ museo.nombre|upper }}</h1>
+    <div class="col-sm-12 mb-2">
+        {% include "museo/museo.html" %}
+    </div>
+{% endblock %} 

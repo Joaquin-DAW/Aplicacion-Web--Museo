@@ -4,7 +4,7 @@ from .import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('museos',views.listar_museos, name='listar_museos'),
+    path('museos/',views.listar_museos, name='listar_museos'),
     
     #Esta URL esta usando una expresión regular, para crearlas usamos el re_path en lugar de solo path 
     #La r al principio indica que es una expresión regular.
@@ -26,5 +26,8 @@ urlpatterns = [
     path('producto_sin_vender',views.productos_sin_vender, name='productos_sin_vender'),
     path('visitantes_media',views.visitantes_menor_media, name='visitantes_menor_media'),
     
-    path('museo/create/',views.museo_create,name='museo_create')
+    path('museo/create/',views.museo_create,name='museo_create'),
+    path('museo/buscar_avanzado/',views.museo_buscar_avanzado,name='museo_buscar_avanzado'),
+    path('museo/editar/<int:museo_id>',views.museo_editar,name='museo_editar'),
+    path('museo/eliminar/<int:museo_id>/', views.museo_eliminar, name='museo_eliminar'),
 ]

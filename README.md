@@ -265,3 +265,4 @@ Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usam
 
 
 Crear, actualizar y borrar por Post, leer por Get
+Orden para crear formularios: La url, el formulario, la vista y el template.

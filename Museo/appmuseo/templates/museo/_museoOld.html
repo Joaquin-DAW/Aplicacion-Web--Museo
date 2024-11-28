@@ -1,0 +1,29 @@
+<div>
+    <h2>Nombre: {{museo.nombre}}</h2>
+    <h2>Ubicación: {{museo.ubicacion}}</h2>
+    <h2>Fecha fundación: {{museo.fecha_fundacion|date:"d/m/Y"}}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
+    <h2>Descripción: {{museo.descripcion}}</h2>
+    <h2>Exposiciones:<h2>
+        <ul>
+            {% for exposicion in museo.exposiciones.all %}
+                <li>{{ exposicion.titulo }}</li>
+            {% endfor %}
+        </ul>
+    <h2>Visitantes:<h2>
+        <ul>
+            {% for visitante in museo.visitantes.all %}
+                <li>{{ visitante.nombre }}</li>
+            {% endfor %}
+        </ul>
+    <h2>Tienda:<h2>
+            <ul>
+                    <li>{{ museo.tienda.nombre }}</li>
+            </ul>
+    <h2>Guias:<h2>
+            <ul>
+                {% for guia in museo.guias.all %}
+                    <li>{{ guia.nombre }}</li>
+                {% endfor %}
+            </ul>
+</div>
+<br><br>
