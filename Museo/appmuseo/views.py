@@ -185,10 +185,11 @@ def museo_eliminar(request,museo_id):
     museo = Museo.objects.get(id=museo_id)
     try:
         museo.delete()
-        messages.success(request, "Se ha elimnado el museo "+museo.nombre+" correctamente")
+        messages.success(request, "Se ha elimnado el museo '"+museo.nombre+"' correctamente")
     except Exception as error:
+        messages.error(request, "Hubo un error al intentar eliminar el museo.")
         print(error)
-    return redirect('museo_lista')
+    return redirect('listar_museos')
 
 
 

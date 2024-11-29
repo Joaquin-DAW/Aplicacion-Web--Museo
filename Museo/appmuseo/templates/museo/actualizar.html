@@ -4,7 +4,7 @@
 
 {% load django_bootstrap5 %}
 
-<form action = "{% url 'museo_create' museo.id %}" method = "post"> 
+<form action = "{% url 'museo_editar' museo.id %}" method = "post"> 
 
     {% csrf_token %} 
 
