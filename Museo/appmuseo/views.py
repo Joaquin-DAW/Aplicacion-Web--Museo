@@ -100,8 +100,9 @@ def museo_create(request):
         formulario = MuseoModelForm(request.POST)
         if formulario.is_valid():
             try:
-                # Guarda el libro en la base de datos
+                # Guarda el museo en la base de datos
                 formulario.save()
+                messages.success(request, "El museo se ha creado correctamente.")
                 return redirect("museo_lista")
             except Exception as error:
                 print(error)
@@ -191,7 +192,21 @@ def museo_eliminar(request,museo_id):
         print(error)
     return redirect('listar_museos')
 
-
+def exposicion_create(request):
+    if request.method == "POST":
+        formulario = ExposicionModelForm(request.POST)
+        if formulario.is_valid():
+            try:
+                # Guarda la exposición en la base de datos
+                formulario.save()
+                messages.success(request, "La exposición se ha creado correctamente.")
+                return redirect("exposicion_lista")
+            except Exception as error:
+                print(error)
+    else:
+        formulario = ExposicionModelForm()
+          
+    return render(request, 'exposicion/create.html',{"formulario":formulario}) 
 
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.

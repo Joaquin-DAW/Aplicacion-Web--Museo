@@ -30,4 +30,6 @@ urlpatterns = [
     path('museo/buscar_avanzado/',views.museo_buscar_avanzado,name='museo_buscar_avanzado'),
     path('museo/editar/<int:museo_id>',views.museo_editar,name='museo_editar'),
     path('museo/eliminar/<int:museo_id>/', views.museo_eliminar, name='museo_eliminar'),
+    
+    path('exposicion/create/',views.exposicion_create,name='exposicion_create'),
 ]
