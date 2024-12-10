@@ -139,12 +139,12 @@ def museo_buscar_avanzado(request):
             # Filtro por fecha desde
             if fecha_desde:
                 QSmuseos = QSmuseos.filter(fecha_fundacion__gte=fecha_desde)
-                mensaje_busqueda += "Fecha de fundación mayor o igual a "+fecha_desde+"\n"
+                mensaje_busqueda += "Fecha de fundación mayor o igual a "+str(fecha_desde)+"\n"
 
             # Filtro por fecha hasta
             if fecha_hasta:
                 QSmuseos = QSmuseos.filter(fecha_fundacion__lte=fecha_hasta)
-                mensaje_busqueda += "Fecha de fundación menor o igual a " +fecha_hasta+"\n"
+                mensaje_busqueda += "Fecha de fundación menor o igual a " +str(fecha_hasta)+"\n"
                 
             museos = QSmuseos.all()
 

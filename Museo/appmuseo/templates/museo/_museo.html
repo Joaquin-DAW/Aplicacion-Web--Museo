@@ -26,14 +26,9 @@
 
             </div>
             <div class="mb-2">
-                <!--<form action="{% url 'museo_eliminar' museo.id %}" method="post">
-                    {% csrf_token %}
-                    <button class="btn btn-danger" onclick="return eliminar();" type="submit">
-                        <span>{% bs_icon 'trash' %}</span>-->
                             <button class="btn btn-danger" 
                                     data-bs-toggle="modal" 
-                                    data-bs-target="#confirmDeleteModal" 
-                                    data-delete-url="{% url 'museo_eliminar' museo.id %}">
+                                    data-bs-target="#confirmDeleteModal">
                                 <span>{% bs_icon 'trash' %}</span>
                             </button>
             </div>
@@ -50,7 +45,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <form id="deleteForm" method="post" style="display:inline;">
+                        <form method="post" action="{% url 'museo_eliminar' museo.id %}" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>

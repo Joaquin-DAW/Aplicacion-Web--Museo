@@ -15,7 +15,7 @@ class Exposicion(models.Model):
     titulo = models.CharField(max_length=150)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)
-    descripcion = models.TextField(blank=True)
+    descripcion = models.TextField(blank=True, null=True)
     capacidad = models.IntegerField(default=60)                                              #"default" nos permite dar un valor por defecto al campo en caso de que no se proporcione ninguno
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="exposiciones")  # ManyToOne con Museo
 
