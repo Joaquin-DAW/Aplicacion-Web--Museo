@@ -17,6 +17,10 @@ def listar_museos(request):
     museos = (Museo.objects.prefetch_related("exposiciones","visitantes","tienda","guias")).all()
     return render(request, "museo/lista.html", {"museos":museos})
 
+def listar_exposiciones(request):
+    exposiciones = Exposicion.objects.select_related("museo").prefetch_related("obras_exposicion", "obras_exposicion__artista").all()
+    return render(request, "exposicion/lista.html", {"exposiciones": exposiciones})
+
 #Esta vista accede a una exposición de un año concreto y muestra toda su información.
 #Usa una relacion reversa al acceder a las obras de cada exposición y a sus artistas.
 #Utilizamos "select_related("museo")" para reducir las consultas necesarias al obtener el museo relacionado con cada exposición.
@@ -157,7 +161,7 @@ def museo_buscar_avanzado(request):
 
     return render(request, 'museo/busqueda_avanzada.html', {"formulario": formulario})
 
-
+#Editar de museo.
 def museo_editar(request,museo_id):
     museo = Museo.objects.get(id=museo_id)
     
@@ -181,7 +185,7 @@ def museo_editar(request,museo_id):
                 
     return render(request, 'museo/actualizar.html',{"formulario":formulario,"museo":museo})
 
-
+#Eliminar de museo.
 def museo_eliminar(request,museo_id):
     museo = Museo.objects.get(id=museo_id)
     try:
@@ -192,6 +196,8 @@ def museo_eliminar(request,museo_id):
         print(error)
     return redirect('listar_museos')
 
+
+#Creación de exposición.
 def exposicion_create(request):
     if request.method == "POST":
         formulario = ExposicionModelForm(request.POST)
@@ -207,6 +213,90 @@ def exposicion_create(request):
         formulario = ExposicionModelForm()
           
     return render(request, 'exposicion/create.html',{"formulario":formulario}) 
+
+#Busqueda avanzada de exposición
+def exposicion_buscar_avanzado(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaExposicionForm(request.GET)
+
+        if formulario.is_valid():
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            QSexposiciones = Exposicion.objects.all()
+            
+            titulo = formulario.cleaned_data.get('titulo')
+            descripcion = formulario.cleaned_data.get('descripcion')
+            fecha_desde = formulario.cleaned_data.get('fecha_desde')
+            fecha_hasta = formulario.cleaned_data.get('fecha_hasta')
+            museo = formulario.cleaned_data.get('museo')
+
+            # Filtro por título y descripción
+            if titulo:
+                QSexposiciones = QSexposiciones.filter(
+                    Q(titulo__icontains=titulo) | 
+                    Q(descripcion__icontains=descripcion)
+                )
+                mensaje_busqueda += "Título o descripción contienen: "+ titulo+"\n"
+            
+            # Filtro por fecha desde
+            if fecha_desde:
+                QSexposiciones = QSexposiciones.filter(fecha_inicio__gte=fecha_desde)
+                mensaje_busqueda += "Fecha de inicio mayor o igual a "+str(fecha_desde)+"\n"
+
+            # Filtro por fecha hasta
+            if fecha_hasta:
+                QSexposiciones = QSexposiciones.filter(fecha_fin__lte=fecha_hasta)
+                mensaje_busqueda += "Fecha de fin menor o igual a " +str(fecha_hasta)+"\n"
+
+            # Filtro por museo
+            if museo:
+                QSexposiciones = QSexposiciones.filter(museo=museo)
+                mensaje_busqueda += "Museo: "+ museo.nombre +"\n"
+                
+            exposiciones = QSexposiciones.all()
+
+            return render(request, 'exposicion/lista_busqueda.html',
+                {"exposiciones": exposiciones, "mensaje_busqueda": mensaje_busqueda }
+            )
+    else:
+        formulario = BusquedaAvanzadaExposicionForm(None)
+
+    return render(request, 'exposicion/busqueda_avanzada.html', {"formulario": formulario})
+
+
+#Editar de exposición.
+def exposicion_editar(request, exposicion_id):
+    exposicion = Exposicion.objects.get(id=exposicion_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    formulario = ExposicionModelForm(datosFormulario, instance=exposicion)
+    
+    if request.method == "POST":
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, f'Se ha editado la exposición {formulario.cleaned_data.get("titulo")} correctamente.')
+                return redirect('listar_exposiciones')  
+            except Exception as error:
+                print(error)
+                
+    return render(request, 'exposicion/actualizar.html', {"formulario": formulario, "exposicion": exposicion})
+
+#Eliminar de Exposición
+def exposicion_eliminar(request, exposicion_id):
+    exposicion = Exposicion.objects.get(id=exposicion_id)
+    
+    try:
+        exposicion.delete()
+        messages.success(request, f"Se ha eliminado la exposición '{exposicion.titulo}' correctamente.")
+    except Exception as error:
+        messages.error(request, "Hubo un error al intentar eliminar la exposición.")
+        print(error)
+        
+    return redirect('listar_exposiciones')
 
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.

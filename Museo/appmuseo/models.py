@@ -5,17 +5,22 @@ from django.db import models
 class Museo(models.Model):
     nombre = models.CharField(max_length=200, unique=True, verbose_name="Nombre del museo") #"Unique" si esta en "true" indica que el valor de ese campo no puede repetirse en la base de datos
                                                                                             #"Verbose_name" nos permite poner un nombre más entendible a nivel humano para el campo         
-    ubicacion = models.CharField(max_length=200, blank=True, null=True)                     #"blank" si esta en "true" nos permite que el campo quede vacío en los formularios
+    ubicacion = models.CharField(max_length=200, blank=True, null=True, default="")                     #"blank" si esta en "true" nos permite que el campo quede vacío en los formularios
                                                                                             #"null" si esta en "true" nos permite que el campo acepte un valor null en la base de datos
     fecha_fundacion = models.DateField(null=True, help_text="Fecha en que se fundo el museo")
                                                                                             #"help_text" aparece un mensaje de ayuda en la interfaz de Djanho o en los formularios, se usa para guiar o dar más información al usuario
     descripcion = models.TextField(blank=True)
     
+    def __str__(self):
+        # Este método define cómo se representa el objeto Museo como texto. Por defecto nos muestra un mensaje asi "Museo Object (id), pero podemos sobrescribirlo para cambiar el mensaje que nos devuelve"
+        return self.nombre
+        # Al devolver el nombre del museo, en lugar de algo genérico como "Museo Object (id)", permite que los formularios y otras interfaces muestren información más clara y útil.
+        
 class Exposicion(models.Model):
     titulo = models.CharField(max_length=150)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True, default="")
     capacidad = models.IntegerField(default=60)                                              #"default" nos permite dar un valor por defecto al campo en caso de que no se proporcione ninguno
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="exposiciones")  # ManyToOne con Museo
 

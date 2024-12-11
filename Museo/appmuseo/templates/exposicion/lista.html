@@ -1,0 +1,14 @@
+{% extends 'principal.html' %}
+{% load django_bootstrap5 %}
+
+{% block cabecera %}
+  <h1>Lista de Exposiciones</h1>
+{% endblock %}
+
+{% block contenido %}
+  {% for exposicion in exposiciones %}
+    {% include 'exposicion/_exposicion.html' %}
+  {% empty %}
+    <h2>No hay exposiciones creadas aún.</h2>
+  {% endfor %}
+{% endblock %}

@@ -34,7 +34,7 @@ class MuseoModelForm(ModelForm):
         
         #Obtenemos los campos 
         nombre = self.cleaned_data.get('nombre')
-        ubicacion = self.cleaned_data.get('ubicacion', '')  # Proporcionar valor por defecto si es None
+        ubicacion = self.cleaned_data.get('ubicacion', '')
         fecha_fundacion = self.cleaned_data.get('fecha_fundacion')
         descripcion = self.cleaned_data.get('descripcion', '')  # Proporcionar valor por defecto si es None
  
@@ -50,7 +50,7 @@ class MuseoModelForm(ModelForm):
              else:
                 self.add_error('nombre','Ya existe un museo con ese nombre')
                 
-        #Comprobamos que el campo ubicacion no tenga menos de 10 caracteres        
+        #Comprobamos que el campo ubicacion no tenga menos de 10 caracteres    
         if ubicacion and len(ubicacion) < 10:
             self.add_error('ubicacion','Al menos debes indicar 10 caracteres')
             
@@ -173,5 +173,56 @@ class ExposicionModelForm(forms.ModelForm):
         # Validar que la descripción tenga al menos 10 caracteres (si se proporciona)
         if descripcion and len(descripcion) < 10:
             self.add_error('descripcion', 'La descripción debe tener al menos 10 caracteres.')
+
+        return self.cleaned_data
+
+class BusquedaAvanzadaExposicionForm(forms.Form):
+    titulo = forms.CharField(
+        required=False,
+        label="Escriba el título de la exposición",
+        widget=forms.TextInput(attrs={"placeholder": "Título de la exposición"})
+    )
+    descripcion = forms.CharField(
+        required=False,
+        label="Escriba la descripción de la exposición",
+        widget=forms.TextInput(attrs={"placeholder": "Descripción de la exposición"})
+    )
+    fecha_desde = forms.DateField(
+        label="Fecha Desde",
+        required=False,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
+    )
+    fecha_hasta = forms.DateField(
+        label="Fecha Hasta",
+        required=False,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
+    )
+    museo = forms.ModelChoiceField(
+        queryset=Museo.objects.all(),
+        required=False,
+        label="Museo",
+        empty_label="Seleccione un museo"
+    )
+
+    def clean(self):
+        super().clean()
+        titulo = self.cleaned_data.get('titulo')
+        descripcion = self.cleaned_data.get('descripcion')
+        fecha_desde = self.cleaned_data.get('fecha_desde')
+        fecha_hasta = self.cleaned_data.get('fecha_hasta')
+        museo = self.cleaned_data.get('museo')
+
+        # Validación: al menos un campo debe estar lleno
+        if (titulo == "" and descripcion == "" and fecha_desde is None and fecha_hasta is None and museo is None):
+            self.add_error('titulo','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('descripcion','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('fecha_desde','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('fecha_hasta','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('museo','Debe seleccionar al menos un museo')
+        
+        # Validación: fecha_hasta no puede ser menor que fecha_desde
+        if not fecha_desde is None and not fecha_hasta is None and fecha_hasta < fecha_desde:
+            self.add_error('fecha_desde', "La fecha hasta no puede ser menor que la fecha desde.")
+            self.add_error('fecha_hasta', "La fecha hasta no puede ser menor que la fecha desde.")
 
         return self.cleaned_data

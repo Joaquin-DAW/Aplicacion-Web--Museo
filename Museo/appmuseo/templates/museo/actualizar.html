@@ -18,7 +18,7 @@
             {% if formulario.nombre.field.required %}
                 required
             {% endif %}
-            value="{% if formulario.is_bound %}{{ formulario.nombre.value }}{% endif %}"
+            value="{{ formulario.nombre.value }}"
     />
     {% if formulario.nombre.help_text %}
     <div class="form-text">
@@ -37,7 +37,7 @@
     <textarea name="{{ formulario.descripcion.html_name }}" 
               class="form-control {% if formulario.descripcion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
               id="{{ formulario.descripcion.id_for_label }}"
-              >{% if formulario.is_bound %}{{ formulario.descripcion.value }}{% endif %}</textarea>
+              >{{ formulario.descripcion.value }}</textarea>
     <div class="invalid-feedback">
         {% for error in formulario.descripcion.errors %} 
             {{ error }}
@@ -51,7 +51,7 @@
             type="date" 
             class="form-control {% if formulario.fecha_fundacion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
             id="{{ formulario.fecha_fundacion.id_for_label }}"
-            value="{% if formulario.is_bound %}{{ formulario.fecha_fundacion.value|stringformat:'Y-m-d' }}{% endif %}"
+            value="{{ formulario.fecha_fundacion.value|date:'Y-m-d' }}"
     />
     {% if formulario.fecha_fundacion.help_text %}
     <div class="form-text">
@@ -72,7 +72,7 @@
             class="form-control {% if formulario.ubicacion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
             id="{{ formulario.ubicacion.id_for_label }}"
             maxlength="{{ formulario.ubicacion.field.max_length }}"
-            value="{% if formulario.is_bound %}{{ formulario.ubicacion.value }}{% endif %}"
+            value="{{ formulario.ubicacion.value }}"
     />
     <div class="invalid-feedback">
         {% for error in formulario.ubicacion.errors %} 

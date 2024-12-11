@@ -1,15 +1,59 @@
-<div>
-    <h2>Titulo: {{exposicion.titulo}}</h2>
-    <h2>Fecha inicio: {{exposicion.fecha_inicio|date:"d/m/Y"}}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
-    <h2>Fecha fin: {{exposicion.fecha_fin|date:"d/m/Y"}}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
-    <h2>Descripción: {{exposicion.descripcion}}</h2>
-    <h2>Capacidad: {{exposicion.capacidad|add:10}}</h2> <!-- Añadimos 10 más a la cantidad de capacidad-->
-    <h2>Museo en el que se realiza: {{exposicion.museo.nombre}}</h2>
-    <h2>Obras expuestas:<h2>
-        <ul>
-            {% for obra in exposicion.obras_exposicion.all %}
-                <li>{{ obra.titulo }} - Artista: {{obra.artista.nombre_completo}}</li>
-            {% endfor %}
-        </ul>
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ exposicion.titulo|capfirst }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Fecha inicio: {{ exposicion.fecha_inicio|date:"d/m/Y" }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">
+            Fecha fin: {{ exposicion.fecha_fin|default:"Indefinida" }}
+        </h6>
+        <p class="card-text"><strong>Descripción:</strong> {{ exposicion.descripcion|default:"Sin descripción" }}</p>
+        <p class="card-text"><strong>Capacidad máxima:</strong> {{ exposicion.capacidad }}</p>
+        <p class="card-text"><strong>Museo:</strong> {{ exposicion.museo.nombre }}</p>
+        <div>
+            <p class="card-text"><strong>Obras expuestas:</strong></p>
+            <ul>
+                {% for obra in exposicion.obras_exposicion.all %}
+                    <li>
+                        {{ obra.titulo }} - <em>Artista:</em> {{ obra.artista.nombre_completo }}
+                    </li>
+                {% empty %}
+                    <li>No hay obras asociadas a esta exposición.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% load bootstrap_icons %}
+        <div class="row btn-group mt-3">
+            <div class="mb-2">
+                <button type="button" class="btn btn-outline-primary">
+                    <a href="{% url 'exposicion_editar' exposicion.id %}">
+                        <span>{% bs_icon 'pencil' %} </span>
+                    </a>
+                </button>
+            </div>
+            <div class="mb-2">
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-{{ exposicion.id }}">
+                    <span>{% bs_icon 'trash' %} </span>
+                </button>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmDeleteModal-{{ exposicion.id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel-{{ exposicion.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel-{{ exposicion.id }}">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar la exposición "{{ exposicion.titulo }}"? Esta acción no se puede deshacer.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form method="post" action="{% url 'exposicion_eliminar' exposicion.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<br><br>

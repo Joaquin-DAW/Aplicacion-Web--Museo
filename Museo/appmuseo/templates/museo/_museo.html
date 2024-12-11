@@ -20,7 +20,7 @@
                 <button type="button" 
                         class="btn btn-outline-primary"> 
                         <a href="{% url 'museo_editar' museo.id %}">
-                            <span>{% bs_icon 'pencil' %}</span>
+                            <span>{% bs_icon 'pencil' %} </span>
                         </a>
                 </button>
 
@@ -28,12 +28,12 @@
             <div class="mb-2">
                             <button class="btn btn-danger" 
                                     data-bs-toggle="modal" 
-                                    data-bs-target="#confirmDeleteModal">
+                                    data-bs-target="#confirmDeleteModal-{{ museo.id }}">
                                 <span>{% bs_icon 'trash' %}</span>
                             </button>
             </div>
         </div>
-        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal fade" id="confirmDeleteModal-{{ museo.id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel-{{ museo.id }}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -41,7 +41,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este museo? Esta acción no se puede deshacer.
+                        ¿Estás seguro de que deseas eliminar este museo: {{ museo.nombre }}? Esta acción no se puede deshacer.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

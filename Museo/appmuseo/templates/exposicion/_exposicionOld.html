@@ -1,0 +1,15 @@
+<div>
+    <h2>Titulo: {{exposicion.titulo}}</h2>
+    <h2>Fecha inicio: {{exposicion.fecha_inicio|date:"d/m/Y"}}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
+    <h2>Fecha fin: {{exposicion.fecha_fin|date:"d/m/Y"}}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
+    <h2>Descripción: {{exposicion.descripcion}}</h2>
+    <h2>Capacidad: {{exposicion.capacidad|add:10}}</h2> <!-- Añadimos 10 más a la cantidad de capacidad-->
+    <h2>Museo en el que se realiza: {{exposicion.museo.nombre}}</h2>
+    <h2>Obras expuestas:<h2>
+        <ul>
+            {% for obra in exposicion.obras_exposicion.all %}
+                <li>{{ obra.titulo }} - Artista: {{obra.artista.nombre_completo}}</li>
+            {% endfor %}
+        </ul>
+</div>
+<br><br>
