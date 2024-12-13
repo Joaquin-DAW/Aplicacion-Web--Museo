@@ -25,6 +25,11 @@ def listar_artistas(request):
     artistas = Artista.objects.prefetch_related("obras_artista").all()
     return render(request, "artista/lista.html", {"artistas": artistas})
 
+def listar_obras(request):
+    obras = Obra.objects.prefetch_related("artista", "exposicion").all()
+    return render(request, "obra/lista.html", {"obras": obras})
+
+
 #Esta vista accede a una exposición de un año concreto y muestra toda su información.
 #Usa una relacion reversa al acceder a las obras de cada exposición y a sus artistas.
 #Utilizamos "select_related("museo")" para reducir las consultas necesarias al obtener el museo relacionado con cada exposición.
@@ -406,6 +411,60 @@ def artista_eliminar(request, artista_id):
         print(error)
         
     return redirect('listar_artistas')
+
+# Creación de obra
+def obra_create(request):
+    if request.method == "POST":
+        formulario = ObraModelForm(request.POST, request.FILES)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, "La obra se ha creado correctamente.")
+                return redirect("listar_obras")  # Cambia esto al nombre de tu lista de obras
+            except Exception as error:
+                print(error)
+                messages.error(request, "Ocurrió un error al crear la obra.")
+    else:
+        formulario = ObraModelForm()
+    
+    return render(request, 'obra/create.html', {"formulario": formulario})
+
+# Editar de obra
+def obra_editar(request, obra_id):
+    obra = Obra.objects.get(id=obra_id)  # Obtenemos la obra con el id proporcionado
+
+    datosFormulario = None  # Inicializamos el formulario
+
+    if request.method == "POST":
+        datosFormulario = request.POST  # Si es POST, obtenemos los datos del formulario
+
+    # Creamos el formulario con los datos del POST y la instancia de la obra a editar
+    formulario = ObraModelForm(datosFormulario, instance=obra)
+
+    if request.method == "POST":
+        if formulario.is_valid():  # Si el formulario es válido
+            try:
+                formulario.save()  # Guardamos los cambios
+                messages.success(request, f'Se ha editado la obra "{formulario.cleaned_data.get("titulo")}" correctamente.')
+                return redirect('listar_obras')  # Redirigimos a la lista de obras
+            except Exception as error:
+                print(error)
+                messages.error(request, 'Hubo un error al intentar editar la obra.')
+
+    return render(request, 'obra/actualizar.html', {"formulario": formulario, "obra": obra})
+
+# Eliminar de obra
+def obra_eliminar(request, obra_id):
+    obra = Obra.objects.get(id=obra_id)  # Obtenemos la obra con el id proporcionado
+
+    try:
+        obra.delete()  # Eliminamos la obra
+        messages.success(request, f"Se ha eliminado la obra '{obra.titulo}' correctamente.")
+    except Exception as error:
+        messages.error(request, "Hubo un error al intentar eliminar la obra.")
+        print(error)
+
+    return redirect('listar_obras')  # Redirigimos a la lista de obras después de eliminar
 
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.

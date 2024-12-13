@@ -330,3 +330,41 @@ class BusquedaAvanzadaArtistaForm(forms.Form):
             self.add_error('fecha_nacimiento_hasta', "La fecha de nacimiento hasta no puede ser menor que la fecha desde.")
 
         return self.cleaned_data
+
+
+# Formulario para obra
+class ObraModelForm(forms.ModelForm):
+    class Meta:
+        model = Obra
+        fields = ['titulo', 'fecha_creacion', 'tipo', 'imagen', 'exposicion', 'artista']
+        labels = {
+            "titulo": "Título de la Obra",
+            "fecha_creacion": "Fecha de Creación",
+            "tipo": "Tipo de Obra",
+            "imagen": "Imagen de la Obra",
+            "exposicion": "Exposición",
+            "artista": "Artista",
+        }
+        help_texts = {
+            "titulo": "Título de la obra (máximo 200 caracteres).",
+            "fecha_creacion": "Fecha en la que fue creada la obra (puede dejarse en blanco).",
+            "tipo": "Seleccione el tipo de obra (pintura o escultura).",
+            "imagen": "Suba una imagen representativa de la obra (opcional).",
+            "exposicion": "Seleccione la exposición a la que pertenece la obra.",
+            "artista": "Seleccione el artista asociado con la obra.",
+        }
+        widgets = {
+            "fecha_creacion": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+        }
+        localized_fields = ["fecha_creacion"]
+
+    def clean(self):
+        super().clean()
+        
+        titulo = self.cleaned_data.get('titulo')
+
+        # Validar que el título no supere los 200 caracteres
+        if len(titulo) > 200:
+            self.add_error('titulo', 'El título no puede superar los 200 caracteres.')
+
+        return self.cleaned_data

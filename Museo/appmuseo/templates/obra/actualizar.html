@@ -1,0 +1,155 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+
+<form action="{% url 'obra_editar' obra.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Campo Título -->
+    <div class="mb-4">
+        <label for="{{ formulario.titulo.id_for_label }}" class="form-label">{{ formulario.titulo.label }}: </label>
+        <input name="{{ formulario.titulo.html_name }}" 
+               type="text" 
+               class="form-control {% if formulario.titulo.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+               id="{{ formulario.titulo.id_for_label }}"
+               maxlength="{{ formulario.titulo.field.max_length }}"
+               {% if formulario.titulo.field.required %} required {% endif %}
+               value="{{ formulario.titulo.value }}"
+        />
+        {% if formulario.titulo.help_text %}
+        <div class="form-text">
+            {{ formulario.titulo.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.titulo.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Campo Fecha de Creación -->
+    <div class="mb-4">
+        <label for="{{ formulario.fecha_creacion.id_for_label }}" class="form-label">{{ formulario.fecha_creacion.label }}: </label>
+        <input name="{{ formulario.fecha_creacion.html_name }}" 
+               type="date" 
+               class="form-control {% if formulario.fecha_creacion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+               id="{{ formulario.fecha_creacion.id_for_label }}"
+               value="{{ formulario.fecha_creacion.value|date:'Y-m-d' }}"
+        />
+        {% if formulario.fecha_creacion.help_text %}
+        <div class="form-text">
+            {{ formulario.fecha_creacion.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.fecha_creacion.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Campo Tipo -->
+    <div class="mb-4">
+        <label for="{{ formulario.tipo.id_for_label }}" class="form-label">{{ formulario.tipo.label }}: </label>
+        <select name="{{ formulario.tipo.html_name }}" 
+                class="form-select {% if formulario.tipo.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.tipo.id_for_label }}">
+            {% for choice in formulario.tipo.field.choices %}
+                <option value="{{ choice.0 }}" {% if formulario.tipo.value == choice.0 %} selected {% endif %}>
+                    {{ choice.1 }}
+                </option>
+            {% endfor %}
+        </select>
+        {% if formulario.tipo.help_text %}
+        <div class="form-text">
+            {{ formulario.tipo.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.tipo.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Campo Imagen -->
+    <div class="mb-4">
+        <label for="{{ formulario.imagen.id_for_label }}" class="form-label">{{ formulario.imagen.label }}: </label>
+        <input name="{{ formulario.imagen.html_name }}" 
+               type="file" 
+               class="form-control {% if formulario.imagen.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+               id="{{ formulario.imagen.id_for_label }}"
+        />
+        {% if formulario.imagen.help_text %}
+        <div class="form-text">
+            {{ formulario.imagen.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.imagen.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Campo Exposición -->
+    <div class="mb-4">
+        <label for="{{ formulario.exposicion.id_for_label }}" class="form-label">{{ formulario.exposicion.label }}: </label>
+        <select name="{{ formulario.exposicion.html_name }}" 
+                class="form-select {% if formulario.exposicion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.exposicion.id_for_label }}">
+            <option value="">Seleccione una exposición</option>
+            {% for choice in formulario.exposicion.field.choices %}
+                <option value="{{ choice.0 }}" {% if formulario.exposicion.value == choice.0 %} selected {% endif %}>
+                    {{ choice.1 }}
+                </option>
+            {% endfor %}
+        </select>
+        {% if formulario.exposicion.help_text %}
+        <div class="form-text">
+            {{ formulario.exposicion.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.exposicion.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Campo Artista -->
+    <div class="mb-4">
+        <label for="{{ formulario.artista.id_for_label }}" class="form-label">{{ formulario.artista.label }}: </label>
+        <select name="{{ formulario.artista.html_name }}" 
+                class="form-select {% if formulario.artista.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.artista.id_for_label }}">
+            <option value="">Seleccione un artista</option>
+            {% for choice in formulario.artista.field.choices %}
+                <option value="{{ choice.0 }}" {% if formulario.artista.value == choice.0 %} selected {% endif %}>
+                    {{ choice.1 }}
+                </option>
+            {% endfor %}
+        </select>
+        {% if formulario.artista.help_text %}
+        <div class="form-text">
+            {{ formulario.artista.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.artista.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Botón Enviar -->
+    <div class="mb-4">
+        <button type="submit" class="btn btn-primary">Actualizar Obra</button>
+    </div>
+
+</form>
+
+{% endblock %}

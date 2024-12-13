@@ -24,15 +24,22 @@ class Exposicion(models.Model):
     capacidad = models.IntegerField(default=60)                                              #"default" nos permite dar un valor por defecto al campo en caso de que no se proporcione ninguno
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="exposiciones")  # ManyToOne con Museo
 
+    def __str__(self):
+        # Este método define cómo se representa el objeto Exposicion como texto. Por defecto nos muestra un mensaje asi "Museo Object (id), pero podemos sobrescribirlo para cambiar el mensaje que nos devuelve"
+        return self.titulo
+
 class Artista(models.Model):
     nombre_completo = models.CharField(max_length=150)                                      #"max_length" nos permite definir la longitud máxima que tendra un campo
     fecha_nacimiento = models.DateField(blank=True, null=True)
     biografia = models.TextField()
     nacionalidad = models.CharField(max_length=50, choices=[('espanola', 'Española'), ('italiana', 'Italiana')], blank=True)
 
+    def __str__(self):
+        # Este método define cómo se representa el objeto Museo como texto. Por defecto nos muestra un mensaje asi "Museo Object (id), pero podemos sobrescribirlo para cambiar el mensaje que nos devuelve"
+        return self.nombre_completo
+
 class Obra(models.Model):
     titulo = models.CharField(max_length=200, verbose_name="Título de la obra")
-    autor = models.CharField(max_length=100, blank=True)
     fecha_creacion = models.DateField(null=True, blank=True)
     tipo = models.CharField(max_length=50, choices=[('pintura', 'Pintura'), ('escultura', 'Escultura')], default='pintura')
                                                                                             #"choices" nos permite definir un conjunto de opciones para seleccionar

@@ -1,7 +1,55 @@
-<div>
-    <h2>Titulo: {{obra.titulo}}</h2>
-    <h2>Fecha en la que se realizo: {{obra.fecha_creacion|date:"d/m/Y"}}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
-    <h2>Tipo: {{obra.tipo|capfirst}}</h2> <!-- Convertimos la primera letra del valor que nos devuelva en mayúscula-->
-    <h2>Imagen: {{obra.imagen}}</h2>
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ obra.titulo|capfirst }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            Fecha de creación: {{ obra.fecha_creacion|date:"d/m/Y"|default:"Desconocida" }}
+        </h6>
+        <p class="card-text"><strong>Tipo:</strong> {{ obra.get_tipo_display|default:"Sin tipo" }}</p>
+        <p class="card-text"><strong>Exposición:</strong> {{ obra.exposicion.titulo|default:"Sin exposición" }}</p>
+        <p class="card-text"><strong>Artista:</strong> {{ obra.artista.nombre_completo|default:"Sin artista asignado" }}</p>
+        
+        {% if obra.imagen %}
+            <img src="{{ obra.imagen.url }}" class="card-img-top" alt="Imagen de {{ obra.titulo }}">
+        {% else %}
+            <p>No hay imagen disponible</p>
+        {% endif %}
+
+        {% load bootstrap_icons %}
+        <div class="row btn-group mt-3">
+            <div class="mb-2">
+                <button type="button" class="btn btn-outline-primary">
+                    <a href="{% url 'obra_editar' obra.id %}">
+                        <span>{% bs_icon 'pencil' %} Editar</span>
+                    </a>
+                </button>
+            </div>
+            <div class="mb-2">
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-{{ obra.id }}">
+                    <span>{% bs_icon 'trash' %} Eliminar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal para Confirmar Eliminación -->
+        <div class="modal fade" id="confirmDeleteModal-{{ obra.id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel-{{ obra.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel-{{ obra.id }}">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar la obra "{{ obra.titulo }}"? Esta acción no se puede deshacer.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form method="post" action="{% url 'obra_eliminar' obra.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<br><br>

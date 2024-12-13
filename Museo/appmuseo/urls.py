@@ -44,5 +44,8 @@ urlpatterns = [
     path('artista/editar/<int:artista_id>', views.artista_editar, name='artista_editar'),
     path('artista/eliminar/<int:artista_id>/', views.artista_eliminar, name='artista_eliminar'),
 
-
+    path('obra/',views.listar_obras,name='listar_obras'),
+    path('obra/create/',views.obra_create,name='obra_create'),
+    path('obra/editar/<int:obra_id>/', views.obra_editar, name='obra_editar'),
+    path('obra/eliminar/<int:obra_id>/', views.obra_eliminar, name='obra_eliminar'),
 ]
