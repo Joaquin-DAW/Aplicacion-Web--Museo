@@ -32,10 +32,17 @@ urlpatterns = [
     path('museo/editar/<int:museo_id>',views.museo_editar,name='museo_editar'),
     path('museo/eliminar/<int:museo_id>/', views.museo_eliminar, name='museo_eliminar'),
     
-    path('exposicion/create/',views.exposicion_create,name='exposicion_create'),
     path('exposicion/',views.listar_exposiciones,name='listar_exposiciones'),
+    path('exposicion/create/',views.exposicion_create,name='exposicion_create'),
     path('exposicion/buscar_avanzado/', views.exposicion_buscar_avanzado, name='exposicion_buscar_avanzado'),
     path('exposicion/editar/<int:exposicion_id>', views.exposicion_editar, name='exposicion_editar'),
     path('exposicion/eliminar/<int:exposicion_id>/', views.exposicion_eliminar, name='exposicion_eliminar'),
+    
+    path('artista/',views.listar_artistas,name='listar_artistas'),
+    path('artista/create/',views.artista_create,name='artista_create'),
+    path('artista/buscar_avanzado/', views.artista_buscar_avanzado, name='artista_buscar_avanzado'),
+    path('artista/editar/<int:artista_id>', views.artista_editar, name='artista_editar'),
+    path('artista/eliminar/<int:artista_id>/', views.artista_eliminar, name='artista_eliminar'),
+
 
 ]

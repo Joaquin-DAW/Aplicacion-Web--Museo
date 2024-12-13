@@ -1,0 +1,31 @@
+{% extends "principal.html" %}
+{% load django_bootstrap5 %}
+
+{% block contenido %}
+<h1>Búsqueda Avanzada de Artistas</h1>
+<form action="{% url 'artista_buscar_avanzado' %}" method="GET">
+    {% csrf_token %}
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.nombre_completo show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.fecha_nacimiento_desde show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.fecha_nacimiento_hasta show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.nacionalidad show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.biografia show_label=True %}
+    </div>
+
+    {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+</form>
+{% endblock %}

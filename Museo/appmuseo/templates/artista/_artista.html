@@ -1,17 +1,57 @@
-<div>
-  <h2>Nombre: {{ artista.nombre_completo }}</h2>
-  <h2>Fecha nacimiento: {{ artista.fecha_nacimiento|date:"d/m/Y" }}</h2> <!-- Formateamos la fecha tipo: Dia/Mes/Año-->
-  <h2>Biografía: {{ artista.biografia }}</h2>
-  <h2>Nacionalidad: {{ artista.get_nacionalidad_display }}</h2> <!--  Para mostrar la nacionalidad de manera correcta, es decir "Española" y 
-                                                                no "espanola", debemos usar el método "get_atributo_display()", con este método
-                                                                podemos acceder al "valor entendible por el ser humano" que definimos en el modelo.  -->
-  <h2>Obras:</h2>
-  <ul>
-    {% for obras in artista.obras_artista.all %}
-      <li>
-        <h3>{{ obras.titulo }}</h3>
-      </li>
-    {% endfor %}
-  </ul>
-  <br /><br />
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ artista.nombre_completo|capfirst }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            Fecha de nacimiento: {{ artista.fecha_nacimiento|date:"d/m/Y"|default:"Desconocida" }}
+        </h6>
+        <p class="card-text"><strong>Nacionalidad:</strong> {{ artista.get_nacionalidad_display|default:"Sin nacionalidad" }}</p>
+        <p class="card-text">
+            <strong>Biografía:</strong> {{ artista.biografia|truncatechars:200|default:"Sin biografía disponible" }}
+        </p>
+        <div>
+            <p class="card-text"><strong>Obras creadas:</strong></p>
+            <ul>
+                {% for obra in artista.obras_artista.all %}
+                    <li>{{ obra.titulo }}</li>
+                {% empty %}
+                    <li>No hay obras asociadas a este artista.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% load bootstrap_icons %}
+        <div class="row btn-group mt-3">
+            <div class="mb-2">
+                <button type="button" class="btn btn-outline-primary">
+                    <a href="{% url 'artista_editar' artista.id %}">
+                        <span>{% bs_icon 'pencil' %} </span>
+                    </a>
+                </button>
+            </div>
+            <div class="mb-2">
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-{{ artista.id }}">
+                    <span>{% bs_icon 'trash' %} </span>
+                </button>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmDeleteModal-{{ artista.id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel-{{ artista.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel-{{ artista.id }}">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar al artista "{{ artista.nombre_completo }}"? Esta acción no se puede deshacer.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form method="post" action="{% url 'artista_eliminar' artista.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

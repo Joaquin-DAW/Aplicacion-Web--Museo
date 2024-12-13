@@ -1,0 +1,14 @@
+{% extends 'principal.html' %}
+{% load django_bootstrap5 %}
+
+{% block cabecera %}
+  <h1>Lista de Artistas</h1>
+{% endblock %}
+
+{% block contenido %}
+  {% for artista in artistas %}
+    {% include 'artista/_artista.html' %}
+  {% empty %}
+    <h2>No hay artistas registrados aún.</h2>
+  {% endfor %}
+{% endblock %}

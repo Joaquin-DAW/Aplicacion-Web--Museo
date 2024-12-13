@@ -21,6 +21,10 @@ def listar_exposiciones(request):
     exposiciones = Exposicion.objects.select_related("museo").prefetch_related("obras_exposicion", "obras_exposicion__artista").all()
     return render(request, "exposicion/lista.html", {"exposiciones": exposiciones})
 
+def listar_artistas(request):
+    artistas = Artista.objects.prefetch_related("obras_artista").all()
+    return render(request, "artista/lista.html", {"artistas": artistas})
+
 #Esta vista accede a una exposición de un año concreto y muestra toda su información.
 #Usa una relacion reversa al acceder a las obras de cada exposición y a sus artistas.
 #Utilizamos "select_related("museo")" para reducir las consultas necesarias al obtener el museo relacionado con cada exposición.
@@ -107,7 +111,7 @@ def museo_create(request):
                 # Guarda el museo en la base de datos
                 formulario.save()
                 messages.success(request, "El museo se ha creado correctamente.")
-                return redirect("museo_lista")
+                return redirect("listar_museos")
             except Exception as error:
                 print(error)
     else:
@@ -206,7 +210,7 @@ def exposicion_create(request):
                 # Guarda la exposición en la base de datos
                 formulario.save()
                 messages.success(request, "La exposición se ha creado correctamente.")
-                return redirect("exposicion_lista")
+                return redirect("listar_exposiciones")
             except Exception as error:
                 print(error)
     else:
@@ -297,6 +301,111 @@ def exposicion_eliminar(request, exposicion_id):
         print(error)
         
     return redirect('listar_exposiciones')
+
+# Creación de artista.
+def artista_create(request):
+    if request.method == "POST":
+        formulario = ArtistaModelForm(request.POST)
+        if formulario.is_valid():
+            try:
+                # Guarda el artista en la base de datos
+                formulario.save()
+                messages.success(request, "El artista se ha creado correctamente.")
+                return redirect("listar_artistas")
+            except Exception as error:
+                print("Error al guardar:", error)
+        else:
+            print("Errores del formulario:", formulario.errors)  # Para depuración
+    else:
+        formulario = ArtistaModelForm()
+
+    return render(request, 'artista/create.html', {"formulario": formulario})
+
+# Búsqueda avanzada de artista
+def artista_buscar_avanzado(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaArtistaForm(request.GET)
+
+        if formulario.is_valid():
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            QSartistas = Artista.objects.all()
+            
+            nombre_completo = formulario.cleaned_data.get('nombre_completo')
+            fecha_nacimiento_desde = formulario.cleaned_data.get('fecha_nacimiento_desde')
+            fecha_nacimiento_hasta = formulario.cleaned_data.get('fecha_nacimiento_hasta')
+            nacionalidad = formulario.cleaned_data.get('nacionalidad')
+            biografia = formulario.cleaned_data.get('biografia')
+
+            # Filtro por nombre completo
+            if nombre_completo:
+                QSartistas = QSartistas.filter(nombre_completo__icontains=nombre_completo)
+                mensaje_busqueda += "Nombre contiene: " + nombre_completo + "\n"
+
+            # Filtro por fecha de nacimiento desde
+            if fecha_nacimiento_desde:
+                QSartistas = QSartistas.filter(fecha_nacimiento__gte=fecha_nacimiento_desde)
+                mensaje_busqueda += "Fecha de nacimiento desde: " + str(fecha_nacimiento_desde) + "\n"
+
+            # Filtro por fecha de nacimiento hasta
+            if fecha_nacimiento_hasta:
+                QSartistas = QSartistas.filter(fecha_nacimiento__lte=fecha_nacimiento_hasta)
+                mensaje_busqueda += "Fecha de nacimiento hasta: " + str(fecha_nacimiento_hasta) + "\n"
+
+            # Filtro por nacionalidad
+            if nacionalidad:
+                QSartistas = QSartistas.filter(nacionalidad=nacionalidad)
+                mensaje_busqueda += "Nacionalidad: " + nacionalidad + "\n"
+
+            # Filtro por biografía
+            if biografia:
+                QSartistas = QSartistas.filter(biografia__icontains=biografia)
+                mensaje_busqueda += "Biografía contiene: " + biografia + "\n"
+
+            artistas = QSartistas.all()
+
+            return render(request, 'artista/lista_busqueda.html',
+                {"artistas": artistas, "mensaje_busqueda": mensaje_busqueda}
+            )
+    else:
+        formulario = BusquedaAvanzadaArtistaForm(None)
+
+    return render(request, 'artista/busqueda_avanzada.html', {"formulario": formulario})
+
+
+# Editar Artista
+def artista_editar(request, artista_id):
+    artista = Artista.objects.get(id=artista_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    formulario = ArtistaModelForm(datosFormulario, instance=artista)
+    
+    if request.method == "POST":
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, f'Se ha editado el artista {formulario.cleaned_data.get("nombre")} correctamente.')
+                return redirect('listar_artistas')  
+            except Exception as error:
+                print(error)
+                
+    return render(request, 'artista/actualizar.html', {"formulario": formulario, "artista": artista})
+
+# Eliminar Artista
+def artista_eliminar(request, artista_id):
+    artista = Artista.objects.get(id=artista_id)
+    
+    try:
+        artista.delete()
+        messages.success(request, f"Se ha eliminado el artista '{artista.nombre}' correctamente.")
+    except Exception as error:
+        messages.error(request, "Hubo un error al intentar eliminar el artista.")
+        print(error)
+        
+    return redirect('listar_artistas')
 
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.

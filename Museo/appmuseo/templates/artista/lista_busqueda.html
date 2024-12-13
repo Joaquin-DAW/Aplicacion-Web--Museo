@@ -1,0 +1,23 @@
+{% extends "principal.html" %}
+{% block contenido %}
+<h1>Resultados de Búsqueda de Artistas</h1>
+
+<p>{{ mensaje_busqueda }}</p>
+
+{% if artistas %}
+    <ul>
+        {% for artista in artistas %}
+            <li>
+                <strong>{{ artista.nombre_completo }}</strong><br>
+                Fecha de Nacimiento: {{ artista.fecha_nacimiento|date:"d-m-Y" }}<br>
+                Nacionalidad: {{ artista.nacionalidad|default:"Indefinida" }}<br>
+                Biografía: {{ artista.biografia|default:"Sin biografía" }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No se encontraron artistas con los criterios de búsqueda.</p>
+{% endif %}
+
+<a href="{% url 'artista_buscar_avanzado' %}" class="btn btn-secondary">Nueva búsqueda</a>
+{% endblock %}

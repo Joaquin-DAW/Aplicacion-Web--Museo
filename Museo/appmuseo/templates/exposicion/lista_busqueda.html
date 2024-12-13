@@ -1,0 +1,25 @@
+{% extends "principal.html" %}
+{% block contenido %}
+<h1>Resultados de Búsqueda</h1>
+
+<p>{{ mensaje_busqueda }}</p>
+
+{% if exposiciones %}
+    <ul>
+        {% for exposicion in exposiciones %}
+            <li>
+                <strong>{{ exposicion.titulo }}</strong><br>
+                Fecha de Inicio: {{ exposicion.fecha_inicio|date:"d-m-Y" }}<br>
+                Fecha de Fin: {{ exposicion.fecha_fin|default:"Indefinida" }}<br>
+                Descripción: {{ exposicion.descripcion|default:"Sin descripción" }}<br>
+                Capacidad Máxima: {{ exposicion.capacidad }}<br>
+                Museo: {{ exposicion.museo.nombre }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No se encontraron exposiciones con los criterios de búsqueda.</p>
+{% endif %}
+
+<a href="{% url 'exposicion_buscar_avanzado' %}" class="btn btn-secondary">Nueva búsqueda</a>
+{% endblock %}

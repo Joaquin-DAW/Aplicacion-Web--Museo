@@ -1,0 +1,105 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+
+<form action="{% url 'artista_create' %}" method="post">
+
+    {% csrf_token %}
+
+    <!-- Campo Nombre Completo -->
+    <div class="mb-4">
+        <label for="{{ formulario.nombre_completo.id_for_label }}" class="form-label">{{ formulario.nombre_completo.label }}: </label>
+        <input name="{{ formulario.nombre_completo.html_name }}" 
+               type="text" 
+               class="form-control {% if formulario.nombre_completo.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+               id="{{ formulario.nombre_completo.id_for_label }}"
+               maxlength="{{ formulario.nombre_completo.field.max_length }}"
+               {% if formulario.nombre_completo.field.required %} required {% endif %}
+               value="{% if formulario.is_bound %}{{ formulario.nombre_completo.value }}{% endif %}" 
+        />
+        {% if formulario.nombre_completo.help_text %}
+        <div class="form-text">
+            {{ formulario.nombre_completo.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.nombre_completo.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Campo Fecha de Nacimiento -->
+    <div class="mb-4">
+        <label for="{{ formulario.fecha_nacimiento.id_for_label }}" class="form-label">{{ formulario.fecha_nacimiento.label }}: </label>
+        <input name="{{ formulario.fecha_nacimiento.html_name }}" 
+               type="date" 
+               class="form-control {% if formulario.fecha_nacimiento.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+               id="{{ formulario.fecha_nacimiento.id_for_label }}"
+               value="{% if formulario.is_bound %}{{ formulario.fecha_nacimiento.value|stringformat:'Y-m-d' }}{% endif %}" 
+        />
+        {% if formulario.fecha_nacimiento.help_text %}
+        <div class="form-text">
+            {{ formulario.fecha_nacimiento.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.fecha_nacimiento.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Campo Nacionalidad -->
+    <div class="mb-4">
+        <label for="{{ formulario.nacionalidad.id_for_label }}" class="form-label">{{ formulario.nacionalidad.label }}: </label>
+        <select name="{{ formulario.nacionalidad.html_name }}" 
+                class="form-select {% if formulario.nacionalidad.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.nacionalidad.id_for_label }}">
+            <option value="">Seleccione una nacionalidad</option>
+            {% for choice in formulario.nacionalidad.field.choices %}
+                <option value="{{ choice.0 }}" {% if formulario.nacionalidad.value == choice.0 %} selected {% endif %}>
+                    {{ choice.1 }}
+                </option>
+            {% endfor %}
+        </select>
+        {% if formulario.nacionalidad.help_text %}
+        <div class="form-text">
+            {{ formulario.nacionalidad.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.nacionalidad.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Campo Biografía -->
+    <div class="mb-4">
+        <label for="{{ formulario.biografia.id_for_label }}" class="form-label">{{ formulario.biografia.label }}: </label>
+        <textarea name="{{ formulario.biografia.html_name }}" 
+                    class="form-control {% if formulario.biografia.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                    id="{{ formulario.biografia.id_for_label }}">{{ formulario.biografia.value }}</textarea>
+        {% if formulario.biografia.help_text %}
+        <div class="form-text">
+            {{ formulario.biografia.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.biografia.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Botón Enviar -->
+    <div class="mb-4">
+        <button type="submit" class="btn btn-primary">Crear Artista</button>
+    </div>
+
+</form>
+
+{% endblock %}
