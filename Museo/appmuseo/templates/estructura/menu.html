@@ -1,40 +1,105 @@
-<nav>
-    <ul class="menu">
-        <!--
-        <li><a href="{% url 'exposiciones_por_anyo' 2023 %}">Exposiciones del año 2023</a></li>
-        <li>
-            <a href="{% url 'obras_por_artista_exposicion' 'Leonardo da Vinci' 'Renacimiento Italiano' %}">
-                Obras de Leonardo da Vinci en Renacimiento Italiano
-            </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Museo Online</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <!-- Grupo para Museos -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="museoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Museos</a>
+          <ul class="dropdown-menu" aria-labelledby="museoDropdown">
+            <li>
+              <a class="dropdown-item" href="{% url 'listar_museos' %}">Listado de Museos</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'museo_create' %}">Crear Museo</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'museo_buscar_avanzado' %}">Búsqueda avanzada Museo</a>
+            </li>
+          </ul>
         </li>
-        <li><a href="{% url 'visitantes_edad' 30 %}">Visitantes con edad superior a 30</a></li>
-        <li>
-            <a href="{% url 'artistas_nacionalidad' 'espanola' %}">
-                Artistas españoles por fecha de nacimiento descendente
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'guias_idiomas' 'francés' 'inglés' %}">
-                Guías que hablan francés o inglés
-            </a>
-        </li>
-        <li><a href="{% url 'media_precio' %}">Media del precio de productos de la tienda</a></li>
-        <li><a href="{% url 'primer_visitante_2023' %}">Primera persona que visitó el museo en 2023</a></li>
-        <li><a href="{% url 'productos_sin_vender' %}">Productos sin vender</a></li>
-        <li><a href="{% url 'visitantes_menor_media' %}">Visitantes con menos edad que la media</a></li>-->
-        <li><a href="{% url 'listar_museos' %}">Listado de Museos</a></li>
-        <li><a href="{% url 'museo_create' %}">Crear Museo</a></li>
-        <li><a href="{% url 'museo_buscar_avanzado' %}">Busqueda avanzada Museo</a></li>
 
-        <li><a href="{% url 'listar_exposiciones' %}">Listado de Exposiciones</a></li>
-        <li><a href="{% url 'exposicion_create' %}">Crear Exposición</a></li>
-        <li><a href="{% url 'exposicion_buscar_avanzado' %}">Busqueda avanzada Exposición</a></li>
-        
-        <li><a href="{% url 'listar_artistas' %}">Listado de Artistas</a></li>
-        <li><a href="{% url 'artista_create' %}">Crear Artista</a></li>
-        <li><a href="{% url 'artista_buscar_avanzado' %}">Busqueda avanzada Artista</a></li>
+        <!-- Grupo para Exposiciones -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="exposicionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Exposiciones</a>
+          <ul class="dropdown-menu" aria-labelledby="exposicionDropdown">
+            <li>
+              <a class="dropdown-item" href="{% url 'listar_exposiciones' %}">Listado de Exposiciones</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'exposicion_create' %}">Crear Exposición</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'exposicion_buscar_avanzado' %}">Búsqueda avanzada Exposición</a>
+            </li>
+          </ul>
+        </li>
 
-        <li><a href="{% url 'listar_obras' %}">Listado de Obras</a></li>
-        <li><a href="{% url 'obra_create' %}">Crear Obra</a></li>
-    </ul>
+        <!-- Grupo para Artistas -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="artistaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Artistas</a>
+          <ul class="dropdown-menu" aria-labelledby="artistaDropdown">
+            <li>
+              <a class="dropdown-item" href="{% url 'listar_artistas' %}">Listado de Artistas</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'artista_create' %}">Crear Artista</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'artista_buscar_avanzado' %}">Búsqueda avanzada Artista</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Grupo para Obras -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="obraDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Obras</a>
+          <ul class="dropdown-menu" aria-labelledby="obraDropdown">
+            <li>
+              <a class="dropdown-item" href="{% url 'listar_obras' %}">Listado de Obras</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'obra_create' %}">Crear Obra</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'obra_buscar_avanzado' %}">Búsqueda avanzada Obra</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Grupo para Guias -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="artistaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Guias</a>
+          <ul class="dropdown-menu" aria-labelledby="artistaDropdown">
+            <li>
+              <a class="dropdown-item" href="{% url 'listar_guias' %}">Listado de Guias</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'guia_create' %}">Crear Guía</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'guia_buscar_avanzado' %}">Búsqueda avanzada Guia</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Grupo para Visita Guiada -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="obraDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visitas Guiadas</a>
+          <ul class="dropdown-menu" aria-labelledby="obraDropdown">
+            <li>
+              <a class="dropdown-item" href="{% url 'listar_visitas_guiadas' %}">Listado de Visitas Guiadas</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'visita_guiada_create' %}">Crear Visita Guiada</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'visita_guiada_buscar_avanzado' %}">Búsqueda avanzada Visita Guiada</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>

@@ -1,0 +1,35 @@
+{% extends "principal.html" %}
+{% load django_bootstrap5 %}
+
+{% block contenido %}
+<h1>Búsqueda Avanzada de Obras</h1>
+<form action="{% url 'obra_buscar_avanzado' %}" method="GET">
+    {% csrf_token %}
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.titulo show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.fecha_creacion_desde show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.fecha_creacion_hasta show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.tipo show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.exposicion show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.artista show_label=True %}
+    </div>
+
+    {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+</form>
+{% endblock %}

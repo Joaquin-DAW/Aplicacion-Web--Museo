@@ -1,0 +1,23 @@
+{% extends "principal.html" %}
+{% block contenido %}
+<h1>Resultados de Búsqueda de Visitas Guiadas</h1>
+
+<p>{{ mensaje_busqueda }}</p>
+
+{% if visitas_guiadas %}
+    <ul>
+        {% for visita_guiada in visitas_guiadas %}
+            <li>
+                <strong>{{ visita_guiada.nombre_visita_guia }}</strong><br>
+                Duración: {{ visita_guiada.duracion|default:"Sin duración" }}<br>
+                Capacidad máxima: {{ visita_guiada.capacidad_maxima|default:"Indefinida" }}<br>
+                Idioma: {{ visita_guiada.idioma|default:"No especificado" }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No se encontraron visitas guiadas con los criterios de búsqueda.</p>
+{% endif %}
+
+<a href="{% url 'visita_guiada_buscar_avanzado' %}" class="btn btn-secondary">Nueva búsqueda</a>
+{% endblock %}

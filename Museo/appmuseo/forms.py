@@ -362,9 +362,253 @@ class ObraModelForm(forms.ModelForm):
         super().clean()
         
         titulo = self.cleaned_data.get('titulo')
+        fecha_creacion = self.cleaned_data.get('fecha_creacion')
 
         # Validar que el título no supere los 200 caracteres
         if len(titulo) > 200:
             self.add_error('titulo', 'El título no puede superar los 200 caracteres.')
+            
+         # Validar que la fecha de creación no sea futura
+        if fecha_creacion and fecha_creacion > date.today():
+            self.add_error('fecha_creacion', 'La fecha de creación no puede ser en el futuro.')
+
+
+        return self.cleaned_data
+    
+class BusquedaAvanzadaObraForm(forms.Form):
+    titulo = forms.CharField(
+        required=False,
+        label="Título de la obra",
+        widget=forms.TextInput(attrs={"placeholder": "Título de la obra"})
+    )
+    fecha_creacion_desde = forms.DateField(
+        label="Fecha de creación desde",
+        required=False,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
+    )
+    fecha_creacion_hasta = forms.DateField(
+        label="Fecha de creación hasta",
+        required=False,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
+    )
+    tipo = forms.ChoiceField(
+        choices=[('', 'Seleccione un tipo'), ('pintura', 'Pintura'), ('escultura', 'Escultura')],
+        required=False,
+        label="Tipo"
+    )
+    exposicion = forms.ModelChoiceField(
+        queryset=Exposicion.objects.all(),
+        required=False,
+        label="Exposición",
+        empty_label="Seleccione una exposición"
+    )
+    artista = forms.ModelChoiceField(
+        queryset=Artista.objects.all(),
+        required=False,
+        label="Artista",
+        empty_label="Seleccione un artista"
+    )
+
+    def clean(self):
+        super().clean()
+        titulo = self.cleaned_data.get('titulo')
+        fecha_creacion_desde = self.cleaned_data.get('fecha_creacion_desde')
+        fecha_creacion_hasta = self.cleaned_data.get('fecha_creacion_hasta')
+        tipo = self.cleaned_data.get('tipo')
+        exposicion = self.cleaned_data.get('exposicion')
+        artista = self.cleaned_data.get('artista')
+
+        # Validación: al menos un campo debe estar lleno
+        if (not titulo and not fecha_creacion_desde and not fecha_creacion_hasta and
+            not tipo and not exposicion and not artista):
+            raise forms.ValidationError("Debe introducir al menos un valor en algún campo del formulario.")
+        
+        # Validación: fecha_creacion_hasta no puede ser menor que fecha_creacion_desde
+        if fecha_creacion_desde and fecha_creacion_hasta and fecha_creacion_hasta < fecha_creacion_desde:
+            self.add_error('fecha_creacion_desde', "La fecha de creación hasta no puede ser menor que la fecha desde.")
+            self.add_error('fecha_creacion_hasta', "La fecha de creación hasta no puede ser menor que la fecha desde.")
+
+        return self.cleaned_data
+
+
+# Formulario para Guía
+class GuiaModelForm(forms.ModelForm):
+    class Meta:
+        model = Guia
+        fields = ['nombre', 'idiomas', 'especialidad', 'disponibilidad', 'museo']
+        labels = {
+            "nombre": "Nombre",
+            "idiomas": "Idiomas",
+            "especialidad": "Especialidad",
+            "disponibilidad": "Disponibilidad",
+            "museo": "Museo",
+        }
+        help_texts = {
+            "nombre": "Nombre del guía (máximo 100 caracteres).",
+            "especialidad": "Área de especialización del guía (opcional).",
+            "disponibilidad": "Indique si el guía está disponible.",
+            "museo": "Seleccione el museo al que pertenece el guía.",
+        }
+        widgets = {
+            "idiomas": forms.TextInput(attrs={"placeholder": "Ejemplo: español, inglés"}),
+            "especialidad": forms.TextInput(attrs={"placeholder": "Especialidad del guía (opcional)."}),
+            "disponibilidad": forms.Select(choices=((True, 'Disponible'), (False, 'No Disponible'))),
+        }
+
+    def clean(self):
+        super().clean()
+
+        # Obtener campos del formulario
+        nombre = self.cleaned_data.get('nombre')
+        idiomas = self.cleaned_data.get('idiomas', "").split(',')  # Separamos los idiomas, si están presentes
+
+        # Validar que el nombre no supere los 100 caracteres
+        if len(nombre) > 100:
+            self.add_error('nombre', 'El nombre no puede superar los 100 caracteres.')
+
+        # Validar que se seleccione al menos un idioma
+        if not idiomas or not any(idiomas):
+            self.add_error('idiomas', 'Debe seleccionar al menos un idioma válido.')
+
+        # Convertir la lista de idiomas seleccionados a una cadena separada por comas para guardar en la base de datos
+        self.cleaned_data['idiomas'] = ','.join(idiomas)
+
+        return self.cleaned_data
+    
+class BusquedaAvanzadaGuiaForm(forms.Form):
+    nombre = forms.CharField(
+        required=False,
+        label="Nombre del guía",
+        widget=forms.TextInput(attrs={"placeholder": "Nombre del guía"})
+    )
+    idiomas = forms.CharField(
+        required=False,
+        label="Idiomas",
+        widget=forms.TextInput(attrs={"placeholder": "Idiomas (separados por comas)"})
+    )
+    especialidad = forms.CharField(
+        required=False,
+        label="Especialidad",
+        widget=forms.TextInput(attrs={"placeholder": "Especialidad del guía"})
+    )
+    disponibilidad = forms.BooleanField(
+        required=False,
+        label="Disponible",
+        widget=forms.CheckboxInput()
+    )
+    museo = forms.ModelChoiceField(
+        queryset=Museo.objects.all(),
+        required=False,
+        label="Museo",
+        empty_label="Seleccione un museo"
+    )
+
+    def clean(self):
+        super().clean()
+        nombre = self.cleaned_data.get('nombre')
+        idiomas = self.cleaned_data.get('idiomas')
+        especialidad = self.cleaned_data.get('especialidad')
+        disponibilidad = self.cleaned_data.get('disponibilidad')
+        museo = self.cleaned_data.get('museo')
+
+        # Validación: Al menos un campo debe estar lleno
+        if not (nombre or idiomas or especialidad or disponibilidad or museo):
+            self.add_error(None, 'Debe rellenar al menos un campo para realizar la búsqueda.')
+
+        # Validación: El campo "idiomas" debe contener valores separados por comas
+        if idiomas and not all(i.strip().isalpha() for i in idiomas.split(',')):
+            self.add_error(
+                'idiomas',
+                'El campo idiomas debe contener solo nombres de idiomas separados por comas (sin números ni caracteres especiales).'
+            )
+        
+        return self.cleaned_data
+
+# Formulario visita guiada
+class VisitaGuiadaModelForm(forms.ModelForm):
+    class Meta:
+        model = VisitaGuiada
+        fields = ['duracion', 'nombre_visita_guia', 'capacidad_maxima', 'idioma']
+        labels = {
+            "duracion": "Duración (en horas)",
+            "nombre_visita_guia": "Nombre de la Visita Guiada",
+            "capacidad_maxima": "Capacidad Máxima",
+            "idioma": "Idioma",
+        }
+        help_texts = {
+            "duracion": "Ingrese la duración estimada en horas de la visita.",
+            "nombre_visita_guia": "Nombre de la visita guiada (máximo 100 caracteres).",
+            "capacidad_maxima": "Número máximo de personas permitidas por visita.",
+            "idioma": "Seleccione el idioma de la visita guiada.",
+        }
+        widgets = {
+            "duracion": forms.NumberInput(attrs={"type": "number", "min": "0", "step": "0.5", "placeholder": "Duración en horas"}),  # Campo numérico para horas con pasos de 0.5
+            "nombre_visita_guia": forms.TextInput(attrs={"maxlength": "100"}),
+            "capacidad_maxima": forms.NumberInput(attrs={"min": "1", "max": "100"}),  # Ajustar según sea necesario
+            "idioma": forms.Select(attrs={"class": "form-select"}), 
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        nombre_visita_guia = cleaned_data.get("nombre_visita_guia")
+        capacidad_maxima = cleaned_data.get("capacidad_maxima")
+
+        # Validación: El nombre de la visita guiada no debe superar los 100 caracteres.
+        if not nombre_visita_guia or len(nombre_visita_guia) > 100:
+            self.add_error("nombre_visita_guia", "El nombre no puede superar los 100 caracteres.")
+
+        # Validación: La capacidad máxima debe ser al menos de 1 persona y no mayor de 100.
+        if capacidad_maxima and (capacidad_maxima < 1 or capacidad_maxima > 100):
+            self.add_error("capacidad_maxima", "La capacidad máxima debe estar entre 1 y 100.")
+
+        return cleaned_data
+    
+    
+class BusquedaAvanzadaVisitaGuiadaForm(forms.Form):
+    nombre_visita_guia = forms.CharField(
+        required=False,
+        label="Nombre de la visita guiada",
+        widget=forms.TextInput(attrs={"placeholder": "Nombre de la visita guiada"})
+    )
+    duracion = forms.DurationField(
+        required=False,
+        label="Duración",
+        widget=forms.TimeInput(attrs={"placeholder": "HH:MM"})
+    )
+    capacidad_maxima = forms.IntegerField(
+        required=False,
+        label="Capacidad máxima"
+    )
+    idioma = forms.ChoiceField(
+        required=False,
+        label="Idioma",
+        choices=[('espanol', 'Español'), ('ingles', 'Inglés')]
+    )
+
+    def clean(self):
+        super().clean()
+        nombre_visita_guia = self.cleaned_data.get('nombre_visita_guia')
+        duracion = self.cleaned_data.get('duracion')
+        capacidad_maxima = self.cleaned_data.get('capacidad_maxima')
+        idioma = self.cleaned_data.get('idioma')
+
+        # Validación: Al menos un campo debe estar lleno
+        fields_filled = [
+            nombre_visita_guia,
+            duracion,
+            capacidad_maxima,
+            idioma
+        ]
+        if not any(fields_filled):
+            self.add_error(None, 'Debe introducir al menos un valor en un campo del formulario.')
+
+        # Validación: La capacidad máxima, si está presente, debe ser un valor positivo
+        if capacidad_maxima is not None and capacidad_maxima <= 0:
+            self.add_error('capacidad_maxima', 'La capacidad máxima debe ser un número positivo.')
+
+        # Validación: El nombre de la visita no debe contener números
+        if nombre_visita_guia and any(char.isdigit() for char in nombre_visita_guia):
+            self.add_error('nombre_visita_guia', 'El nombre de la visita guiada no debe contener números.')
+
 
         return self.cleaned_data

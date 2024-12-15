@@ -1,0 +1,101 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+
+<form action="{% url 'visita_guiada_editar' visita_guiada.id %}" method="post">
+    {% csrf_token %}
+
+    <div class="mb-4">
+        <label for="{{ formulario.nombre_visita_guia.id_for_label }}" class="form-label">{{ formulario.nombre_visita_guia.label }}: </label>
+        <input name="{{ formulario.nombre_visita_guia.html_name }}"
+               type="text"
+               class="form-control {% if formulario.nombre_visita_guia.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}"
+               id="{{ formulario.nombre_visita_guia.id_for_label }}"
+               maxlength="{{ formulario.nombre_visita_guia.field.max_length }}"
+               {% if formulario.nombre_visita_guia.field.required %} required {% endif %} 
+               value="{{ formulario.nombre_visita_guia.value }}"
+        />
+        {% if formulario.nombre_visita_guia.help_text %}
+        <div class="form-text">
+            {{ formulario.nombre_visita_guia.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.nombre_visita_guia.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.duracion.id_for_label }}" class="form-label">{{ formulario.duracion.label }}: </label>
+        <input name="{{ formulario.duracion.html_name }}"
+               type="time"
+               class="form-control {% if formulario.duracion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}"
+               id="{{ formulario.duracion.id_for_label }}"
+               value="{{ formulario.duracion.value }}"
+        />
+        {% if formulario.duracion.help_text %}
+        <div class="form-text">
+            {{ formulario.duracion.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.duracion.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.capacidad_maxima.id_for_label }}" class="form-label">{{ formulario.capacidad_maxima.label }}: </label>
+        <input name="{{ formulario.capacidad_maxima.html_name }}"
+               type="number"
+               class="form-control {% if formulario.capacidad_maxima.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}"
+               id="{{ formulario.capacidad_maxima.id_for_label }}"
+               value="{{ formulario.capacidad_maxima.value }}"
+        />
+        {% if formulario.capacidad_maxima.help_text %}
+        <div class="form-text">
+            {{ formulario.capacidad_maxima.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.capacidad_maxima.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.idioma.id_for_label }}" class="form-label">{{ formulario.idioma.label }}: </label>
+        <select name="{{ formulario.idioma.html_name }}" id="{{ formulario.idioma.id_for_label }}"
+                class="form-select {% if formulario.idioma.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                multiple>
+            {% for opcion in formulario.idioma.field.choices %}
+                <option value="{{ opcion.0 }}" {% if opcion.0 in formulario.idioma.value %}selected{% endif %}>
+                    {{ opcion.1 }}
+                </option>
+            {% endfor %}
+        </select>
+        {% if formulario.idioma.help_text %}
+        <div class="form-text">
+            {{ formulario.idioma.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.idioma.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <button type="submit" class="btn btn-primary">Actualizar Visita Guiada</button>
+    </div>
+
+</form>
+
+{% endblock %}

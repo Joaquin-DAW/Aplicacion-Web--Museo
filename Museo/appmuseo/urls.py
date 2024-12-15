@@ -46,6 +46,19 @@ urlpatterns = [
 
     path('obra/',views.listar_obras,name='listar_obras'),
     path('obra/create/',views.obra_create,name='obra_create'),
+    path('obra/buscar_avanzado/',views.obra_buscar_avanzado,name='obra_buscar_avanzado'),
     path('obra/editar/<int:obra_id>/', views.obra_editar, name='obra_editar'),
     path('obra/eliminar/<int:obra_id>/', views.obra_eliminar, name='obra_eliminar'),
+    
+    path('guia/',views.listar_guias,name='listar_guias'),
+    path('guia/create/',views.guia_create,name='guia_create'),
+    path('guia/buscar_avanzado/',views.guia_buscar_avanzado,name='guia_buscar_avanzado'),
+    path('guia/editar/<int:guia_id>/', views.guia_editar, name='guia_editar'),
+    path('guia/eliminar/<int:guia_id>/', views.guia_eliminar, name='guia_eliminar'),
+    
+    path('visitas_guiadas/',views.listar_visitas_guiadas,name='listar_visitas_guiadas'),
+    path('visita_guiada/create/',views.visita_guiada_create,name='visita_guiada_create'),
+    path('visita_guiada/buscar_avanzado/', views.visita_guiada_buscar_avanzado, name='visita_guiada_buscar_avanzado'),
+    path('visita_guiada/editar/<int:visita_guiada_id>/', views.visita_guiada_editar, name='visita_guiada_editar'),
+    path('visita_guiada/eliminar/<int:visita_guiada_id>/', views.visita_guiada_eliminar, name='visita_guiada_eliminar'),
 ]
