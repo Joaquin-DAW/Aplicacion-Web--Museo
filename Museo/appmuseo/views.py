@@ -537,43 +537,6 @@ def obra_eliminar(request, obra_id):
 
     return redirect('listar_obras')  # Redirigimos a la lista de obras después de eliminar
 
-
-<<<<<<< HEAD
-def registrar_usuario(request):
-    if request.method == 'POST':
-        formulario = RegistroForm(request.POST)
-        if formulario.is_valid():
-            user = formulario.save()
-            rol = int(formulario.cleaned_data.get('rol'))
-            if(rol == Usuario.VISITANTE):
-                visitante = Visitante.objects.create( usuario = user)
-                visitante.save()
-            elif(rol == Usuario.RESPONSABLE):
-                responsable = Responsable.objects.create(usuario = user)
-                responsable.save()
-            
-            login(request, user)
-            return redirect('index')
-    else:
-        formulario = RegistroForm()
-    return render(request, 'registration/signup.html', {'formulario': formulario})
-
-@permission_required('biblioteca.add_prestamo')
-
-
-def registrar_visita(request):
-    if request.method == 'POST':
-        form = VisitaForm(request.POST)
-        if form.is_valid():
-            visita = form.save(commit=False)  # Crear la instancia sin guardarla en la base de datos todavía
-            visita.visitante = Visitante.objects.get(usuario=request.user)  # Asociar el visitante actual
-            visita.save()  # Guardar la visita con todos los datos
-            return redirect('nombre_de_tu_vista_principal')  # Redirige a la página principal o a otra página
-    else:
-        form = VisitaForm()
-
-    return render(request, 'registrar_visita.html', {'form': form})
-=======
 # Creación de guía
 def guia_create(request):
     if request.method == "POST":
@@ -783,7 +746,43 @@ def visita_guiada_eliminar(request, visita_guiada_id):
         
     return redirect('listar_visitas_guiadas')
 
->>>>>>> 1e7603e4f2320776021f6a68770c1de9c0e5fc91
+#Usuarios y Sesiones
+
+def registrar_usuario(request):
+    if request.method == 'POST':
+        formulario = RegistroForm(request.POST)
+        if formulario.is_valid():
+            user = formulario.save()
+            rol = int(formulario.cleaned_data.get('rol'))
+            if(rol == Usuario.VISITANTE):
+                visitante = Visitante.objects.create( usuario = user)
+                visitante.save()
+            elif(rol == Usuario.RESPONSABLE):
+                responsable = Responsable.objects.create(usuario = user)
+                responsable.save()
+            
+            login(request, user)
+            return redirect('index')
+    else:
+        formulario = RegistroForm()
+    return render(request, 'registration/signup.html', {'formulario': formulario})
+
+@permission_required('biblioteca.add_prestamo')
+
+
+def registrar_visita(request):
+    if request.method == 'POST':
+        form = VisitaForm(request.POST)
+        if form.is_valid():
+            visita = form.save(commit=False)  # Crear la instancia sin guardarla en la base de datos todavía
+            visita.visitante = Visitante.objects.get(usuario=request.user)  # Asociar el visitante actual
+            visita.save()  # Guardar la visita con todos los datos
+            return redirect('nombre_de_tu_vista_principal')  # Redirige a la página principal o a otra página
+    else:
+        form = VisitaForm()
+
+    return render(request, 'registrar_visita.html', {'form': form})
+
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.
 

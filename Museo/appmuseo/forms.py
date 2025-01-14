@@ -375,35 +375,6 @@ class ObraModelForm(forms.ModelForm):
 
 
         return self.cleaned_data
-<<<<<<< HEAD
-
-
-#Usuario y secciones 
-
-class RegistroForm(UserCreationForm): 
-    roles = (
-                (Usuario.VISITANTE, 'visitante'),
-                (Usuario.RESPONSABLE, 'responsable'),
-            )  
-    ciudad = forms.CharField(required=False) 
-    rol = forms.ChoiceField(choices=roles)  
-    class Meta:
-        model = Usuario
-        fields = ('username', 'email', 'password1', 'password2','rol')
-        
-class VisitaForm(forms.ModelForm):
-    class Meta:
-        model = Visita
-        fields = ['museo', 'fecha_visita', 'duracion']  # Campos que deseas incluir en el formulario
-        widgets = {
-            'fecha_visita': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'duracion': forms.TextInput(attrs={'placeholder': 'Ejemplo: 2:30 para 2 horas y 30 minutos'}),
-        }
-        labels = {
-            'fecha_visita': 'Fecha y hora de la visita',
-            'duracion': 'Duración de la visita',
-        }
-=======
     
 class BusquedaAvanzadaObraForm(forms.Form):
     titulo = forms.CharField(
@@ -642,4 +613,30 @@ class BusquedaAvanzadaVisitaGuiadaForm(forms.Form):
 
 
         return self.cleaned_data
->>>>>>> 1e7603e4f2320776021f6a68770c1de9c0e5fc91
+
+
+#Usuario y secciones 
+
+class RegistroForm(UserCreationForm): 
+    roles = (
+                (Usuario.VISITANTE, 'visitante'),
+                (Usuario.RESPONSABLE, 'responsable'),
+            )  
+    ciudad = forms.CharField(required=False) 
+    rol = forms.ChoiceField(choices=roles)  
+    class Meta:
+        model = Usuario
+        fields = ('username', 'email', 'password1', 'password2','rol')
+        
+class VisitaForm(forms.ModelForm):
+    class Meta:
+        model = Visita
+        fields = ['museo', 'fecha_visita', 'duracion']  # Campos que deseas incluir en el formulario
+        widgets = {
+            'fecha_visita': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'duracion': forms.TextInput(attrs={'placeholder': 'Ejemplo: 2:30 para 2 horas y 30 minutos'}),
+        }
+        labels = {
+            'fecha_visita': 'Fecha y hora de la visita',
+            'duracion': 'Duración de la visita',
+        }

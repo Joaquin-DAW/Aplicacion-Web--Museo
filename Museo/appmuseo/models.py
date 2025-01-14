@@ -121,16 +121,15 @@ class VisitaGuiada(models.Model):
     guias = models.ManyToManyField(Guia, related_name="visita_guiada_guia")  # ManyToMany con Guia
     visitantes = models.ManyToManyField(Visitante, related_name="visita_guiada_visitante")  # ManyToMany con Visitante
     
-<<<<<<< HEAD
-class Visita(models.Model):
-    visitante = models.ForeignKey(Visitante, on_delete=models.CASCADE) 
-    museo = models.ForeignKey(Museo, on_delete=models.CASCADE)
-    fecha_visita = models.DateTimeField(default=timezone.now, blank=True)  
-    duracion = models.DurationField(blank=True, null=True) 
-=======
     def __str__(self):
     # Convertir la duración a horas con decimales
         total_seconds = self.duracion.total_seconds()
         horas = total_seconds / 3600  # Convertir segundos a horas
         return f"{horas:.1f} horas"
->>>>>>> 1e7603e4f2320776021f6a68770c1de9c0e5fc91
+    
+class Visita(models.Model):
+    visitante = models.ForeignKey(Visitante, on_delete=models.CASCADE) 
+    museo = models.ForeignKey(Museo, on_delete=models.CASCADE)
+    fecha_visita = models.DateTimeField(default=timezone.now, blank=True)  
+    duracion = models.DurationField(blank=True, null=True) 
+

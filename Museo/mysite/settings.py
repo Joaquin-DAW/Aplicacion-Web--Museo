@@ -131,14 +131,12 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-<<<<<<< HEAD
-AUTH_USER_MODEL = 'appmuseo.Usuario'
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'index'
-=======
 import os
 
 # Configuración de medios
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
->>>>>>> 1e7603e4f2320776021f6a68770c1de9c0e5fc91
+
+AUTH_USER_MODEL = 'appmuseo.Usuario'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'

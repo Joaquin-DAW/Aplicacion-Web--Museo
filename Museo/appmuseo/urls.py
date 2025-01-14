@@ -50,9 +50,6 @@ urlpatterns = [
     path('obra/editar/<int:obra_id>/', views.obra_editar, name='obra_editar'),
     path('obra/eliminar/<int:obra_id>/', views.obra_eliminar, name='obra_eliminar'),
     
-<<<<<<< HEAD
-    path('registrar',views.registrar_usuario,name='registrar_usuario'),
-=======
     path('guia/',views.listar_guias,name='listar_guias'),
     path('guia/create/',views.guia_create,name='guia_create'),
     path('guia/buscar_avanzado/',views.guia_buscar_avanzado,name='guia_buscar_avanzado'),
@@ -64,5 +61,6 @@ urlpatterns = [
     path('visita_guiada/buscar_avanzado/', views.visita_guiada_buscar_avanzado, name='visita_guiada_buscar_avanzado'),
     path('visita_guiada/editar/<int:visita_guiada_id>/', views.visita_guiada_editar, name='visita_guiada_editar'),
     path('visita_guiada/eliminar/<int:visita_guiada_id>/', views.visita_guiada_eliminar, name='visita_guiada_eliminar'),
->>>>>>> 1e7603e4f2320776021f6a68770c1de9c0e5fc91
+    
+    path('registrar',views.registrar_usuario,name='registrar_usuario'),
 ]
