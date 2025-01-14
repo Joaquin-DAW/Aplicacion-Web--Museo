@@ -1,12 +1,19 @@
 from django.shortcuts import render,redirect
 from django.db.models import Q, Avg
-from datetime import date
 from .models import Museo,Obra,Exposicion, Visitante, Artista, Guia, Producto
 from .forms import *
 from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import Group
+
+from datetime import datetime
 
 #Index donde podremos acceder a todas las URLs.
 def index(request):
+    if(not "fecha_inicio" in request.session):
+        request.session["fecha_inicio"] = datetime.now().strftime('%d/%m/%Y %H:%M')
+        
     return render(request, 'index.html')
 
 #Esta vista saca todos los datos de museo y accede a todos los modelos relacionados con el mismo para poder sacar información sobre ellos.
@@ -466,6 +473,41 @@ def obra_eliminar(request, obra_id):
 
     return redirect('listar_obras')  # Redirigimos a la lista de obras después de eliminar
 
+
+def registrar_usuario(request):
+    if request.method == 'POST':
+        formulario = RegistroForm(request.POST)
+        if formulario.is_valid():
+            user = formulario.save()
+            rol = int(formulario.cleaned_data.get('rol'))
+            if(rol == Usuario.VISITANTE):
+                visitante = Visitante.objects.create( usuario = user)
+                visitante.save()
+            elif(rol == Usuario.RESPONSABLE):
+                responsable = Responsable.objects.create(usuario = user)
+                responsable.save()
+            
+            login(request, user)
+            return redirect('index')
+    else:
+        formulario = RegistroForm()
+    return render(request, 'registration/signup.html', {'formulario': formulario})
+
+@permission_required('biblioteca.add_prestamo')
+
+
+def registrar_visita(request):
+    if request.method == 'POST':
+        form = VisitaForm(request.POST)
+        if form.is_valid():
+            visita = form.save(commit=False)  # Crear la instancia sin guardarla en la base de datos todavía
+            visita.visitante = Visitante.objects.get(usuario=request.user)  # Asociar el visitante actual
+            visita.save()  # Guardar la visita con todos los datos
+            return redirect('nombre_de_tu_vista_principal')  # Redirige a la página principal o a otra página
+    else:
+        form = VisitaForm()
+
+    return render(request, 'registrar_visita.html', {'form': form})
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.
 

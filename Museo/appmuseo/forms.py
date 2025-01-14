@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from .models import *
 from datetime import date
 import datetime
+from django.contrib.auth.forms import UserCreationForm
 
 # Formulario para museo
 class MuseoModelForm(ModelForm):
@@ -368,3 +369,30 @@ class ObraModelForm(forms.ModelForm):
             self.add_error('titulo', 'El título no puede superar los 200 caracteres.')
 
         return self.cleaned_data
+
+
+#Usuario y secciones 
+
+class RegistroForm(UserCreationForm): 
+    roles = (
+                (Usuario.VISITANTE, 'visitante'),
+                (Usuario.RESPONSABLE, 'responsable'),
+            )  
+    ciudad = forms.CharField(required=False) 
+    rol = forms.ChoiceField(choices=roles)  
+    class Meta:
+        model = Usuario
+        fields = ('username', 'email', 'password1', 'password2','rol')
+        
+class VisitaForm(forms.ModelForm):
+    class Meta:
+        model = Visita
+        fields = ['museo', 'fecha_visita', 'duracion']  # Campos que deseas incluir en el formulario
+        widgets = {
+            'fecha_visita': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'duracion': forms.TextInput(attrs={'placeholder': 'Ejemplo: 2:30 para 2 horas y 30 minutos'}),
+        }
+        labels = {
+            'fecha_visita': 'Fecha y hora de la visita',
+            'duracion': 'Duración de la visita',
+        }

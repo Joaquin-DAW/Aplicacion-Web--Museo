@@ -1,6 +1,25 @@
 from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+class Usuario(AbstractUser):
+    ADMINISTRADOR = 1
+    VISITANTE = 2
+    RESPONSABLE = 3
+    ROLES = (
+        (ADMINISTRADOR, 'administardor'),
+        (VISITANTE, 'visitante'),
+        (RESPONSABLE, 'responsable'),
+    )
+    
+    rol  = models.PositiveSmallIntegerField(
+        choices=ROLES,default=1
+    )
+    
+class Responsable(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete = models.CASCADE, null=True)
 
 class Museo(models.Model):
     nombre = models.CharField(max_length=200, unique=True, verbose_name="Nombre del museo") #"Unique" si esta en "true" indica que el valor de ese campo no puede repetirse en la base de datos
@@ -48,8 +67,10 @@ class Obra(models.Model):
     artista = models.ForeignKey(Artista, on_delete=models.CASCADE, related_name="obras_artista")        # ManyToOne con Artista
 
 class Visitante(models.Model):
-    nombre = models.CharField(max_length=100)
-    correo_electronico = models.EmailField(unique=True)
+    usuario = models.OneToOneField(Usuario, on_delete = models.CASCADE, null=True)
+    
+    #nombre = models.CharField(max_length=100)
+    #correo_electronico = models.EmailField(unique=True)
     edad = models.IntegerField(null=True)
     fecha_visita = models.DateField()
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="visitantes")  # ManyToOne con Museo
@@ -97,3 +118,9 @@ class VisitaGuiada(models.Model):
     idioma = models.CharField(max_length=50, choices=[('espanol', 'Español'), ('ingles', 'Inglés')])
     guias = models.ManyToManyField(Guia, related_name="visita_guiada_guia")  # ManyToMany con Guia
     visitantes = models.ManyToManyField(Visitante, related_name="visita_guiada_visitante")  # ManyToMany con Visitante
+    
+class Visita(models.Model):
+    visitante = models.ForeignKey(Visitante, on_delete=models.CASCADE) 
+    museo = models.ForeignKey(Museo, on_delete=models.CASCADE)
+    fecha_visita = models.DateTimeField(default=timezone.now, blank=True)  
+    duracion = models.DurationField(blank=True, null=True) 

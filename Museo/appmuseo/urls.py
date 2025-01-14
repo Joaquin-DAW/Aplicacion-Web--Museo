@@ -48,4 +48,6 @@ urlpatterns = [
     path('obra/create/',views.obra_create,name='obra_create'),
     path('obra/editar/<int:obra_id>/', views.obra_editar, name='obra_editar'),
     path('obra/eliminar/<int:obra_id>/', views.obra_eliminar, name='obra_eliminar'),
+    
+    path('registrar',views.registrar_usuario,name='registrar_usuario'),
 ]
