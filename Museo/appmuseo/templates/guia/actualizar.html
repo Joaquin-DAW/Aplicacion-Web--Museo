@@ -1,0 +1,124 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+
+<form action="{% url 'guia_editar' guia.id %}" method="post">
+    {% csrf_token %}
+
+    <div class="mb-4">
+        <label for="{{ formulario.nombre.id_for_label }}" class="form-label">{{ formulario.nombre.label }}: </label>
+        <input name="{{ formulario.nombre.html_name }}"
+               type="text"
+               class="form-control {% if formulario.nombre.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}"
+               id="{{ formulario.nombre.id_for_label }}"
+               maxlength="{{ formulario.nombre.field.max_length }}"
+               {% if formulario.nombre.field.required %} required {% endif %}
+               value="{{ formulario.nombre.value }}"
+        />
+        {% if formulario.nombre.help_text %}
+        <div class="form-text">
+            {{ formulario.nombre.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.nombre.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.idiomas.id_for_label }}" class="form-label">{{ formulario.idiomas.label }}: </label>
+        <select name="{{ formulario.idiomas.html_name }}" id="{{ formulario.idiomas.id_for_label }}"
+                class="form-select {% if formulario.idiomas.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                multiple>
+            {% for opcion in formulario.idiomas.field.choices %}
+                <option value="{{ opcion.0 }}" {% if opcion.0 in formulario.idiomas.value %}selected{% endif %}>
+                    {{ opcion.1 }}
+                </option>
+            {% endfor %}
+        </select>
+        {% if formulario.idiomas.help_text %}
+        <div class="form-text">
+            {{ formulario.idiomas.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.idiomas.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.especialidad.id_for_label }}" class="form-label">{{ formulario.especialidad.label }}: </label>
+        <input name="{{ formulario.especialidad.html_name }}"
+               type="text"
+               class="form-control {% if formulario.especialidad.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}"
+               id="{{ formulario.especialidad.id_for_label }}"
+               value="{{ formulario.especialidad.value }}"
+        />
+        {% if formulario.especialidad.help_text %}
+        <div class="form-text">
+            {{ formulario.especialidad.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.especialidad.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.disponibilidad.id_for_label }}" class="form-label">{{ formulario.disponibilidad.label }}: </label>
+        <select name="{{ formulario.disponibilidad.html_name }}"
+                class="form-select {% if formulario.disponibilidad.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}"
+                id="{{ formulario.disponibilidad.id_for_label }}">
+            <option value="True" {% if formulario.disponibilidad.value == True %}selected{% endif %}>Disponible</option>
+            <option value="False" {% if formulario.disponibilidad.value == False %}selected{% endif %}>No disponible</option>
+        </select>
+        {% if formulario.disponibilidad.help_text %}
+        <div class="form-text">
+            {{ formulario.disponibilidad.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.disponibilidad.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.museo.id_for_label }}" class="form-label">{{ formulario.museo.label }}: </label>
+        <select name="{{ formulario.museo.html_name }}"
+                class="form-select {% if formulario.museo.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}"
+                id="{{ formulario.museo.id_for_label }}">
+            {% for museo in formulario.museo.field.queryset %}
+                <option value="{{ museo.id }}" {% if formulario.museo.value == museo.id %}selected{% endif %}>
+                    {{ museo.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+        {% if formulario.museo.help_text %}
+        <div class="form-text">
+            {{ formulario.museo.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.museo.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <button type="submit" class="btn btn-primary">Actualizar Guía</button>
+    </div>
+
+</form>
+
+{% endblock %}

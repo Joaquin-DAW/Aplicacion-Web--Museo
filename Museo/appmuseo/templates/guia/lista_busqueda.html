@@ -1,0 +1,24 @@
+{% extends "principal.html" %}
+{% block contenido %}
+<h1>Resultados de Búsqueda de Guías</h1>
+
+<p>{{ mensaje_busqueda }}</p>
+
+{% if guias %}
+    <ul>
+        {% for guia in guias %}
+            <li>
+                <strong>{{ guia.nombre }}</strong><br>
+                Idiomas: {{ guia.idiomas|default:"Sin idiomas" }}<br>
+                Especialidad: {{ guia.especialidad|default:"Indefinida" }}<br>
+                Disponibilidad: {{ guia.disponibilidad|yesno:"Sí,No" }}<br>
+                Museo: {{ guia.museo.nombre }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No se encontraron guías con los criterios de búsqueda.</p>
+{% endif %}
+
+<a href="{% url 'guia_buscar_avanzado' %}" class="btn btn-secondary">Nueva búsqueda</a>
+{% endblock %}

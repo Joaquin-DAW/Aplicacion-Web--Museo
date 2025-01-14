@@ -44,7 +44,6 @@ class Exposicion(models.Model):
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="exposiciones")  # ManyToOne con Museo
 
     def __str__(self):
-        # Este método define cómo se representa el objeto Exposicion como texto. Por defecto nos muestra un mensaje asi "Museo Object (id), pero podemos sobrescribirlo para cambiar el mensaje que nos devuelve"
         return self.titulo
 
 class Artista(models.Model):
@@ -62,7 +61,7 @@ class Obra(models.Model):
     fecha_creacion = models.DateField(null=True, blank=True)
     tipo = models.CharField(max_length=50, choices=[('pintura', 'Pintura'), ('escultura', 'Escultura')], default='pintura')
                                                                                             #"choices" nos permite definir un conjunto de opciones para seleccionar
-    imagen = models.ImageField(upload_to='obras/', blank=True, null=True)                   #"upload_to" nos permite especificar donde se almacenara los archivos subidos de un tipo ImageField o FileField  
+    imagen = models.ImageField(upload_to='obras', blank=True, null=True)                   #"upload_to" nos permite especificar donde se almacenara los archivos subidos de un tipo ImageField o FileField  
     exposicion = models.ForeignKey(Exposicion, on_delete=models.CASCADE, related_name="obras_exposicion")  # ManyToOne con Exposicion
     artista = models.ForeignKey(Artista, on_delete=models.CASCADE, related_name="obras_artista")        # ManyToOne con Artista
 
@@ -106,21 +105,32 @@ class Inventario(models.Model):
 
 class Guia(models.Model):
     nombre = models.CharField(max_length=100)
-    idiomas = models.CharField(max_length=100)
+    idiomas = models.CharField(max_length=200, blank=True, null=True, help_text="Escribe los idiomas separados por comas.")
     especialidad = models.CharField(max_length=100, blank=True, null=True)
     disponibilidad = models.BooleanField(default=True)
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="guias")  # ManyToOne con Museo
+    
+    def __str__(self):
+        return self.nombre
 
 class VisitaGuiada(models.Model):
     duracion = models.DurationField()
     nombre_visita_guia = models.CharField(max_length=100)
     capacidad_maxima = models.IntegerField(default=20)
-    idioma = models.CharField(max_length=50, choices=[('espanol', 'Español'), ('ingles', 'Inglés')])
+    idioma = models.CharField(max_length=100, choices=[('espanol', 'Español'), ('ingles', 'Inglés')], default='espanol')
     guias = models.ManyToManyField(Guia, related_name="visita_guiada_guia")  # ManyToMany con Guia
     visitantes = models.ManyToManyField(Visitante, related_name="visita_guiada_visitante")  # ManyToMany con Visitante
     
+<<<<<<< HEAD
 class Visita(models.Model):
     visitante = models.ForeignKey(Visitante, on_delete=models.CASCADE) 
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE)
     fecha_visita = models.DateTimeField(default=timezone.now, blank=True)  
     duracion = models.DurationField(blank=True, null=True) 
+=======
+    def __str__(self):
+    # Convertir la duración a horas con decimales
+        total_seconds = self.duracion.total_seconds()
+        horas = total_seconds / 3600  # Convertir segundos a horas
+        return f"{horas:.1f} horas"
+>>>>>>> 1e7603e4f2320776021f6a68770c1de9c0e5fc91

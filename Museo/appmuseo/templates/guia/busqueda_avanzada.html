@@ -1,0 +1,31 @@
+{% extends "principal.html" %}
+{% load django_bootstrap5 %}
+
+{% block contenido %}
+<h1>Búsqueda Avanzada de Guías</h1>
+<form action="{% url 'guia_buscar_avanzado' %}" method="GET">
+    {% csrf_token %}
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.nombre show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.idiomas show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.especialidad show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.disponibilidad show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.museo show_label=True %}
+    </div>
+
+    {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+</form>
+{% endblock %}

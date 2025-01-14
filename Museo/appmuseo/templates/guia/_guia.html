@@ -1,21 +1,60 @@
-<div>
-    <h2>Nombre: {{guia.nombre}}</h2>
-    <h2>Idiomas: {{guia.idiomas|title}}</h2> <!-- Convertimos en mayúscula la primera letra de cada palabra, así tendremos "Español", "Inglés" y "Francés"-->
-    <h2>Especialidad: {{guia.especialidad}}</h2>
-    <!--<h2>Disponibilidad: {% if guia.disponibilidad == True%} 
-                        Disponible{% else %}
-                        No disponible{% endif %}</h2>--> <!-- Creo una condición if con disponibilidad porque el valor que tiene guardado
-                                                        es booleano, por lo que devuelve un tru o un false, lo cual es poco entendible a 
-                                                        nivel humano, con este if, controlo que devuelva 
-                                                        "disponible" si tiene un valor true o "no disponible" si su valor es false-->
-    <h2>Disponibilidad: {{ guia.disponibilidad|yesno:"Disponible, No disponible, Sin datos" }} <!-- Cambiamos la anterior configuración de if para sacar la 
-        disponibilidad en palabras entendibles a nivel humano y lo simplificamos con un filtro yesno. Si el valor es true devuelve el primer valor que 
-        configuramos, si el false, el segundo y si es None el tercero-->
-    <h2>Museo: {{guia.museo.nombre}}</h2> 
-    <h2>Visita guiada:</h2>
-    <ul>
-        {% for visitaguiada in guia.visita_guiada_guia.all %}
-            <li><h3>{{ visitaguiada.nombre_visita_guia }}</h3></li>
-        {% endfor %}
-    </ul>
-<br><br>
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ guia.nombre|capfirst }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            Idiomas: 
+            {% if guia.idiomas %}
+                {{ guia.idiomas|capfirst }}
+            {% else %}
+                <span>No especificados</span>
+            {% endif %}
+        </h6>
+        <p class="card-text"><strong>Especialidad:</strong> {{ guia.especialidad|default:"Sin especialidad" }}</p>
+        <p class="card-text">
+            <strong>Disponibilidad:</strong> 
+            {% if guia.disponibilidad %}
+                <span class="text-success">Disponible</span>
+            {% else %}
+                <span class="text-danger">No disponible</span>
+            {% endif %}
+        </p>
+        <p class="card-text">
+            <strong>Museo asociado:</strong> {{ guia.museo.nombre|default:"No asociado" }}
+        </p>
+        {% load bootstrap_icons %}
+        <div class="row btn-group mt-3">
+            <div class="mb-2">
+                <button type="button" class="btn btn-outline-primary">
+                    <a href="{% url 'guia_editar' guia.id %}">
+                        <span>{% bs_icon 'pencil' %} </span>
+                    </a>
+                </button>
+            </div>
+            <div class="mb-2">
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-{{ guia.id }}">
+                    <span>{% bs_icon 'trash' %} </span>
+                </button>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmDeleteModal-{{ guia.id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel-{{ guia.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel-{{ guia.id }}">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar al guía "{{ guia.nombre }}"? Esta acción no se puede deshacer.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form method="post" action="{% url 'guia_eliminar' guia.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

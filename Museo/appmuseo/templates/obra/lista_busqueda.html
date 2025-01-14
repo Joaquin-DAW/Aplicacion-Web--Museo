@@ -1,0 +1,31 @@
+{% extends "principal.html" %}
+{% block contenido %}
+{% load static %}
+<h1>Resultados de Búsqueda de Obras</h1>
+
+<p>{{ mensaje_busqueda }}</p>
+
+{% if obras %}
+    <ul>
+        {% for obra in obras %}
+            <li>
+                <strong>{{ obra.titulo }}</strong><br>
+                Fecha de Creación: {{ obra.fecha_creacion|date:"d-m-Y" }}<br>
+                Tipo: {{ obra.tipo|title }}<br>
+                Exposición: {{ obra.exposicion.titulo|default:"Sin exposición asignada" }}<br>
+                Artista: {{ obra.artista.nombre_completo|default:"Artista desconocido" }}<br>
+                
+                {% if obra.imagen %}
+                    <img src="{{ obra.imagen.url }}" alt="Imagen de {{ obra.titulo }}" style="max-width: 200px; max-height: 200px;">
+                {% else %}
+                    <em>Sin imagen disponible</em>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No se encontraron obras con los criterios de búsqueda.</p>
+{% endif %}
+
+<a href="{% url 'obra_buscar_avanzado' %}" class="btn btn-secondary">Nueva búsqueda</a>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'principal.html' %}
+{% load django_bootstrap5 %}
+
+{% block cabecera %}
+  <h1>Lista de Guías</h1>
+{% endblock %}
+
+{% block contenido %}
+  {% for guia in guias %}
+    {% include 'guia/_guia.html' %}
+  {% empty %}
+    <h2>No hay guías registrados aún.</h2>
+  {% endfor %}
+{% endblock %}

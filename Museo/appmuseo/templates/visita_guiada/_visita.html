@@ -1,20 +1,50 @@
-<h1>Visita guiada: {{visitas_guiadas.nombrenombre_visita_guia}} </h1>
-<div>
-    <h2>Nombre de la visita: {{visita_guiada.nombre_visita_guia}}</h2>
-    <h2>Duración: {{visita_guiada.duracion}}</h2>
-    <h2>Capacidad máxima: {{visita_guiada.capacidad_maxima}}</h2>
-    <h2>Idioma: {{visita_guiada.idioma}}</h2>
-    <h2>Guias:<h2>
-        <ul>
-            {% for guia in visita_guiada.guias.all %}
-                <li>{{ guia.nombre }}</li>
-            {% endfor %}
-        </ul>
-    <h2>Visitantes:<h2>
-        <ul>
-            {% for visitante in visita_guiada.visitantes.all %}
-                <li>{{ visitante.nombre }}</li>
-            {% endfor %}
-        </ul>
+{% load bootstrap_icons %}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ visita_guiada.nombre_visita_guia }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            {% if visita_guiada.duracion %}
+                {{ visita_guiada.duracion}} horas
+            {% else %}
+                Duración: No especificada
+            {% endif %}
+        </h6>
+        <p class="card-text"><strong>Capacidad máxima:</strong> {{ visita_guiada.capacidad_maxima }}</p>
+        <p class="card-text"><strong>Idioma:</strong> {{ visita_guiada.idioma|capfirst }}</p>
+        <div class="row btn-group mt-3">
+            <div class="mb-2">
+                <button type="button" class="btn btn-outline-primary">
+                    <a href="{% url 'visita_guiada_editar' visita_guiada.id %}">
+                        <span>{% bs_icon 'pencil' %}</span>
+                    </a>
+                </button>
+            </div>
+            <div class="mb-2">
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-{{ visita_guiada.id }}">
+                    <span>{% bs_icon 'trash' %}</span>
+                </button>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmDeleteModal-{{ visita_guiada.id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel-{{ visita_guiada.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel-{{ visita_guiada.id }}">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar la visita guiada "{{ visita_guiada.nombre_visita_guia }}"? Esta acción no se puede deshacer.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form method="post" action="{% url 'visita_guiada_eliminar' visita_guiada.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<br><br>

@@ -36,6 +36,14 @@ def listar_obras(request):
     obras = Obra.objects.prefetch_related("artista", "exposicion").all()
     return render(request, "obra/lista.html", {"obras": obras})
 
+def listar_guias(request):
+    guias = Guia.objects.prefetch_related("museo").all()
+    return render(request, "guia/lista.html", {"guias": guias})
+
+def listar_visitas_guiadas(request):
+    visita_guiadas = VisitaGuiada.objects.prefetch_related("guias").all()
+    return render(request, "visita_guiada/lista.html", {"visita_guiadas": visita_guiadas})
+
 
 #Esta vista accede a una exposición de un año concreto y muestra toda su información.
 #Usa una relacion reversa al acceder a las obras de cada exposición y a sus artistas.
@@ -436,6 +444,62 @@ def obra_create(request):
     
     return render(request, 'obra/create.html', {"formulario": formulario})
 
+# Busqueda avanzada de obra
+def obra_buscar_avanzado(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaObraForm(request.GET)
+
+        if formulario.is_valid():
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            QSobras = Obra.objects.all()
+
+            titulo = formulario.cleaned_data.get('titulo')
+            fecha_creacion_desde = formulario.cleaned_data.get('fecha_creacion_desde')
+            fecha_creacion_hasta = formulario.cleaned_data.get('fecha_creacion_hasta')
+            tipo = formulario.cleaned_data.get('tipo')
+            exposicion = formulario.cleaned_data.get('exposicion')
+            artista = formulario.cleaned_data.get('artista')
+
+            # Filtro por título
+            if titulo:
+                QSobras = QSobras.filter(titulo__icontains=titulo)
+                mensaje_busqueda += f"Título contiene: {titulo}\n"
+
+            # Filtro por fecha de creación desde
+            if fecha_creacion_desde:
+                QSobras = QSobras.filter(fecha_creacion__gte=fecha_creacion_desde)
+                mensaje_busqueda += f"Fecha de creación desde: {fecha_creacion_desde}\n"
+
+            # Filtro por fecha de creación hasta
+            if fecha_creacion_hasta:
+                QSobras = QSobras.filter(fecha_creacion__lte=fecha_creacion_hasta)
+                mensaje_busqueda += f"Fecha de creación hasta: {fecha_creacion_hasta}\n"
+
+            # Filtro por tipo
+            if tipo:
+                QSobras = QSobras.filter(tipo=tipo)
+                mensaje_busqueda += f"Tipo: {tipo}\n"
+
+            # Filtro por exposición
+            if exposicion:
+                QSobras = QSobras.filter(exposicion=exposicion)
+                mensaje_busqueda += f"Exposición: {exposicion.titulo}\n"
+
+            # Filtro por artista
+            if artista:
+                QSobras = QSobras.filter(artista=artista)
+                mensaje_busqueda += f"Artista: {artista.nombre_completo}\n"
+
+            obras = QSobras.all()
+
+            return render(request, 'obra/lista_busqueda.html',
+                          {"obras": obras, "mensaje_busqueda": mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaObraForm(None)
+
+    return render(request, 'obra/busqueda_avanzada.html', {"formulario": formulario})
+
+
 # Editar de obra
 def obra_editar(request, obra_id):
     obra = Obra.objects.get(id=obra_id)  # Obtenemos la obra con el id proporcionado
@@ -474,6 +538,7 @@ def obra_eliminar(request, obra_id):
     return redirect('listar_obras')  # Redirigimos a la lista de obras después de eliminar
 
 
+<<<<<<< HEAD
 def registrar_usuario(request):
     if request.method == 'POST':
         formulario = RegistroForm(request.POST)
@@ -508,6 +573,217 @@ def registrar_visita(request):
         form = VisitaForm()
 
     return render(request, 'registrar_visita.html', {'form': form})
+=======
+# Creación de guía
+def guia_create(request):
+    if request.method == "POST":
+        formulario = GuiaModelForm(request.POST)
+        if formulario.is_valid():
+            try:
+                # Convertir disponibilidad de texto a booleano
+                disponibilidad = formulario.cleaned_data.get('disponibilidad')
+                guia = formulario.save(commit=False)
+                guia.disponibilidad = disponibilidad == 'Disponible'  
+                guia.save() 
+                messages.success(request, "El guía se ha creado correctamente.")
+                return redirect("listar_guias")
+            except Exception as error:
+                print("Error al guardar:", error)
+        else:
+            print("Errores del formulario:", formulario.errors)  # Para depuración
+    else:
+        formulario = GuiaModelForm()
+
+    return render(request, 'guia/create.html', {"formulario": formulario})
+
+# Búsqueda avanzada de guía
+def guia_buscar_avanzado(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaGuiaForm(request.GET)
+
+        if formulario.is_valid():
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            QSguias = Guia.objects.all()
+            
+            nombre = formulario.cleaned_data.get('nombre')
+            idiomas = formulario.cleaned_data.get('idiomas')
+            especialidad = formulario.cleaned_data.get('especialidad')
+            disponibilidad = formulario.cleaned_data.get('disponibilidad')
+            museo = formulario.cleaned_data.get('museo')
+
+            # Filtro por nombre
+            if nombre:
+                QSguias = QSguias.filter(nombre__icontains=nombre)
+                mensaje_busqueda += "Nombre contiene: " + nombre + "\n"
+
+            # Filtro por idiomas
+            if idiomas:
+                idiomas_list = idiomas.split(',')
+                QSguias = QSguias.filter(idiomas__in=idiomas_list)
+                mensaje_busqueda += "Idiomas contienen: " + ', '.join(idiomas_list) + "\n"
+
+            # Filtro por especialidad
+            if especialidad:
+                QSguias = QSguias.filter(especialidad__icontains=especialidad)
+                mensaje_busqueda += "Especialidad contiene: " + especialidad + "\n"
+
+            # Filtro por disponibilidad
+            if disponibilidad is not None:
+                QSguias = QSguias.filter(disponibilidad=disponibilidad)
+                mensaje_busqueda += "Disponible: " + ("Sí" if disponibilidad else "No") + "\n"
+
+            # Filtro por museo
+            if museo:
+                QSguias = QSguias.filter(museo=museo)
+                mensaje_busqueda += "Museo: " + museo.nombre + "\n"
+
+            guias = QSguias.all()
+
+            return render(request, 'guia/lista_busqueda.html',
+                {"guias": guias, "mensaje_busqueda": mensaje_busqueda}
+            )
+    else:
+        formulario = BusquedaAvanzadaGuiaForm(None)
+
+    return render(request, 'guia/busqueda_avanzada.html', {"formulario": formulario})
+
+# Editar Guía
+def guia_editar(request, guia_id):
+    guia = Obra.objects.get(id=guia_id)
+    
+    datosFormulario = None
+
+    if request.method == "POST":
+        datosFormulario = request.POST
+
+    formulario = GuiaModelForm(datosFormulario, instance=guia)
+
+    if request.method == "POST":
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, f'Se ha editado el guía {formulario.cleaned_data.get("nombre")} correctamente.')
+                return redirect('listar_guias')  # Redirige a la lista de guías
+            except Exception as error:
+                print(error)
+
+    return render(request, 'guia/actualizar.html', {"formulario": formulario, "guia": guia})
+
+# Eliminar Guía
+def guia_eliminar(request, guia_id):
+    guia = Guia.objects.get(id=guia_id)
+
+    try:
+        guia.delete()
+        messages.success(request, f"Se ha eliminado el guía '{guia.nombre}' correctamente.")
+    except Exception as error:
+        messages.error(request, "Hubo un error al intentar eliminar el guía.")
+        print(error)
+
+    return redirect('listar_guias')  # Redirige a la lista de guías
+
+
+# Crear de visita guiada
+def visita_guiada_create(request):
+    if request.method == "POST":
+        formulario = VisitaGuiadaModelForm(request.POST)
+        if formulario.is_valid():
+            try:
+                visita_guiada = formulario.save(commit=False)
+                visita_guiada.save()
+                messages.success(request, "La visita guiada se ha creado correctamente.")
+                return redirect("listar_visitas_guiadas")  # Cambiar según la URL correspondiente
+            except Exception as error:
+                print("Error al guardar:", error)
+        else:
+            print("Errores del formulario:", formulario.errors)  # Para depuración
+    else:
+        formulario = VisitaGuiadaModelForm()
+
+    return render(request, 'visita_guiada/create.html', {"formulario": formulario})
+
+# Búsqueda avanzada de visita guiada
+def visita_guiada_buscar_avanzado(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaVisitaGuiadaForm(request.GET)
+
+        if formulario.is_valid():
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            QSvisitas_guiadas = VisitaGuiada.objects.all()
+            
+            nombre_visita_guia = formulario.cleaned_data.get('nombre_visita_guia')
+            duracion = formulario.cleaned_data.get('duracion')
+            capacidad_maxima = formulario.cleaned_data.get('capacidad_maxima')
+            idioma = formulario.cleaned_data.get('idioma')
+
+            # Filtro por nombre de visita guiada
+            if nombre_visita_guia:
+                QSvisitas_guiadas = QSvisitas_guiadas.filter(nombre_visita_guia__icontains=nombre_visita_guia)
+                mensaje_busqueda += "Nombre contiene: " + nombre_visita_guia + "\n"
+
+            # Filtro por duración
+            if duracion:
+                QSvisitas_guiadas = QSvisitas_guiadas.filter(duracion=duracion)
+                mensaje_busqueda += "Duración: " + str(duracion) + "\n"
+
+            # Filtro por capacidad máxima
+            if capacidad_maxima:
+                QSvisitas_guiadas = QSvisitas_guiadas.filter(capacidad_maxima=capacidad_maxima)
+                mensaje_busqueda += "Capacidad máxima: " + str(capacidad_maxima) + "\n"
+
+            # Filtro por idioma
+            if idioma:
+                QSvisitas_guiadas = QSvisitas_guiadas.filter(idioma=idioma)
+                mensaje_busqueda += "Idioma: " + idioma + "\n"
+
+            visitas_guiadas = QSvisitas_guiadas.all()
+
+            return render(request, 'visita_guiada/lista_busqueda.html',
+                {"visitas_guiadas": visitas_guiadas, "mensaje_busqueda": mensaje_busqueda}
+            )
+    else:
+        formulario = BusquedaAvanzadaVisitaGuiadaForm(None)
+
+    return render(request, 'visita_guiada/busqueda_avanzada.html', {"formulario": formulario})
+
+
+# Editar de visita guiada
+def visita_guiada_editar(request, visita_guiada_id):
+    visita_guiada = VisitaGuiada.objects.get(id=visita_guiada_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    formulario = VisitaGuiadaModelForm(datosFormulario, instance=visita_guiada)
+    
+    if request.method == "POST":
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, f'Se ha editado la visita guiada {formulario.cleaned_data.get("nombre_visita_guia")} correctamente.')
+                return redirect('listar_visitas_guiadas')  
+            except Exception as error:
+                print(error)
+                
+    return render(request, 'visita_guiada/actualizar.html', {"formulario": formulario, "visita_guiada": visita_guiada})
+
+
+#Eliminar de visita guiada
+def visita_guiada_eliminar(request, visita_guiada_id):
+    visita_guiada = VisitaGuiada.objects.get(id=visita_guiada_id)
+    
+    try:
+        visita_guiada.delete()
+        messages.success(request, f"Se ha eliminado la visita guiada '{visita_guiada.nombre_visita_guia}' correctamente.")
+    except Exception as error:
+        messages.error(request, "Hubo un error al intentar eliminar la visita guiada.")
+        print(error)
+        
+    return redirect('listar_visitas_guiadas')
+
+>>>>>>> 1e7603e4f2320776021f6a68770c1de9c0e5fc91
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.
 
