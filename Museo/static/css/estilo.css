@@ -1,0 +1,42 @@
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Alineación horizontal */
+    gap: 10px;
+}
+
+.menu li {
+    margin: 0;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #333; /* Cambia a tu preferencia */
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center; /* Centrar texto dentro del botón */
+    display: block; /* Garantiza que se comporte como un bloque */
+    white-space: normal; /* Permite que el texto haga saltos de línea */
+    word-wrap: break-word; /* Divide palabras largas si es necesario */
+    max-width: 150px; /* Limita el ancho del botón */
+}
+
+.menu a:hover {
+    background-color: #f0f0f0; /* Color al pasar el ratón */
+    color: #000;
+}
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer p {
+    margin: 5px 0;
+}
