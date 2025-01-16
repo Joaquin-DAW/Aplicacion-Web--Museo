@@ -640,3 +640,20 @@ class VisitaForm(forms.ModelForm):
             'fecha_visita': 'Fecha y hora de la visita',
             'duracion': 'Duración de la visita',
         }
+        
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(VisitaForm, self).__init__(*args, **kwargs)
+
+        if self.request and self.request.user.is_authenticated:
+            visitante = getattr(self.request.user, 'visitante', None)
+
+            if visitante:
+                hoy = timezone.now().date()
+                museos_visitados_hoy = Visita.objects.filter(
+                    visitante=visitante, fecha_visita__date=hoy
+                ).values_list('museo', flat=True)
+
+                museos_disponibles = Museo.objects.exclude(id__in=museos_visitados_hoy)
+
+                self.fields['museo'].queryset = museos_disponibles

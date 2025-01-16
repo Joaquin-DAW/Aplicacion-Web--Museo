@@ -63,4 +63,5 @@ urlpatterns = [
     path('visita_guiada/eliminar/<int:visita_guiada_id>/', views.visita_guiada_eliminar, name='visita_guiada_eliminar'),
     
     path('registrar',views.registrar_usuario,name='registrar_usuario'),
+    path('visita/crear',views.visita_crear,name='visita_crear'),
 ]

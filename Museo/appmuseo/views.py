@@ -767,21 +767,23 @@ def registrar_usuario(request):
         formulario = RegistroForm()
     return render(request, 'registration/signup.html', {'formulario': formulario})
 
-@permission_required('biblioteca.add_prestamo')
+@permission_required('appmuseo.add_visita')
 
 
-def registrar_visita(request):
+def visita_crear(request):
     if request.method == 'POST':
-        form = VisitaForm(request.POST)
-        if form.is_valid():
-            visita = form.save(commit=False)  # Crear la instancia sin guardarla en la base de datos todavía
+        formulario = VisitaForm(request.POST)
+        if formulario.is_valid():
+            visita = formulario.save(commit=False)  # Crear la instancia sin guardarla en la base de datos todavía
             visita.visitante = Visitante.objects.get(usuario=request.user)  # Asociar el visitante actual
             visita.save()  # Guardar la visita con todos los datos
-            return redirect('nombre_de_tu_vista_principal')  # Redirige a la página principal o a otra página
+            return redirect('visita_lista_usuarios',usuario_id=request.user.visitante.id)  # Redirige a la página principal o a otra página
     else:
-        form = VisitaForm()
+        formulario = VisitaForm()
 
-    return render(request, 'registrar_visita.html', {'form': form})
+    return render(request, 'visita/create.html', {'form': formulario})
+
+@permission_required('appmuseo.add_visita')
 
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.
