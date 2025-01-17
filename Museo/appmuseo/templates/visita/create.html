@@ -1,0 +1,12 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+<form action="{% url 'visita_crear' %}" method="post">
+    {% csrf_token %}
+    {% load django_bootstrap5 %}
+    <div class="mb-4">
+        {% bootstrap_form form %}
+    </div>
+    {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
+</form>
+{% endblock %}

@@ -18,6 +18,15 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="museoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Museos</a>
           <ul class="dropdown-menu" aria-labelledby="museoDropdown">
+            <li>
+              <a class="dropdown-item" href="{% url 'listar_museos' %}">Listado de Museos</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'museo_create' %}">Crear Museo</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'museo_buscar_avanzado' %}">Búsqueda avanzada Museo</a>
+            </li>
           </ul>
         </li>
 
@@ -101,12 +110,24 @@
             </li>
           </ul>
         </li>
+
+        <!-- Grupo para Visitas -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="visitaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visitas</a>
+          <ul class="dropdown-menu" aria-labelledby="visitaDropdown">
+            {% if request.user.is_authenticated %}
+              <li>
+                <a class="dropdown-item" href="{% url 'visita_lista_usuarios' request.user.id %}">Ver Mis Visitas</a>
+              </li>
+            {% endif %}
+              <li>
+                <a class="dropdown-item" href="{% url 'visita_crear' %}">Crear Visita</a>
+              </li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
-  <a class="btn btn-outline-warning" href="{% url 'registrar_usuario' %}">
-    Registrarse
-  </a>
   <div class="ml-2">
   {% if not request.user.is_authenticated %}
   <a class="btn btn-outline-warning" href="{% url 'login' %}">

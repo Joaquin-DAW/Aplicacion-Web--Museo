@@ -785,6 +785,12 @@ def visita_crear(request):
 
 @permission_required('appmuseo.add_visita')
 
+def visita_lista_usuario(request, usuario_id):
+    visitante = Visitante.objects.filter(id=usuario_id).get()
+    visitas = Visita.objects.select_related("museo")
+    visitas = visitas.filter(visitante=visitante.id).all()
+    return render(request, 'visita/lista.html', {"visitas_mostrar": visitas, "visitante": visitante})
+
 
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.
 

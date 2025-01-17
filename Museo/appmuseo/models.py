@@ -71,7 +71,7 @@ class Visitante(models.Model):
     #nombre = models.CharField(max_length=100)
     #correo_electronico = models.EmailField(unique=True)
     edad = models.IntegerField(null=True)
-    fecha_visita = models.DateField()
+    fecha_visita = models.DateField(null=True, blank=True)
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="visitantes")  # ManyToOne con Museo
 
 class Entrada(models.Model):
@@ -132,4 +132,3 @@ class Visita(models.Model):
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE)
     fecha_visita = models.DateTimeField(default=timezone.now, blank=True)  
     duracion = models.DurationField(blank=True, null=True) 
-

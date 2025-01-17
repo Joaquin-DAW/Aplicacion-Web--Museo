@@ -622,11 +622,11 @@ class RegistroForm(UserCreationForm):
                 (Usuario.VISITANTE, 'visitante'),
                 (Usuario.RESPONSABLE, 'responsable'),
             )  
-    ciudad = forms.CharField(required=False) 
     rol = forms.ChoiceField(choices=roles)  
+    museo = forms.ModelChoiceField(queryset=Museo.objects.all(), required=False, empty_label="Selecciona un museo")
     class Meta:
         model = Usuario
-        fields = ('username', 'email', 'password1', 'password2','rol')
+        fields = ('username', 'email', 'password1', 'password2', 'rol', 'museo')
         
 class VisitaForm(forms.ModelForm):
     class Meta:

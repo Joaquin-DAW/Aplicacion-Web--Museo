@@ -1,0 +1,9 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ visita.museo.nombre|capfirst }}</h5>
+        <p class="card-text">
+            Fecha Visita: {{ visita.fecha_visita|date:"d-m-Y H:i" }}<br>
+            Duración: {{ visita.duracion }}
+        </p>
+    </div>
+</div>

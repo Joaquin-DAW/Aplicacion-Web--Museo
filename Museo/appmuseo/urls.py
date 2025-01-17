@@ -64,4 +64,5 @@ urlpatterns = [
     
     path('registrar',views.registrar_usuario,name='registrar_usuario'),
     path('visita/crear',views.visita_crear,name='visita_crear'),
+    path('visita/listar/<int:usuario_id>', views.visita_lista_usuario, name='visita_lista_usuario'),
 ]
