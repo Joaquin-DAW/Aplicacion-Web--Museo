@@ -117,7 +117,7 @@
           <ul class="dropdown-menu" aria-labelledby="visitaDropdown">
             {% if request.user.is_authenticated %}
               <li>
-                <a class="dropdown-item" href="{% url 'visita_lista_usuarios' request.user.id %}">Ver Mis Visitas</a>
+                <a class="dropdown-item" href="{% url 'visita_lista_usuario' request.user.id %}">Ver Mis Visitas</a>
               </li>
             {% endif %}
               <li>

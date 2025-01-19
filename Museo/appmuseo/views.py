@@ -746,6 +746,7 @@ def visita_guiada_eliminar(request, visita_guiada_id):
         
     return redirect('listar_visitas_guiadas')
 
+
 #Usuarios y Sesiones
 
 def registrar_usuario(request):
@@ -754,10 +755,15 @@ def registrar_usuario(request):
         if formulario.is_valid():
             user = formulario.save()
             rol = int(formulario.cleaned_data.get('rol'))
+            museo = formulario.cleaned_data.get('museo')
             if(rol == Usuario.VISITANTE):
-                visitante = Visitante.objects.create( usuario = user)
+                grupo = Group.objects.get(name='Visitantes')
+                grupo.user_set.add(user)
+                visitante = Visitante.objects.create( usuario = user, museo=museo)
                 visitante.save()
             elif(rol == Usuario.RESPONSABLE):
+                grupo = Group.objects.get(name='Responsables')
+                grupo.user_set.add(user)
                 responsable = Responsable.objects.create(usuario = user)
                 responsable.save()
             
@@ -767,9 +773,9 @@ def registrar_usuario(request):
         formulario = RegistroForm()
     return render(request, 'registration/signup.html', {'formulario': formulario})
 
+
+
 @permission_required('appmuseo.add_visita')
-
-
 def visita_crear(request):
     if request.method == 'POST':
         formulario = VisitaForm(request.POST)
@@ -777,16 +783,18 @@ def visita_crear(request):
             visita = formulario.save(commit=False)  # Crear la instancia sin guardarla en la base de datos todavía
             visita.visitante = Visitante.objects.get(usuario=request.user)  # Asociar el visitante actual
             visita.save()  # Guardar la visita con todos los datos
-            return redirect('visita_lista_usuarios',usuario_id=request.user.visitante.id)  # Redirige a la página principal o a otra página
+            return redirect('visita_lista_usuario',usuario_id=request.user.visitante.id)  # Redirige a la página principal o a otra página
     else:
         formulario = VisitaForm()
 
     return render(request, 'visita/create.html', {'form': formulario})
 
-@permission_required('appmuseo.add_visita')
+
+
+
 
 def visita_lista_usuario(request, usuario_id):
-    visitante = Visitante.objects.filter(id=usuario_id).get()
+    visitante = Visitante.objects.get(id=usuario_id).get()
     visitas = Visita.objects.select_related("museo")
     visitas = visitas.filter(visitante=visitante.id).all()
     return render(request, 'visita/lista.html', {"visitas_mostrar": visitas, "visitante": visitante})

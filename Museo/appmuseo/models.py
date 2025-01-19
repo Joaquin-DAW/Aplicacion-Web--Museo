@@ -74,6 +74,9 @@ class Visitante(models.Model):
     fecha_visita = models.DateField(null=True, blank=True)
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="visitantes")  # ManyToOne con Museo
 
+    def __str__(self):
+        return self.usuario.get_full_name() or self.usuario.username
+
 class Entrada(models.Model):
     codigo = models.CharField(max_length=10, unique=True)
     precio = models.DecimalField(max_digits=6, decimal_places=2)
