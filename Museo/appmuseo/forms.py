@@ -628,22 +628,20 @@ class RegistroForm(UserCreationForm):
         model = Usuario
         fields = ('username', 'email', 'password1', 'password2', 'rol', 'museo')
         
-class VisitaForm(forms.ModelForm):
+class EntradaForm(forms.ModelForm):
     class Meta:
         model = Visita
-        fields = ['museo', 'fecha_visita', 'duracion']  # Campos que deseas incluir en el formulario
+        fields = ['museo', 'fecha_visita', 'duracion']  
         widgets = {
             'fecha_visita': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'duracion': forms.TextInput(attrs={'placeholder': 'Ejemplo: 2:30 para 2 horas y 30 minutos'}),
         }
         labels = {
             'fecha_visita': 'Fecha y hora de la visita',
-            'duracion': 'Duración de la visita',
         }
         
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
-        super(VisitaForm, self).__init__(*args, **kwargs)
+        super(EntradaForm, self).__init__(*args, **kwargs)
 
         if self.request and self.request.user.is_authenticated:
             visitante = getattr(self.request.user, 'visitante', None)

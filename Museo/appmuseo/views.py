@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
-
+from django.contrib.auth.decorators import login_required #Esto garantizará que cualquier usuario que haya iniciado sesión pueda acceder a la vista, independientemente de los permisos o grupos a los que pertenezca.
 from datetime import datetime
 
 #Index donde podremos acceder a todas las URLs.
@@ -123,12 +123,15 @@ def visitantes_menor_media(request):
 #Aqui vamos a crear lo que corresponda a los formularios.
 
 #Creación de museo.
+@permission_required('appmuseo.add_museo')
 def museo_create(request):
     if request.method == "POST":
         formulario = MuseoModelForm(request.POST)
         if formulario.is_valid():
             try:
                 # Guarda el museo en la base de datos
+                museo = formulario.save(commit=False)
+                museo.creado_por = request.user  # Asignar el usuario actual
                 formulario.save()
                 messages.success(request, "El museo se ha creado correctamente.")
                 return redirect("listar_museos")
@@ -140,6 +143,7 @@ def museo_create(request):
     return render(request, 'museo/create.html',{"formulario":formulario}) 
 
 #Busqueda avanzada de museo.
+@login_required
 def museo_buscar_avanzado(request):
 
     if len(request.GET) > 0:
@@ -186,6 +190,7 @@ def museo_buscar_avanzado(request):
     return render(request, 'museo/busqueda_avanzada.html', {"formulario": formulario})
 
 #Editar de museo.
+@permission_required('appmuseo.change_museo')
 def museo_editar(request,museo_id):
     museo = Museo.objects.get(id=museo_id)
     
@@ -210,6 +215,7 @@ def museo_editar(request,museo_id):
     return render(request, 'museo/actualizar.html',{"formulario":formulario,"museo":museo})
 
 #Eliminar de museo.
+@permission_required('appmuseo.delete_museo')
 def museo_eliminar(request,museo_id):
     museo = Museo.objects.get(id=museo_id)
     try:
@@ -222,12 +228,15 @@ def museo_eliminar(request,museo_id):
 
 
 #Creación de exposición.
+@permission_required('appmuseo.add_exposicion')
 def exposicion_create(request):
     if request.method == "POST":
         formulario = ExposicionModelForm(request.POST)
         if formulario.is_valid():
             try:
                 # Guarda la exposición en la base de datos
+                exposicion = formulario.save(commit=False)
+                exposicion.creado_por = request.user  # Asignar el usuario actual
                 formulario.save()
                 messages.success(request, "La exposición se ha creado correctamente.")
                 return redirect("listar_exposiciones")
@@ -239,6 +248,7 @@ def exposicion_create(request):
     return render(request, 'exposicion/create.html',{"formulario":formulario}) 
 
 #Busqueda avanzada de exposición
+@login_required
 def exposicion_buscar_avanzado(request):
     if len(request.GET) > 0:
         formulario = BusquedaAvanzadaExposicionForm(request.GET)
@@ -288,6 +298,7 @@ def exposicion_buscar_avanzado(request):
 
 
 #Editar de exposición.
+@permission_required('appmuseo.change_exposicion')
 def exposicion_editar(request, exposicion_id):
     exposicion = Exposicion.objects.get(id=exposicion_id)
     
@@ -310,6 +321,7 @@ def exposicion_editar(request, exposicion_id):
     return render(request, 'exposicion/actualizar.html', {"formulario": formulario, "exposicion": exposicion})
 
 #Eliminar de Exposición
+@permission_required('appmuseo.delete_exposicion')
 def exposicion_eliminar(request, exposicion_id):
     exposicion = Exposicion.objects.get(id=exposicion_id)
     
@@ -323,12 +335,15 @@ def exposicion_eliminar(request, exposicion_id):
     return redirect('listar_exposiciones')
 
 # Creación de artista.
+@permission_required('appmuseo.add_artista')  
 def artista_create(request):
     if request.method == "POST":
         formulario = ArtistaModelForm(request.POST)
         if formulario.is_valid():
             try:
                 # Guarda el artista en la base de datos
+                artista = formulario.save(commit=False)
+                artista.creado_por = request.user  # Asignar el usuario actual
                 formulario.save()
                 messages.success(request, "El artista se ha creado correctamente.")
                 return redirect("listar_artistas")
@@ -342,6 +357,7 @@ def artista_create(request):
     return render(request, 'artista/create.html', {"formulario": formulario})
 
 # Búsqueda avanzada de artista
+@login_required
 def artista_buscar_avanzado(request):
     if len(request.GET) > 0:
         formulario = BusquedaAvanzadaArtistaForm(request.GET)
@@ -393,6 +409,7 @@ def artista_buscar_avanzado(request):
 
 
 # Editar Artista
+@permission_required('appmuseo.change_artista')  
 def artista_editar(request, artista_id):
     artista = Artista.objects.get(id=artista_id)
     
@@ -415,6 +432,7 @@ def artista_editar(request, artista_id):
     return render(request, 'artista/actualizar.html', {"formulario": formulario, "artista": artista})
 
 # Eliminar Artista
+@permission_required('appmuseo.delete_artista')
 def artista_eliminar(request, artista_id):
     artista = Artista.objects.get(id=artista_id)
     
@@ -428,11 +446,14 @@ def artista_eliminar(request, artista_id):
     return redirect('listar_artistas')
 
 # Creación de obra
+@permission_required('appmuseo.add_obra')
 def obra_create(request):
     if request.method == "POST":
         formulario = ObraModelForm(request.POST, request.FILES)
         if formulario.is_valid():
             try:
+                obra = formulario.save(commit=False)
+                obra.creado_por = request.user  # Asignar el usuario actual
                 formulario.save()
                 messages.success(request, "La obra se ha creado correctamente.")
                 return redirect("listar_obras")  # Cambia esto al nombre de tu lista de obras
@@ -445,6 +466,7 @@ def obra_create(request):
     return render(request, 'obra/create.html', {"formulario": formulario})
 
 # Busqueda avanzada de obra
+@login_required
 def obra_buscar_avanzado(request):
     if len(request.GET) > 0:
         formulario = BusquedaAvanzadaObraForm(request.GET)
@@ -501,6 +523,7 @@ def obra_buscar_avanzado(request):
 
 
 # Editar de obra
+@permission_required('appmuseo.change_obra')
 def obra_editar(request, obra_id):
     obra = Obra.objects.get(id=obra_id)  # Obtenemos la obra con el id proporcionado
 
@@ -525,6 +548,7 @@ def obra_editar(request, obra_id):
     return render(request, 'obra/actualizar.html', {"formulario": formulario, "obra": obra})
 
 # Eliminar de obra
+@permission_required('appmuseo.delete_obra')
 def obra_eliminar(request, obra_id):
     obra = Obra.objects.get(id=obra_id)  # Obtenemos la obra con el id proporcionado
 
@@ -538,6 +562,7 @@ def obra_eliminar(request, obra_id):
     return redirect('listar_obras')  # Redirigimos a la lista de obras después de eliminar
 
 # Creación de guía
+@permission_required('appmuseo.add_guia')
 def guia_create(request):
     if request.method == "POST":
         formulario = GuiaModelForm(request.POST)
@@ -547,6 +572,7 @@ def guia_create(request):
                 disponibilidad = formulario.cleaned_data.get('disponibilidad')
                 guia = formulario.save(commit=False)
                 guia.disponibilidad = disponibilidad == 'Disponible'  
+                guia.creado_por = request.user  # Asignar el usuario actual
                 guia.save() 
                 messages.success(request, "El guía se ha creado correctamente.")
                 return redirect("listar_guias")
@@ -560,6 +586,7 @@ def guia_create(request):
     return render(request, 'guia/create.html', {"formulario": formulario})
 
 # Búsqueda avanzada de guía
+@login_required
 def guia_buscar_avanzado(request):
     if len(request.GET) > 0:
         formulario = BusquedaAvanzadaGuiaForm(request.GET)
@@ -611,6 +638,7 @@ def guia_buscar_avanzado(request):
     return render(request, 'guia/busqueda_avanzada.html', {"formulario": formulario})
 
 # Editar Guía
+@permission_required('appmuseo.change_guia')
 def guia_editar(request, guia_id):
     guia = Obra.objects.get(id=guia_id)
     
@@ -633,6 +661,7 @@ def guia_editar(request, guia_id):
     return render(request, 'guia/actualizar.html', {"formulario": formulario, "guia": guia})
 
 # Eliminar Guía
+@permission_required('appmuseo.delete_guia')
 def guia_eliminar(request, guia_id):
     guia = Guia.objects.get(id=guia_id)
 
@@ -647,12 +676,14 @@ def guia_eliminar(request, guia_id):
 
 
 # Crear de visita guiada
+@permission_required('appmuseo.add_visita_guiada')
 def visita_guiada_create(request):
     if request.method == "POST":
         formulario = VisitaGuiadaModelForm(request.POST)
         if formulario.is_valid():
             try:
                 visita_guiada = formulario.save(commit=False)
+                visita_guiada.creado_por = request.user  # Asignar el usuario actual
                 visita_guiada.save()
                 messages.success(request, "La visita guiada se ha creado correctamente.")
                 return redirect("listar_visitas_guiadas")  # Cambiar según la URL correspondiente
@@ -666,6 +697,7 @@ def visita_guiada_create(request):
     return render(request, 'visita_guiada/create.html', {"formulario": formulario})
 
 # Búsqueda avanzada de visita guiada
+@login_required
 def visita_guiada_buscar_avanzado(request):
     if len(request.GET) > 0:
         formulario = BusquedaAvanzadaVisitaGuiadaForm(request.GET)
@@ -711,6 +743,7 @@ def visita_guiada_buscar_avanzado(request):
 
 
 # Editar de visita guiada
+@permission_required('appmuseo.change_visita_guiada')
 def visita_guiada_editar(request, visita_guiada_id):
     visita_guiada = VisitaGuiada.objects.get(id=visita_guiada_id)
     
@@ -734,6 +767,7 @@ def visita_guiada_editar(request, visita_guiada_id):
 
 
 #Eliminar de visita guiada
+@permission_required('appmuseo.delete_visita_guiada')
 def visita_guiada_eliminar(request, visita_guiada_id):
     visita_guiada = VisitaGuiada.objects.get(id=visita_guiada_id)
     
@@ -766,35 +800,49 @@ def registrar_usuario(request):
                 grupo.user_set.add(user)
                 responsable = Responsable.objects.create(usuario = user)
                 responsable.save()
+                
+                login(request, user)
+                        
+                    # Guardar variables en la sesión
+                request.session["nombre_usuario"] = user.username
+                request.session["rol"] = "visitante" if rol == Usuario.VISITANTE else "responsable"
+
+                    # Obtener número de usuario
+                request.session["numero_usuario"] = user.id
+                    
+                    # Obtener rol
+                if hasattr(user, "visitante"):
+                    request.session["rol"] = "visitante"
+                elif hasattr(user, "responsable"):
+                    request.session["rol"] = "responsable"
+                else:
+                    request.session["rol"] = "administrador"
             
-            login(request, user)
-            return redirect('index')
+        return redirect('index')
     else:
         formulario = RegistroForm()
     return render(request, 'registration/signup.html', {'formulario': formulario})
 
 
 
-@permission_required('appmuseo.add_visita')
-def visita_crear(request):
+@permission_required('appmuseo.add_entrada')  
+def entrada_crear(request):
     if request.method == 'POST':
-        formulario = VisitaForm(request.POST)
-        if formulario.is_valid():
-            visita = formulario.save(commit=False)  # Crear la instancia sin guardarla en la base de datos todavía
-            visita.visitante = Visitante.objects.get(usuario=request.user)  # Asociar el visitante actual
-            visita.save()  # Guardar la visita con todos los datos
-            return redirect('visita_lista_usuario',usuario_id=request.user.visitante.id)  # Redirige a la página principal o a otra página
+        form = EntradaForm(request.POST)
+        if form.is_valid():
+            entrada = form.save(commit=False)
+            entrada.visitante = Visitante.objects.get(usuario=request.user)
+            entrada.save()
+
+            return redirect('visita_lista_usuario', usuario_id=request.user.visitante.id)
     else:
-        formulario = VisitaForm()
+        form = EntradaForm()
+    return render(request, 'visita/create.html', {'form': form})
 
-    return render(request, 'visita/create.html', {'form': formulario})
-
-
-
-
-
+@permission_required('appmuseo.view_visita') 
 def visita_lista_usuario(request, usuario_id):
-    visitante = Visitante.objects.get(id=usuario_id).get()
+    usuario = Usuario.objects.get(id=usuario_id)
+    visitante = Visitante.objects.get(usuario=usuario)
     visitas = Visita.objects.select_related("museo")
     visitas = visitas.filter(visitante=visitante.id).all()
     return render(request, 'visita/lista.html', {"visitas_mostrar": visitas, "visitante": visitante})

@@ -29,6 +29,7 @@ class Museo(models.Model):
     fecha_fundacion = models.DateField(null=True, help_text="Fecha en que se fundo el museo")
                                                                                             #"help_text" aparece un mensaje de ayuda en la interfaz de Djanho o en los formularios, se usa para guiar o dar más información al usuario
     descripcion = models.TextField(blank=True)
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
         # Este método define cómo se representa el objeto Museo como texto. Por defecto nos muestra un mensaje asi "Museo Object (id), pero podemos sobrescribirlo para cambiar el mensaje que nos devuelve"
@@ -42,7 +43,8 @@ class Exposicion(models.Model):
     descripcion = models.TextField(blank=True, null=True, default="")
     capacidad = models.IntegerField(default=60)                                              #"default" nos permite dar un valor por defecto al campo en caso de que no se proporcione ninguno
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="exposiciones")  # ManyToOne con Museo
-
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
+    
     def __str__(self):
         return self.titulo
 
@@ -51,7 +53,8 @@ class Artista(models.Model):
     fecha_nacimiento = models.DateField(blank=True, null=True)
     biografia = models.TextField()
     nacionalidad = models.CharField(max_length=50, choices=[('espanola', 'Española'), ('italiana', 'Italiana')], blank=True)
-
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
+    
     def __str__(self):
         # Este método define cómo se representa el objeto Museo como texto. Por defecto nos muestra un mensaje asi "Museo Object (id), pero podemos sobrescribirlo para cambiar el mensaje que nos devuelve"
         return self.nombre_completo
@@ -64,6 +67,7 @@ class Obra(models.Model):
     imagen = models.ImageField(upload_to='obras', blank=True, null=True)                   #"upload_to" nos permite especificar donde se almacenara los archivos subidos de un tipo ImageField o FileField  
     exposicion = models.ForeignKey(Exposicion, on_delete=models.CASCADE, related_name="obras_exposicion")  # ManyToOne con Exposicion
     artista = models.ForeignKey(Artista, on_delete=models.CASCADE, related_name="obras_artista")        # ManyToOne con Artista
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Visitante(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete = models.CASCADE, null=True)
@@ -83,6 +87,7 @@ class Entrada(models.Model):
     tipo = models.CharField(max_length=50, choices=[('adulto', 'Adulto'), ('nino', 'Niño')])
     fecha_compra = models.DateField(auto_now_add=True)                                      #"auto_now_add" permite establecer la fecha y hora del momento en el que se crea el registro automáticamente
     visitante = models.OneToOneField(Visitante, on_delete=models.CASCADE, related_name="entradas")  # OneToOne con Visitante
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Tienda(models.Model):
     nombre = models.CharField(max_length=100)
@@ -90,6 +95,7 @@ class Tienda(models.Model):
     horario_apertura = models.TimeField()
     horario_cierre = models.TimeField()
     museo = models.OneToOneField(Museo, on_delete=models.CASCADE, related_name="tienda")  # OneToOne con Museo
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
@@ -97,6 +103,7 @@ class Producto(models.Model):
     precio = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     stock = models.IntegerField(default=0)
     tiendas = models.ManyToManyField(Tienda, through='Inventario', related_name="productos_tienda")  # ManyToMany con Tienda a través de Inventario
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Inventario(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="inventario_producto")
@@ -105,6 +112,7 @@ class Inventario(models.Model):
     fecha_ultima_venta = models.DateField(blank=True, null=True)
     stock_inicial = models.IntegerField(default=100)
     ubicacion_almacen = models.CharField(max_length=100, blank=True)
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Guia(models.Model):
     nombre = models.CharField(max_length=100)
@@ -112,6 +120,7 @@ class Guia(models.Model):
     especialidad = models.CharField(max_length=100, blank=True, null=True)
     disponibilidad = models.BooleanField(default=True)
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="guias")  # ManyToOne con Museo
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
         return self.nombre
@@ -123,6 +132,7 @@ class VisitaGuiada(models.Model):
     idioma = models.CharField(max_length=100, choices=[('espanol', 'Español'), ('ingles', 'Inglés')], default='espanol')
     guias = models.ManyToManyField(Guia, related_name="visita_guiada_guia")  # ManyToMany con Guia
     visitantes = models.ManyToManyField(Visitante, related_name="visita_guiada_visitante")  # ManyToMany con Visitante
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
     # Convertir la duración a horas con decimales
@@ -135,3 +145,4 @@ class Visita(models.Model):
     museo = models.ForeignKey(Museo, on_delete=models.CASCADE)
     fecha_visita = models.DateTimeField(default=timezone.now, blank=True)  
     duracion = models.DurationField(blank=True, null=True) 
+    creado_por = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)

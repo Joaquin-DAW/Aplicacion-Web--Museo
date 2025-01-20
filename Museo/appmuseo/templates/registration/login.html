@@ -8,5 +8,8 @@
     {% bootstrap_form form %}         
 
     {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
+
+    <!-- Enlace para la recuperación de contraseña -->
+    <p><a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a></p>
 </form>
 {% endblock %}

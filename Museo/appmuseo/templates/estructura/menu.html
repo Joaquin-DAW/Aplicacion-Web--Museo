@@ -3,14 +3,12 @@
     <a class="navbar-brand" href="#">Museo Online</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <p>
-        Fecha Inicio:
-        </br>
-        {{ request.session.fecha_inicio}}
-    </p>
     {% if request.user.is_authenticated %}
     <p>
-        Nombre Usuario: {{ request.user }}
+        Nombre de usuario: {{ request.user }}<br>
+        Fecha Inicio: {{ request.session.fecha_inicio}}
+        Rol: {{ request.session.rol }} <br>
+        Número de usuario: {{ request.session.numero_usuario }}
     </p>
     {% endif %}
       <ul class="navbar-nav">
@@ -113,7 +111,7 @@
 
         <!-- Grupo para Visitas -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="visitaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visitas</a>
+          <a class="nav-link dropdown-toggle" href="#" id="visitaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Entradas</a>
           <ul class="dropdown-menu" aria-labelledby="visitaDropdown">
             {% if request.user.is_authenticated %}
               <li>
@@ -121,7 +119,7 @@
               </li>
             {% endif %}
               <li>
-                <a class="dropdown-item" href="{% url 'visita_crear' %}">Crear Visita</a>
+                <a class="dropdown-item" href="{% url 'entrada_crear' %}">Comprar entrada</a>
               </li>
           </ul>
         </li>

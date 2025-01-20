@@ -1,7 +1,7 @@
 {% extends "principal.html" %}
 
 {% block contenido %}
-<form action="{% url 'visita_crear' %}" method="post">
+<form action="{% url 'entrada_crear' %}" method="post">
     {% csrf_token %}
     {% load django_bootstrap5 %}
     <div class="mb-4">
