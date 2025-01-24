@@ -7,6 +7,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required #Esto garantizará que cualquier usuario que haya iniciado sesión pueda acceder a la vista, independientemente de los permisos o grupos a los que pertenezca.
+
 from datetime import datetime
 
 #Index donde podremos acceder a todas las URLs.
