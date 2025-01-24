@@ -1,0 +1,1447 @@
+[
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2025-01-21T08:33:07.488Z",
+        "user": 2,
+        "content_type": 3,
+        "object_id": "1",
+        "object_repr": "Visitantes",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2025-01-21T08:33:14.185Z",
+        "user": 2,
+        "content_type": 3,
+        "object_id": "2",
+        "object_repr": "Responsables",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2025-01-21T08:33:58.308Z",
+        "user": 2,
+        "content_type": 3,
+        "object_id": "2",
+        "object_repr": "Responsables",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Permissions\"]}}]"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 1,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 2,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 2,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 2,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 2,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 3,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 3,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 3,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 3,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 4,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 4,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 4,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 4,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 5,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 5,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 5,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 5,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 6,
+        "codename": "add_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 6,
+        "codename": "change_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 6,
+        "codename": "delete_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 6,
+        "codename": "view_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add artista",
+        "content_type": 7,
+        "codename": "add_artista"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change artista",
+        "content_type": 7,
+        "codename": "change_artista"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete artista",
+        "content_type": 7,
+        "codename": "delete_artista"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can view artista",
+        "content_type": 7,
+        "codename": "view_artista"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can add museo",
+        "content_type": 8,
+        "codename": "add_museo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can change museo",
+        "content_type": 8,
+        "codename": "change_museo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can delete museo",
+        "content_type": 8,
+        "codename": "delete_museo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can view museo",
+        "content_type": 8,
+        "codename": "view_museo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add guia",
+        "content_type": 9,
+        "codename": "add_guia"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change guia",
+        "content_type": 9,
+        "codename": "change_guia"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete guia",
+        "content_type": 9,
+        "codename": "delete_guia"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view guia",
+        "content_type": 9,
+        "codename": "view_guia"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Can add exposicion",
+        "content_type": 10,
+        "codename": "add_exposicion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Can change exposicion",
+        "content_type": 10,
+        "codename": "change_exposicion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+        "name": "Can delete exposicion",
+        "content_type": 10,
+        "codename": "delete_exposicion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+        "name": "Can view exposicion",
+        "content_type": 10,
+        "codename": "view_exposicion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can add obra",
+        "content_type": 11,
+        "codename": "add_obra"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can change obra",
+        "content_type": 11,
+        "codename": "change_obra"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can delete obra",
+        "content_type": 11,
+        "codename": "delete_obra"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can view obra",
+        "content_type": 11,
+        "codename": "view_obra"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can add producto",
+        "content_type": 12,
+        "codename": "add_producto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can change producto",
+        "content_type": 12,
+        "codename": "change_producto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can delete producto",
+        "content_type": 12,
+        "codename": "delete_producto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+        "name": "Can view producto",
+        "content_type": 12,
+        "codename": "view_producto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+        "name": "Can add inventario",
+        "content_type": 13,
+        "codename": "add_inventario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+        "name": "Can change inventario",
+        "content_type": 13,
+        "codename": "change_inventario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+        "name": "Can delete inventario",
+        "content_type": 13,
+        "codename": "delete_inventario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+        "name": "Can view inventario",
+        "content_type": 13,
+        "codename": "view_inventario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+        "name": "Can add responsable",
+        "content_type": 14,
+        "codename": "add_responsable"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+        "name": "Can change responsable",
+        "content_type": 14,
+        "codename": "change_responsable"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+        "name": "Can delete responsable",
+        "content_type": 14,
+        "codename": "delete_responsable"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+        "name": "Can view responsable",
+        "content_type": 14,
+        "codename": "view_responsable"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+        "name": "Can add tienda",
+        "content_type": 15,
+        "codename": "add_tienda"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+        "name": "Can change tienda",
+        "content_type": 15,
+        "codename": "change_tienda"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+        "name": "Can delete tienda",
+        "content_type": 15,
+        "codename": "delete_tienda"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+        "name": "Can view tienda",
+        "content_type": 15,
+        "codename": "view_tienda"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+        "name": "Can add visitante",
+        "content_type": 16,
+        "codename": "add_visitante"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+        "name": "Can change visitante",
+        "content_type": 16,
+        "codename": "change_visitante"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+        "name": "Can delete visitante",
+        "content_type": 16,
+        "codename": "delete_visitante"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+        "name": "Can view visitante",
+        "content_type": 16,
+        "codename": "view_visitante"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+        "name": "Can add visita guiada",
+        "content_type": 17,
+        "codename": "add_visitaguiada"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+        "name": "Can change visita guiada",
+        "content_type": 17,
+        "codename": "change_visitaguiada"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+        "name": "Can delete visita guiada",
+        "content_type": 17,
+        "codename": "delete_visitaguiada"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+        "name": "Can view visita guiada",
+        "content_type": 17,
+        "codename": "view_visitaguiada"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+        "name": "Can add visita",
+        "content_type": 18,
+        "codename": "add_visita"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+        "name": "Can change visita",
+        "content_type": 18,
+        "codename": "change_visita"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+        "name": "Can delete visita",
+        "content_type": 18,
+        "codename": "delete_visita"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+        "name": "Can view visita",
+        "content_type": 18,
+        "codename": "view_visita"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+        "name": "Can add entrada",
+        "content_type": 19,
+        "codename": "add_entrada"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+        "name": "Can change entrada",
+        "content_type": 19,
+        "codename": "change_entrada"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+        "name": "Can delete entrada",
+        "content_type": 19,
+        "codename": "delete_entrada"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+        "name": "Can view entrada",
+        "content_type": 19,
+        "codename": "view_entrada"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+        "name": "Can add application",
+        "content_type": 20,
+        "codename": "add_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+        "name": "Can change application",
+        "content_type": 20,
+        "codename": "change_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+        "name": "Can delete application",
+        "content_type": 20,
+        "codename": "delete_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+        "name": "Can view application",
+        "content_type": 20,
+        "codename": "view_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+        "name": "Can add access token",
+        "content_type": 21,
+        "codename": "add_accesstoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+        "name": "Can change access token",
+        "content_type": 21,
+        "codename": "change_accesstoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+        "name": "Can delete access token",
+        "content_type": 21,
+        "codename": "delete_accesstoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+        "name": "Can view access token",
+        "content_type": 21,
+        "codename": "view_accesstoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+        "name": "Can add grant",
+        "content_type": 22,
+        "codename": "add_grant"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+        "name": "Can change grant",
+        "content_type": 22,
+        "codename": "change_grant"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+        "name": "Can delete grant",
+        "content_type": 22,
+        "codename": "delete_grant"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+        "name": "Can view grant",
+        "content_type": 22,
+        "codename": "view_grant"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+        "name": "Can add refresh token",
+        "content_type": 23,
+        "codename": "add_refreshtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+        "name": "Can change refresh token",
+        "content_type": 23,
+        "codename": "change_refreshtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+        "name": "Can delete refresh token",
+        "content_type": 23,
+        "codename": "delete_refreshtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+        "name": "Can view refresh token",
+        "content_type": 23,
+        "codename": "view_refreshtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 93,
+    "fields": {
+        "name": "Can add id token",
+        "content_type": 24,
+        "codename": "add_idtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 94,
+    "fields": {
+        "name": "Can change id token",
+        "content_type": 24,
+        "codename": "change_idtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 95,
+    "fields": {
+        "name": "Can delete id token",
+        "content_type": 24,
+        "codename": "delete_idtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 96,
+    "fields": {
+        "name": "Can view id token",
+        "content_type": 24,
+        "codename": "view_idtoken"
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+        "name": "Visitantes",
+        "permissions": []
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+        "name": "Responsables",
+        "permissions": [
+            29,
+            30,
+            31
+        ]
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "usuario"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "artista"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "museo"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "guia"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "exposicion"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "obra"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "producto"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "inventario"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "responsable"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "tienda"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "visitante"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "visitaguiada"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "visita"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+        "app_label": "appmuseo",
+        "model": "entrada"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "application"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "accesstoken"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "grant"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "refreshtoken"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 24,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "idtoken"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "bhtntjeeh0287p3se53vchdv7jc64zq7",
+    "fields": {
+        "session_data": ".eJxVjDsOwyAQRK8SUUeYbwCX6XMGtF7WgSQCyZ8qyt1jS24sTTXvzXzZSJghllqwNNYzpTshOyWUvQjfG8-uLMK65LjONMWSduXcDYBvqjtIL6jPxrHVZSoD3xV-0Jk_WqLP_XBPBxnmvK0lagwKcXSkk3boIQmCYHXQ4oaUCM0wkgannCRnnBQWvRFWSXRhC_v9AaXsQOM:1tas0F:Qh_LCrPszOMem0LganWroC-PtQb9Nl7qbcuQQh4qvPE",
+        "expire_date": "2025-02-06T07:51:51.251Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "n1kidamkdul57ixzxa6ny5evvpwi5g9e",
+    "fields": {
+        "session_data": ".eJxVjjsOwjAQRK-CXKPgX4hMSU_DBaK1d00MwUY2qRB3x0GRAu3MvKd5sR6m59BPhXIfkB2YYtvfzIK7UZwLvEK8pMal-MzBNvOkWdrSnBLSeFy2f4IBylBpo7VB3nbOYwfWKU9gkRtUUlhtpWidpj0iaTCeO4ROA3np95ykbzmIKo3pbjNV6wQ5pOo8U3mkWMCONL_OaaxhXsOZme6U08qoLfPkBuhDDO4rkWLHxU5y2W64OSjN3h8Un1tP:1ta9il:hAkNWpX4Bwlftmp4qdQhTDtr0yp3WEie0O03xtpDGtk",
+        "expire_date": "2025-02-04T08:34:51.899Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "urtsac971cl4yinf8mhgwq9csr2fn4h1",
+    "fields": {
+        "session_data": "eyJmZWNoYV9pbmljaW8iOiIyNC8wMS8yMDI1IDEzOjQ4In0:1tbJ77:eMha8Fe0jTzyuadkyzJ08Lt4X9xFayIHd8DJNV49Ycw",
+        "expire_date": "2025-02-07T12:48:45.472Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "x0vnj8kyefldttxet4tw11idw5ke3s15",
+    "fields": {
+        "session_data": "eyJmZWNoYV9pbmljaW8iOiIyNC8wMS8yMDI1IDEzOjIzIn0:1tbIic:-fZaxaI8_vjTwsmgJoAnowhuyzMs92Tp01eKd2TIhGI",
+        "expire_date": "2025-02-07T12:23:26.498Z"
+    }
+},
+{
+    "model": "appmuseo.usuario",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$LghFrsg8xKrA5CrQbNMv87$aNwhhweGjJCg8Kp90p4kQxec9V44TMfh39BNDE37hrk=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Responsable",
+        "first_name": "",
+        "last_name": "",
+        "email": "joaquin.cabezas.berjillos.al@iespoligonosur.org",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-01-21T08:29:10.025Z",
+        "rol": 3,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "appmuseo.usuario",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$7djcsc0o8Ix23ENZ1YTJ5t$KjyPiocfKFT9b8yoLtIAl+aaHwq3q6fGIvTKjLq0cUQ=",
+        "last_login": "2025-01-23T07:51:51.225Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-01-21T08:32:42.502Z",
+        "rol": 1,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "appmuseo.usuario",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$OSTOZlVBmxOv6jU8lRuTfU$LP4u+skJVGB4edOaQ9xd+3CQwIhhbVRu0h4OPwFzrFQ=",
+        "last_login": "2025-01-21T08:34:51.837Z",
+        "is_superuser": false,
+        "username": "Responsable3",
+        "first_name": "",
+        "last_name": "",
+        "email": "joaquin.cabezas.berjillos.al@iespoligonosur.org",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-01-21T08:34:51.348Z",
+        "rol": 3,
+        "groups": [
+            2
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "appmuseo.usuario",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$ICsyzS5XaPRg3ZsDLKypva$XuIriRbYgJfPjTtNS112ZloFNyKfrPs0FYyrI24E8VU=",
+        "last_login": "2025-01-24T12:48:31.551Z",
+        "is_superuser": false,
+        "username": "Joaquin",
+        "first_name": "",
+        "last_name": "",
+        "email": "joaquin.cabezas.berjillos.al@iespoligonosur.org",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-01-24T12:48:04.247Z",
+        "rol": 2,
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "appmuseo.responsable",
+    "pk": 1,
+    "fields": {
+        "usuario": 3
+    }
+},
+{
+    "model": "appmuseo.museo",
+    "pk": 1,
+    "fields": {
+        "nombre": "Prueba",
+        "ubicacion": "qefqexrhexccdfebxqebextbte",
+        "fecha_fundacion": "2025-01-01",
+        "descripcion": "asdfasfasfafasfasfsfasf",
+        "creado_por": 3
+    }
+},
+{
+    "model": "appmuseo.museo",
+    "pk": 2,
+    "fields": {
+        "nombre": "Practice story music worker again stuff produce candidate. Whole mind budget PM address this born.\nExecutive style politics get provide weight. Its husband discuss public. Onto according left.",
+        "ubicacion": "Instead end physical family. Yeah some who policy charge camera. Lead whatever open environment what.",
+        "fecha_fundacion": "2007-08-19",
+        "descripcion": "Care cause source pull. People likely receive stage. Student marriage kind maintain form work.\nDirector loss down. Firm avoid store side he artist. Edge magazine knowledge soon.",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.museo",
+    "pk": 3,
+    "fields": {
+        "nombre": "Listen box believe energy own late entire provide. Man reality within research reason.\nCollege by certain four do on remember. Last think available public data traditional.",
+        "ubicacion": "Right floor push grow strong fact hundred dog. Mother money address.",
+        "fecha_fundacion": "2013-02-19",
+        "descripcion": "Require author less. Image two cost major receive.\nEnd reduce beat company.\nThen ahead amount everyone. Draw hard organization mention science defense approach.",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.museo",
+    "pk": 4,
+    "fields": {
+        "nombre": "Support skin pick draw back author reason. Somebody catch citizen herself condition network choice. Skin else education parent lose social garden. Cold bill hundred community huge.",
+        "ubicacion": "Anything well institution wind. Adult job staff court. Politics particularly their culture common particularly however scene.\nDetail white easy rich without Democrat.",
+        "fecha_fundacion": "1988-01-28",
+        "descripcion": "We interesting former her truth score. Lawyer how woman far available environment.\nPhysical soldier also baby like. Morning a nation too reach support.",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.museo",
+    "pk": 5,
+    "fields": {
+        "nombre": "Effect seem season probably air. Buy include ever face read industry general. Blood apply fly fight government appear rather. Science anything operation between because within radio.",
+        "ubicacion": "Region field debate set evening. Pay reason husband unit responsibility major. Success expert high tell million.\nLawyer fire standard light Congress during safe. Article responsibility return find.",
+        "fecha_fundacion": "1976-09-17",
+        "descripcion": "Employee in use house street either. Treat significant lose attack network. Employee word civil land into.",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.museo",
+    "pk": 6,
+    "fields": {
+        "nombre": "Interview late instead continue sound radio. Organization reason wrong what maintain lot term.",
+        "ubicacion": "Ground relate grow value animal American prevent mission. Stuff enjoy drug decision candidate TV research. How their seek national main everyone example data.",
+        "fecha_fundacion": "2024-08-30",
+        "descripcion": "Others deep huge rich. Issue front writer any. Individual ready between.\nTravel religious night right idea.",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.artista",
+    "pk": 1,
+    "fields": {
+        "nombre_completo": "Grow if of. Trial each majority follow address. Woman seven much.",
+        "fecha_nacimiento": "2006-05-27",
+        "biografia": "Activity analysis medical despite item eight. Thank analysis reach time skin western pattern item.\nWord in shake building number.",
+        "nacionalidad": "italiana",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.artista",
+    "pk": 2,
+    "fields": {
+        "nombre_completo": "Draw pick on bed thought table often. Of nice take wonder year.",
+        "fecha_nacimiento": "2019-08-27",
+        "biografia": "Girl billion growth marriage level race fear. Late determine go hear.\nLeast race ball may inside hundred process. Eat go room option state claim hotel. Lay industry college whatever.",
+        "nacionalidad": "espanola",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.artista",
+    "pk": 3,
+    "fields": {
+        "nombre_completo": "Myself certainly small return administration. Trip education explain most walk tend six. Story prevent each close by.",
+        "fecha_nacimiento": "2013-01-31",
+        "biografia": "Cup at year newspaper fear. Capital next record.\nRequire few later friend certainly scientist house. Reduce any hand land. Amount activity brother partner tough cause continue message.",
+        "nacionalidad": "espanola",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.artista",
+    "pk": 4,
+    "fields": {
+        "nombre_completo": "Begin just help light be nice member. Number when smile evidence able collection.",
+        "fecha_nacimiento": "1970-05-26",
+        "biografia": "Information itself writer remain. Family local coach phone message six son. Minute stuff benefit score its hospital outside. Yard tough draw simple approach.",
+        "nacionalidad": "espanola",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.artista",
+    "pk": 5,
+    "fields": {
+        "nombre_completo": "Sport safe campaign go anyone without. Physical media bring there. Natural executive southern strategy view pick last.",
+        "fecha_nacimiento": "2016-09-15",
+        "biografia": "Movement student reduce heavy them hospital. Six kid nor cold popular effect avoid.\nMovie move hospital board. Very cup form follow gun security discover. Together heavy pretty within why.",
+        "nacionalidad": "espanola",
+        "creado_por": null
+    }
+},
+{
+    "model": "appmuseo.visitante",
+    "pk": 1,
+    "fields": {
+        "usuario": 4,
+        "edad": null,
+        "fecha_visita": null,
+        "museo": 1
+    }
+},
+{
+    "model": "oauth2_provider.application",
+    "pk": 1,
+    "fields": {
+        "client_id": "mi_aplicacion",
+        "user": 2,
+        "redirect_uris": "",
+        "post_logout_redirect_uris": "",
+        "client_type": "confidential",
+        "authorization_grant_type": "password",
+        "client_secret": "pbkdf2_sha256$870000$hJDABDDKQnb6Sn23IshhaQ$UhtA7XHwU58Gskulo11mFIzUM+gSL1PyWxcK22r0bGs=",
+        "hash_client_secret": true,
+        "name": "API museo",
+        "skip_authorization": false,
+        "created": "2025-01-23T11:17:00.523Z",
+        "updated": "2025-01-23T11:17:00.523Z",
+        "algorithm": "",
+        "allowed_origins": ""
+    }
+},
+{
+    "model": "oauth2_provider.accesstoken",
+    "pk": 1,
+    "fields": {
+        "user": 2,
+        "source_refresh_token": null,
+        "token": "1chZR0lKVhgnISRnDlVaWaqSevJuV5",
+        "token_checksum": "91d282d6531b3ed1d974c40f9b87b63e0ae9695d3123ee968c114b37a14f7b35",
+        "id_token": null,
+        "application": 1,
+        "expires": "2025-01-23T21:20:14.984Z",
+        "scope": "read write groups",
+        "created": "2025-01-23T11:20:14.985Z",
+        "updated": "2025-01-23T11:20:14.985Z"
+    }
+},
+{
+    "model": "oauth2_provider.accesstoken",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "source_refresh_token": null,
+        "token": "Tptiypl35obv48FlzLegD6dscLrvBC",
+        "token_checksum": "325442d8fee0f94931a5e5ab8c674257080cf340975e593e61f6980fe018048b",
+        "id_token": null,
+        "application": 1,
+        "expires": "2036-06-22T04:44:43.521Z",
+        "scope": "read write groups",
+        "created": "2025-01-24T12:44:43.522Z",
+        "updated": "2025-01-24T12:44:43.522Z"
+    }
+},
+{
+    "model": "oauth2_provider.refreshtoken",
+    "pk": 1,
+    "fields": {
+        "user": 2,
+        "token": "MDoXLlc6EhCfxo8aCM5NsdKxnPafgb",
+        "application": 1,
+        "access_token": 1,
+        "token_family": "f1300c59-6164-4fed-beae-38c950ad19d2",
+        "created": "2025-01-23T11:20:14.986Z",
+        "updated": "2025-01-23T11:20:14.986Z",
+        "revoked": null
+    }
+},
+{
+    "model": "oauth2_provider.refreshtoken",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "token": "KzmZdyJ7lqNWJlBe3XyjelyNyc6G1Y",
+        "application": 1,
+        "access_token": 2,
+        "token_family": "3c49e031-6a50-4188-9633-735376dd0924",
+        "created": "2025-01-24T12:44:43.523Z",
+        "updated": "2025-01-24T12:44:43.523Z",
+        "revoked": null
+    }
+}
+]
