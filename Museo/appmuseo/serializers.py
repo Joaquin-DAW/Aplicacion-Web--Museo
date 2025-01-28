@@ -28,6 +28,9 @@ class ArtistaSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class ObraSerializer(serializers.ModelSerializer):
+    artista = serializers.StringRelatedField()
+    exposicion = serializers.StringRelatedField()
+    
     class Meta:
         model = Obra
         fields = '__all__'
