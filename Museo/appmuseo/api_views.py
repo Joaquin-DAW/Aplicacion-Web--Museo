@@ -19,6 +19,18 @@ def obra_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def exposicion_list(request):
+    exposiciones = Exposicion.objects.select_related('museo').all()
+    serializer = ExposicionSerializer(exposiciones, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def entrada_list(request):
+    entradas = Entrada.objects.select_related('visitante').all()
+    serializer = EntradaSerializer(entradas, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def museo_buscar_avanzado_api(request):
     """
     Vista API para buscar museos avanzados.

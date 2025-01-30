@@ -22,9 +22,9 @@ class ExposicionSerializer(serializers.ModelSerializer):
         model = Exposicion
         fields = '__all__'
         
-class ArtistaSerializer(serializers.ModelSerializer):
+class EntradaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Artista
+        model = Entrada
         fields = '__all__'
         
 class ObraSerializer(serializers.ModelSerializer):
