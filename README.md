@@ -264,5 +264,17 @@ Ahora solo debemos aplicar un filtro a ese atributo de aggregate. Para ello usam
 
 
 
-Crear, actualizar y borrar por Post, leer por Get
-Orden para crear formularios: La url, el formulario, la vista y el template.
+USUARIOS API REST I
+
+Usuario administrador:
+   -Nombre:     admin
+   -Contraseña: admin
+
+Usuario con rol "responsable":
+   -Nombre:     Responsable1
+   -Contraseña: Password123
+
+Usuario con rol "visitante":
+   -Nombre:     Visitante2
+   -Contraseña: Password123
+
