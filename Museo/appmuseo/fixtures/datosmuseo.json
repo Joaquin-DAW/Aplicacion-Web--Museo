@@ -1,652 +1,587 @@
 [
-{
-    "model": "appmuseo.museo",
-    "pk": 1,
-    "fields": {
-        "nombre": "Museo de Arte Moderno",
-        "ubicacion": "Calle del Arte 45, Madrid, España",
-        "fecha_fundacion": "1973-06-05",
-        "descripcion": "Este museo alberga una amplia colección de obras modernas, desde esculturas abstractas hasta pinturas contemporáneas de artistas reconocidos y emergentes."
+    {
+        "model": "auth.group",
+        "pk": 1,
+        "fields": {
+            "name": "Visitantes",
+            "permissions": [
+                73,
+                74
+            ]
+        }
+      },
+      {
+        "model": "auth.group",
+        "pk": 2,
+        "fields": {
+            "name": "Responsables",
+            "permissions": [
+                25,
+                26,
+                27,
+                37,
+                38,
+                39,
+                33,
+                34,
+                35,
+                49,
+                50,
+                51,
+                29,
+                30,
+                31,
+                41,
+                42,
+                43,
+                45,
+                46,
+                47,
+                57,
+                58,
+                59,
+                65,
+                66,
+                67
+            ]
+        }
+      },
+    {
+        "model": "appmuseo.usuario",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$870000$UjmrYLX9GWYBp4qwOVlwyh$nT6WIFRc4BZrVG54ZQw5vk2I6EoGW2xrHDk9cQtGnyE=",
+            "last_login": "2025-02-02T19:28:13.500",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "email": "joaquin.cabezas.berjillos.al@iespoligonosur.org",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2025-02-02T19:24:26.577",
+            "rol": 1,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "appmuseo.usuario",
+        "pk": 2,
+        "fields": {
+            "password": "Password123",
+            "last_login": "2025-02-02T19:28:37",
+            "is_superuser": false,
+            "username": "Responsable1",
+            "first_name": "",
+            "last_name": "",
+            "email": "joaquin.cabezas.berjillos.al@iespoligonosur.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-02-02T19:28:22",
+            "rol": 3,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "appmuseo.usuario",
+        "pk": 3,
+        "fields": {
+            "password": "Password123",
+            "last_login": "2025-02-02T19:29:56",
+            "is_superuser": false,
+            "username": "Responsable2",
+            "first_name": "",
+            "last_name": "",
+            "email": "joaquin.cabezas.berjillos.al@iespoligonosur.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-02-02T19:29:46",
+            "rol": 3,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "appmuseo.usuario",
+        "pk": 4,
+        "fields": {
+            "password": "Password123",
+            "last_login": "2025-02-02T19:30:46",
+            "is_superuser": false,
+            "username": "Visitante1",
+            "first_name": "",
+            "last_name": "",
+            "email": "joaquin.cabezas.berjillos.al@iespoligonosur.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-02-02T19:30:24",
+            "rol": 2,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "appmuseo.usuario",
+        "pk": 5,
+        "fields": {
+            "password": "Password123",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "Visitante2",
+            "first_name": "",
+            "last_name": "",
+            "email": "joaquin.cabezas.berjillos.al@iespoligonosur.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-02-02T19:30:52",
+            "rol": 2,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "appmuseo.museo",
+        "pk": 1,
+        "fields": {
+            "nombre": "Museo de Arte Moderno",
+            "ubicacion": "Calle del Arte 45, Madrid, España",
+            "fecha_fundacion": "1973-06-05",
+            "descripcion": "Este museo alberga una amplia colección de obras modernas, desde esculturas abstractas hasta pinturas contemporáneas de artistas reconocidos y emergentes.",
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.exposicion",
+        "pk": 1,
+        "fields": {
+            "titulo": "Surrealismo en el Siglo XX",
+            "fecha_inicio": "2023-09-01",
+            "fecha_fin": "2024-01-15",
+            "descripcion": "Exposición dedicada al surrealismo con obras de artistas como Salvador Dalí y René Magritte. Incluye pinturas y esculturas representativas del movimiento.",
+            "capacidad": 80,
+            "museo": 1,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.exposicion",
+        "pk": 2,
+        "fields": {
+            "titulo": "Renacimiento Italiano",
+            "fecha_inicio": "2023-07-01",
+            "fecha_fin": "2023-12-30",
+            "descripcion": "Una muestra de las obras más representativas del Renacimiento, con autores como Leonardo da Vinci, Miguel Ángel y Rafael.",
+            "capacidad": 100,
+            "museo": 1,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.exposicion",
+        "pk": 3,
+        "fields": {
+            "titulo": "Expresionismo Abstracto",
+            "fecha_inicio": "2024-02-01",
+            "fecha_fin": "2024-06-15",
+            "descripcion": "Obras representativas del expresionismo abstracto, con artistas como Jackson Pollock y Mark Rothko.",
+            "capacidad": 70,
+            "museo": 1,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 1,
+        "fields": {
+            "titulo": "La persistencia de la memoria",
+            "fecha_creacion": "1931-04-01",
+            "tipo": "pintura",
+            "imagen": "obras/persistencia_memoria.jpg",
+            "exposicion": 1,
+            "artista": 1,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 2,
+        "fields": {
+            "titulo": "El rostro de la guerra",
+            "fecha_creacion": "1940-01-01",
+            "tipo": "pintura",
+            "imagen": "obras/rostro_guerra.jpg",
+            "exposicion": 1,
+            "artista": 1,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 3,
+        "fields": {
+            "titulo": "La última cena",
+            "fecha_creacion": "1498-06-01",
+            "tipo": "pintura",
+            "imagen": "obras/ultima_cena.jpg",
+            "exposicion": 2,
+            "artista": 2,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 4,
+        "fields": {
+            "titulo": "Mona Lisa",
+            "fecha_creacion": "1503-10-01",
+            "tipo": "pintura",
+            "imagen": "obras/mona_lisa.jpg",
+            "exposicion": 2,
+            "artista": 2,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 5,
+        "fields": {
+            "titulo": "David",
+            "fecha_creacion": "1504-01-01",
+            "tipo": "escultura",
+            "imagen": "obras/david.jpg",
+            "exposicion": 2,
+            "artista": 3,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 6,
+        "fields": {
+            "titulo": "La creación de Adán",
+            "fecha_creacion": "1512-01-01",
+            "tipo": "pintura",
+            "imagen": "obras/creacion_adan.jpg",
+            "exposicion": 2,
+            "artista": 3,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 7,
+        "fields": {
+            "titulo": "Guernica",
+            "fecha_creacion": "1937-05-01",
+            "tipo": "pintura",
+            "imagen": "obras/guernica.jpg",
+            "exposicion": 1,
+            "artista": 4,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 8,
+        "fields": {
+            "titulo": "Les Demoiselles d'Avignon",
+            "fecha_creacion": "1907-01-01",
+            "tipo": "pintura",
+            "imagen": "obras/demoiselles_avignon.jpg",
+            "exposicion": 1,
+            "artista": 4,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 9,
+        "fields": {
+            "titulo": "La noche estrellada",
+            "fecha_creacion": "1889-06-01",
+            "tipo": "pintura",
+            "imagen": "obras/noche_estrellada.jpg",
+            "exposicion": 3,
+            "artista": 5,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 10,
+        "fields": {
+            "titulo": "Los girasoles",
+            "fecha_creacion": "1888-01-01",
+            "tipo": "pintura",
+            "imagen": "obras/girasoles.jpg",
+            "exposicion": 3,
+            "artista": 5,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 11,
+        "fields": {
+            "titulo": "Número 31",
+            "fecha_creacion": "1950-01-01",
+            "tipo": "pintura",
+            "imagen": "obras/numero_31.jpg",
+            "exposicion": 3,
+            "artista": 6,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.obra",
+        "pk": 12,
+        "fields": {
+            "titulo": "Convergencia",
+            "fecha_creacion": "1952-01-01",
+            "tipo": "pintura",
+            "imagen": "obras/convergencia.jpg",
+            "exposicion": 3,
+            "artista": 6,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.artista",
+        "pk": 1,
+        "fields": {
+            "nombre_completo": "Salvador Dalí",
+            "fecha_nacimiento": "1904-05-11",
+            "biografia": "Salvador Dalí fue un pintor español, conocido por sus impactantes y oníricas obras surrealistas.",
+            "nacionalidad": "espanola",
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.artista",
+        "pk": 2,
+        "fields": {
+            "nombre_completo": "Leonardo da Vinci",
+            "fecha_nacimiento": "1452-04-15",
+            "biografia": "Leonardo fue un pintor, escultor, inventor y científico italiano, una de las figuras más importantes del Renacimiento.",
+            "nacionalidad": "italiana",
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.artista",
+        "pk": 3,
+        "fields": {
+            "nombre_completo": "Miguel Ángel",
+            "fecha_nacimiento": "1475-03-06",
+            "biografia": "Miguel Ángel fue un escultor, pintor y arquitecto italiano, conocido por sus monumentales esculturas y frescos.",
+            "nacionalidad": "italiana",
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.artista",
+        "pk": 4,
+        "fields": {
+            "nombre_completo": "Pablo Picasso",
+            "fecha_nacimiento": "1881-10-25",
+            "biografia": "Pablo Picasso fue un pintor y escultor español, conocido por cofundar el cubismo.",
+            "nacionalidad": "espanola",
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.artista",
+        "pk": 5,
+        "fields": {
+            "nombre_completo": "Vincent van Gogh",
+            "fecha_nacimiento": "1853-03-30",
+            "biografia": "Vincent van Gogh fue un pintor neerlandés, conocido por sus emotivas y vibrantes obras de postimpresionismo.",
+            "nacionalidad": "neerlandesa",
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.artista",
+        "pk": 6,
+        "fields": {
+            "nombre_completo": "Jackson Pollock",
+            "fecha_nacimiento": "1912-01-28",
+            "biografia": "Jackson Pollock fue un pintor estadounidense, pionero del expresionismo abstracto y conocido por su técnica de pintura por goteo.",
+            "nacionalidad": "estadounidense",
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.visitante",
+        "pk": 1,
+        "fields": {
+            "usuario": 2,
+            "edad": 28,
+            "fecha_visita": "2023-10-21",
+            "museo": 1
+        }
+    },
+    {
+        "model": "appmuseo.visitante",
+        "pk": 2,
+        "fields": {
+            "usuario": 3,
+            "edad": 34,
+            "fecha_visita": "2023-11-02",
+            "museo": 1
+        }
+    },
+    {
+        "model": "appmuseo.visitante",
+        "pk": 3,
+        "fields": {
+            "usuario": 4,
+            "edad": 42,
+            "fecha_visita": "2023-10-18",
+            "museo": 1
+        }
+    },
+    {
+        "model": "appmuseo.visitante",
+        "pk": 4,
+        "fields": {
+            "usuario": 5,
+            "edad": 34,
+            "fecha_visita": "2023-11-02",
+            "museo": 1
+        }
+    },
+    {
+        "model": "appmuseo.visitante",
+        "pk": 5,
+        "fields": {
+            "usuario": 1,
+            "edad": 22,
+            "fecha_visita": "2023-11-05",
+            "museo": 1
+        }
+    },
+    {
+        "model": "appmuseo.entrada",
+        "pk": 1,
+        "fields": {
+            "codigo": "ENTR123456",
+            "precio": "12.50",
+            "tipo": "adulto",
+            "fecha_compra": "2023-10-20",
+            "visitante": 1,
+            "creado_por": 4
+        }
+    },
+    {
+        "model": "appmuseo.entrada",
+        "pk": 2,
+        "fields": {
+            "codigo": "ENTR654321",
+            "precio": "12.50",
+            "tipo": "adulto",
+            "fecha_compra": "2023-10-30",
+            "visitante": 2,
+            "creado_por": 5
+        }
+    },
+    {
+        "model": "appmuseo.entrada",
+        "pk": 3,
+        "fields": {
+            "codigo": "ENTR789012",
+            "precio": "7.50",
+            "tipo": "nino",
+            "fecha_compra": "2023-11-01",
+            "visitante": 3,
+            "creado_por": 4
+        }
+    },
+    {
+        "model": "appmuseo.tienda",
+        "pk": 1,
+        "fields": {
+            "nombre": "Tienda de Arte",
+            "ubicacion": "Planta baja, junto a la entrada",
+            "horario_apertura": "10:00:00",
+            "horario_cierre": "20:00:00",
+            "museo": 1,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.producto",
+        "pk": 1,
+        "fields": {
+            "nombre": "Postales de Obras Famosas",
+            "descripcion": "Set de postales con reproducciones de las obras más icónicas del museo.",
+            "precio": "5.00",
+            "stock": 100,
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.producto",
+        "pk": 2,
+        "fields": {
+            "nombre": "Imán del Museo",
+            "descripcion": "Imán decorativo con el logotipo del museo.",
+            "precio": "3.00",
+            "stock": 200,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.inventario",
+        "pk": 1,
+        "fields": {
+            "producto": 1,
+            "tienda": 1,
+            "cantidad_vendida": 20,
+            "fecha_ultima_venta": "2023-10-25",
+            "stock_inicial": 120,
+            "ubicacion_almacen": "Estantería A, Sección 3",
+            "creado_por": 2
+        }
+    },
+    {
+        "model": "appmuseo.inventario",
+        "pk": 2,
+        "fields": {
+            "producto": 2,
+            "tienda": 1,
+            "cantidad_vendida": 50,
+            "fecha_ultima_venta": "2023-10-28",
+            "stock_inicial": 250,
+            "ubicacion_almacen": "Estantería B, Sección 2",
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.guia",
+        "pk": 1,
+        "fields": {
+            "nombre": "Laura Martínez",
+            "idiomas": "español, inglés",
+            "especialidad": "Arte moderno y surrealismo",
+            "disponibilidad": true,
+            "museo": 1,
+            "creado_por": 3
+        }
+    },
+    {
+        "model": "appmuseo.visitaguiada",
+        "pk": 1,
+        "fields": {
+            "duracion": "01:30:00",
+            "nombre_visita_guia": "Tour Surrealismo",
+            "capacidad_maxima": 20,
+            "idioma": "espanol",
+            "creado_por": 2,
+            "guias": [1],
+            "visitantes": [1, 2, 4]
+        }
     }
-},
-{
-    "model": "appmuseo.exposicion",
-    "pk": 1,
-    "fields": {
-        "titulo": "Surrealismo en el Siglo XX",
-        "fecha_inicio": "2023-09-01",
-        "fecha_fin": "2024-01-15",
-        "descripcion": "Exposición dedicada al surrealismo con obras de artistas como Salvador Dalí y René Magritte. Incluye pinturas y esculturas representativas del movimiento.",
-        "capacidad": 80,
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.exposicion",
-    "pk": 2,
-    "fields": {
-        "titulo": "Renacimiento Italiano",
-        "fecha_inicio": "2023-07-01",
-        "fecha_fin": "2023-12-30",
-        "descripcion": "Una muestra de las obras más representativas del Renacimiento, con autores como Leonardo da Vinci, Miguel Ángel y Rafael.",
-        "capacidad": 100,
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.exposicion",
-    "pk": 3,
-    "fields": {
-        "titulo": "Expresionismo Abstracto",
-        "fecha_inicio": "2024-02-01",
-        "fecha_fin": "2024-06-15",
-        "descripcion": "Obras representativas del expresionismo abstracto, con artistas como Jackson Pollock y Mark Rothko.",
-        "capacidad": 70,
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 1,
-    "fields": {
-        "titulo": "La persistencia de la memoria",
-        "fecha_creacion": "1931-04-01",
-        "tipo": "pintura",
-        "imagen": "obras/persistencia_memoria.jpg",
-        "exposicion": 1,
-        "artista": 1
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 2,
-    "fields": {
-        "titulo": "El rostro de la guerra",
-        "fecha_creacion": "1940-01-01",
-        "tipo": "pintura",
-        "imagen": "obras/rostro_guerra.jpg",
-        "exposicion": 1,
-        "artista": 1
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 3,
-    "fields": {
-        "titulo": "La última cena",
-        "fecha_creacion": "1498-06-01",
-        "tipo": "pintura",
-        "imagen": "obras/ultima_cena.jpg",
-        "exposicion": 2,
-        "artista": 2
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 4,
-    "fields": {
-        "titulo": "Mona Lisa",
-        "fecha_creacion": "1503-10-01",
-        "tipo": "pintura",
-        "imagen": "obras/mona_lisa.jpg",
-        "exposicion": 2,
-        "artista": 2
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 5,
-    "fields": {
-        "titulo": "David",
-        "fecha_creacion": "1504-01-01",
-        "tipo": "escultura",
-        "imagen": "obras/david.jpg",
-        "exposicion": 2,
-        "artista": 3
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 6,
-    "fields": {
-        "titulo": "La creación de Adán",
-        "fecha_creacion": "1512-01-01",
-        "tipo": "pintura",
-        "imagen": "obras/creacion_adan.jpg",
-        "exposicion": 2,
-        "artista": 3
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 7,
-    "fields": {
-        "titulo": "Guernica",
-        "fecha_creacion": "1937-05-01",
-        "tipo": "pintura",
-        "imagen": "obras/guernica.jpg",
-        "exposicion": 1,
-        "artista": 4
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 8,
-    "fields": {
-        "titulo": "Les Demoiselles d'Avignon",
-        "fecha_creacion": "1907-01-01",
-        "tipo": "pintura",
-        "imagen": "obras/demoiselles_avignon.jpg",
-        "exposicion": 1,
-        "artista": 4
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 9,
-    "fields": {
-        "titulo": "La noche estrellada",
-        "fecha_creacion": "1889-06-01",
-        "tipo": "pintura",
-        "imagen": "obras/noche_estrellada.jpg",
-        "exposicion": 3,
-        "artista": 5
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 10,
-    "fields": {
-        "titulo": "Los girasoles",
-        "fecha_creacion": "1888-01-01",
-        "tipo": "pintura",
-        "imagen": "obras/girasoles.jpg",
-        "exposicion": 3,
-        "artista": 5
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 11,
-    "fields": {
-        "titulo": "Número 31",
-        "fecha_creacion": "1950-01-01",
-        "tipo": "pintura",
-        "imagen": "obras/numero_31.jpg",
-        "exposicion": 3,
-        "artista": 6
-    }
-},
-{
-    "model": "appmuseo.obra",
-    "pk": 12,
-    "fields": {
-        "titulo": "Convergencia",
-        "fecha_creacion": "1952-01-01",
-        "tipo": "pintura",
-        "imagen": "obras/convergencia.jpg",
-        "exposicion": 3,
-        "artista": 6
-    }
-},
-{
-    "model": "appmuseo.artista",
-    "pk": 1,
-    "fields": {
-        "nombre_completo": "Salvador Dalí",
-        "fecha_nacimiento": "1904-05-11",
-        "biografia": "Salvador Dalí fue un pintor español, conocido por sus impactantes y oníricas obras surrealistas.",
-        "nacionalidad": "espanola"
-    }
-},
-{
-    "model": "appmuseo.artista",
-    "pk": 2,
-    "fields": {
-        "nombre_completo": "Leonardo da Vinci",
-        "fecha_nacimiento": "1452-04-15",
-        "biografia": "Leonardo fue un pintor, escultor, inventor y científico italiano, una de las figuras más importantes del Renacimiento.",
-        "nacionalidad": "italiana"
-    }
-},
-{
-    "model": "appmuseo.artista",
-    "pk": 3,
-    "fields": {
-        "nombre_completo": "Miguel Ángel",
-        "fecha_nacimiento": "1475-03-06",
-        "biografia": "Miguel Ángel fue un escultor, pintor y arquitecto italiano, conocido por sus monumentales esculturas y frescos.",
-        "nacionalidad": "italiana"
-    }
-},
-{
-    "model": "appmuseo.artista",
-    "pk": 4,
-    "fields": {
-        "nombre_completo": "Pablo Picasso",
-        "fecha_nacimiento": "1881-10-25",
-        "biografia": "Pablo Picasso fue un pintor y escultor español, conocido por cofundar el cubismo.",
-        "nacionalidad": "espanola"
-    }
-},
-{
-    "model": "appmuseo.artista",
-    "pk": 5,
-    "fields": {
-        "nombre_completo": "Vincent van Gogh",
-        "fecha_nacimiento": "1853-03-30",
-        "biografia": "Vincent van Gogh fue un pintor neerlandés, conocido por sus emotivas y vibrantes obras de postimpresionismo.",
-        "nacionalidad": "neerlandesa"
-    }
-},
-{
-    "model": "appmuseo.artista",
-    "pk": 6,
-    "fields": {
-        "nombre_completo": "Jackson Pollock",
-        "fecha_nacimiento": "1912-01-28",
-        "biografia": "Jackson Pollock fue un pintor estadounidense, pionero del expresionismo abstracto y conocido por su técnica de pintura por goteo.",
-        "nacionalidad": "estadounidense"
-    }
-},
-{
-    "model": "appmuseo.visitante",
-    "pk": 1,
-    "fields": {
-        "nombre": "Ana González",
-        "correo_electronico": "ana.gonzalez@example.com",
-        "edad": 28,
-        "fecha_visita": "2023-10-21",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.visitante",
-    "pk": 2,
-    "fields": {
-        "nombre": "Carlos Ramírez",
-        "correo_electronico": "carlos.ramirez@example.com",
-        "edad": 34,
-        "fecha_visita": "2023-11-02",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.visitante",
-    "pk": 3,
-    "fields": {
-        "nombre": "María Sánchez",
-        "correo_electronico": "maria.sanchez@example.com",
-        "edad": 42,
-        "fecha_visita": "2023-10-18",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.visitante",
-    "pk": 4,
-    "fields": {
-        "nombre": "Carlos Martínez",
-        "correo_electronico": "carlos.martinez@example.com",
-        "edad": 34,
-        "fecha_visita": "2023-11-02",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.visitante",
-    "pk": 5,
-    "fields": {
-        "nombre": "Laura Pérez",
-        "correo_electronico": "laura.perez@example.com",
-        "edad": 22,
-        "fecha_visita": "2023-11-05",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.visitante",
-    "pk": 6,
-    "fields": {
-        "nombre": "David Ruiz",
-        "correo_electronico": "david.ruiz@example.com",
-        "edad": 40,
-        "fecha_visita": "2023-11-06",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.visitante",
-    "pk": 7,
-    "fields": {
-        "nombre": "Sofía Morales",
-        "correo_electronico": "sofia.morales@example.com",
-        "edad": 27,
-        "fecha_visita": "2023-11-08",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.visitante",
-    "pk": 8,
-    "fields": {
-        "nombre": "Miguel Torres",
-        "correo_electronico": "miguel.torres@example.com",
-        "edad": 30,
-        "fecha_visita": "2023-11-10",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.entrada",
-    "pk": 1,
-    "fields": {
-        "codigo": "ENTR123456",
-        "precio": "12.50",
-        "tipo": "adulto",
-        "fecha_compra": "2023-10-20",
-        "visitante": 1
-    }
-},
-{
-    "model": "appmuseo.entrada",
-    "pk": 2,
-    "fields": {
-        "codigo": "ENTR654321",
-        "precio": "12.50",
-        "tipo": "adulto",
-        "fecha_compra": "2023-10-30",
-        "visitante": 2
-    }
-},
-{
-    "model": "appmuseo.entrada",
-    "pk": 3,
-    "fields": {
-        "codigo": "ENTR789012",
-        "precio": "7.50",
-        "tipo": "nino",
-        "fecha_compra": "2023-11-01",
-        "visitante": 3
-    }
-},
-{
-    "model": "appmuseo.entrada",
-    "pk": 4,
-    "fields": {
-        "codigo": "ENTR234567",
-        "precio": "15.00",
-        "tipo": "adulto",
-        "fecha_compra": "2023-11-01",
-        "visitante": 4
-    }
-},
-{
-    "model": "appmuseo.entrada",
-    "pk": 5,
-    "fields": {
-        "codigo": "ENTR345678",
-        "precio": "10.00",
-        "tipo": "adulto",
-        "fecha_compra": "2023-11-04",
-        "visitante": 5
-    }
-},
-{
-    "model": "appmuseo.entrada",
-    "pk": 6,
-    "fields": {
-        "codigo": "ENTR456789",
-        "precio": "12.50",
-        "tipo": "adulto",
-        "fecha_compra": "2023-11-05",
-        "visitante": 6
-    }
-},
-{
-    "model": "appmuseo.entrada",
-    "pk": 7,
-    "fields": {
-        "codigo": "ENTR567890",
-        "precio": "14.00",
-        "tipo": "adulto",
-        "fecha_compra": "2023-11-07",
-        "visitante": 7
-    }
-},
-{
-    "model": "appmuseo.entrada",
-    "pk": 8,
-    "fields": {
-        "codigo": "ENTR678901",
-        "precio": "13.50",
-        "tipo": "adulto",
-        "fecha_compra": "2023-11-09",
-        "visitante": 8
-    }
-},
-{
-    "model": "appmuseo.tienda",
-    "pk": 1,
-    "fields": {
-        "nombre": "Tienda de Arte",
-        "ubicacion": "Planta baja, junto a la entrada",
-        "horario_apertura": "10:00:00",
-        "horario_cierre": "20:00:00",
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.producto",
-    "pk": 1,
-    "fields": {
-        "nombre": "Postales de Obras Famosas",
-        "descripcion": "Set de postales con reproducciones de las obras más icónicas del museo.",
-        "precio": "5.00",
-        "stock": 100
-    }
-},
-{
-    "model": "appmuseo.producto",
-    "pk": 2,
-    "fields": {
-        "nombre": "Imán del Museo",
-        "descripcion": "Imán decorativo con el logotipo del museo.",
-        "precio": "3.00",
-        "stock": 200
-    }
-},
-{
-    "model": "appmuseo.producto",
-    "pk": 3,
-    "fields": {
-        "nombre": "Guía ilustrada del museo",
-        "descripcion": "Guía en papel con ilustraciones y descripciones de las principales obras.",
-        "precio": "8.00",
-        "stock": 150
-    }
-},
-{
-    "model": "appmuseo.producto",
-    "pk": 4,
-    "fields": {
-        "nombre": "Postales del museo",
-        "descripcion": "Conjunto de postales con imágenes de las obras más destacadas.",
-        "precio": "5.00",
-        "stock": 200
-    }
-},
-{
-    "model": "appmuseo.producto",
-    "pk": 5,
-    "fields": {
-        "nombre": "Catálogo de exposiciones",
-        "descripcion": "Catálogo en color que recopila las exposiciones pasadas y futuras del museo.",
-        "precio": "15.00",
-        "stock": 100
-    }
-},
-{
-    "model": "appmuseo.producto",
-    "pk": 6,
-    "fields": {
-        "nombre": "Taza del museo",
-        "descripcion": "Taza con el logo del museo, perfecta para los amantes del arte.",
-        "precio": "10.00",
-        "stock": 80
-    }
-},
-{
-    "model": "appmuseo.inventario",
-    "pk": 1,
-    "fields": {
-        "producto": 1,
-        "tienda": 1,
-        "cantidad_vendida": 20,
-        "fecha_ultima_venta": "2023-10-25",
-        "stock_inicial": 120,
-        "ubicacion_almacen": "Estantería A, Sección 3"
-    }
-},
-{
-    "model": "appmuseo.inventario",
-    "pk": 2,
-    "fields": {
-        "producto": 2,
-        "tienda": 1,
-        "cantidad_vendida": 50,
-        "fecha_ultima_venta": "2023-10-28",
-        "stock_inicial": 250,
-        "ubicacion_almacen": "Estantería B, Sección 2"
-    }
-},
-{
-    "model": "appmuseo.inventario",
-    "pk": 3,
-    "fields": {
-        "producto": 3,
-        "tienda": 1,
-        "cantidad_vendida": 20,
-        "fecha_ultima_venta": "2023-10-27",
-        "stock_inicial": 170,
-        "ubicacion_almacen": "Estantería C, Sección 1"
-    }
-},
-{
-    "model": "appmuseo.inventario",
-    "pk": 4,
-    "fields": {
-        "producto": 4,
-        "tienda": 1,
-        "cantidad_vendida": 0,
-        "fecha_ultima_venta": null,
-        "stock_inicial": 50,
-        "ubicacion_almacen": "Estantería B, Sección 1"
-    }
-},
-{
-    "model": "appmuseo.inventario",
-    "pk": 5,
-    "fields": {
-        "producto": 5,
-        "tienda": 1,
-        "cantidad_vendida": 0,
-        "fecha_ultima_venta": null,
-        "stock_inicial": 75,
-        "ubicacion_almacen": "Estantería C, Sección 2"
-    }
-},
-{
-    "model": "appmuseo.inventario",
-    "pk": 6,
-    "fields": {
-        "producto": 6,
-        "tienda": 1,
-        "cantidad_vendida": 10,
-        "fecha_ultima_venta": "2023-11-01",
-        "stock_inicial": 100,
-        "ubicacion_almacen": "Estantería D, Sección 4"
-    }
-},
-{
-    "model": "appmuseo.guia",
-    "pk": 1,
-    "fields": {
-        "nombre": "Laura Martínez",
-        "idiomas": "español, inglés",
-        "especialidad": "Arte moderno y surrealismo",
-        "disponibilidad": true,
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.guia",
-    "pk": 2,
-    "fields": {
-        "nombre": "Alberto Gómez",
-        "idiomas": "español, francés",
-        "especialidad": "Renacimiento y Clasicismo",
-        "disponibilidad": true,
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.guia",
-    "pk": 3,
-    "fields": {
-        "nombre": "Elena Torres",
-        "idiomas": "español, inglés",
-        "especialidad": "Arte moderno",
-        "disponibilidad": true,
-        "museo": 1
-    }
-},
-{
-    "model": "appmuseo.visitaguiada",
-    "pk": 1,
-    "fields": {
-        "duracion": "01:30:00",
-        "nombre_visita_guia": "Tour Surrealismo",
-        "capacidad_maxima": 20,
-        "idioma": "espanol",
-        "guias": [
-            1
-        ],
-        "visitantes": [
-            1, 2, 4
-        ]
-    }
-},
-{
-    "model": "appmuseo.visitaguiada",
-    "pk": 2,
-    "fields": {
-        "duracion": "01:15:00",
-        "nombre_visita_guia": "Exploración del Renacimiento",
-        "capacidad_maxima": 25,
-        "idioma": "espanol",
-        "guias": [
-            2
-        ],
-        "visitantes": [
-            3, 5, 6
-        ]
-    }
-},
-{
-    "model": "appmuseo.visitaguiada",
-    "pk": 3,
-    "fields": {
-        "duracion": "01:00:00",
-        "nombre_visita_guia": "Viaje por el Expresionismo Abstracto",
-        "capacidad_maxima": 20,
-        "idioma": "ingles",
-        "guias": [
-            3
-        ],
-        "visitantes": [
-            7, 8
-        ]
-    }
-}
 ]

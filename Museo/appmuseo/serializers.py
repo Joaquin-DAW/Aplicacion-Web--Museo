@@ -34,3 +34,9 @@ class ObraSerializer(serializers.ModelSerializer):
     class Meta:
         model = Obra
         fields = '__all__'
+        
+class ArtistaSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Artista
+        fields = '__all__'

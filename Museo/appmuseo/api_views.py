@@ -19,6 +19,12 @@ def obra_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def artista_list(request):
+    artistas = Artista.objects.all()
+    serializer = ArtistaSerializer(artistas, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def exposicion_list(request):
     exposiciones = Exposicion.objects.select_related('museo').all()
     serializer = ExposicionSerializer(exposiciones, many=True)
