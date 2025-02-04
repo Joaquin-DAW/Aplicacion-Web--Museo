@@ -27,6 +27,8 @@ urlpatterns = [
     path('producto_sin_vender',views.productos_sin_vender, name='productos_sin_vender'),
     path('visitantes_media',views.visitantes_menor_media, name='visitantes_menor_media'),
     
+    path('museos/busqueda_simple/', views.museo_buscar_simple, name='museo_buscar_simple'),
+    
     path('museos/',views.listar_museos, name='listar_museos'),
     path('museo/create/',views.museo_create,name='museo_create'),
     path('museo/buscar_avanzado/',views.museo_buscar_avanzado,name='museo_buscar_avanzado'),

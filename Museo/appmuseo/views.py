@@ -849,6 +849,26 @@ def visita_lista_usuario(request, usuario_id):
     return render(request, 'visita/lista.html', {"visitas_mostrar": visitas, "visitante": visitante})
 
 
+# API REST
+
+def museo_buscar_simple(request):
+    formulario = BusquedaMuseoForm(request.GET)
+
+    if formulario.is_valid():
+        texto = formulario.cleaned_data.get('textoBusqueda')
+        museos = Museo.objects.select_related("creado_por")  
+        museos = museos.filter(Q(nombre__icontains=texto) | Q(descripcion__icontains=texto)).all()
+
+        mensaje_busqueda = f"Se buscó museos que contienen en su nombre o descripción la palabra: {texto}"
+        return render(request, 'museo/lista_busqueda.html', {"museos_mostrar": museos, "texto_busqueda": mensaje_busqueda})
+
+    # Si el formulario no es válido, redirige a la página anterior o al índice
+    if "HTTP_REFERER" in request.META:
+        return redirect(request.META["HTTP_REFERER"])
+    else:
+        return redirect("index")
+
+
 #Aquí creamos las vistas para cada una de las cuatro páginas de errores que vamos a controlar.
 
 #Este error indica que el servidor no entiende la solicitud del navegador.

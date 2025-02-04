@@ -655,3 +655,10 @@ class EntradaForm(forms.ModelForm):
                 museos_disponibles = Museo.objects.exclude(id__in=museos_visitados_hoy)
 
                 self.fields['museo'].queryset = museos_disponibles
+                
+                
+                
+# API REST
+
+class BusquedaMuseoForm(forms.Form):
+    textoBusqueda = forms.CharField(label='Buscar Museo', max_length=100)
