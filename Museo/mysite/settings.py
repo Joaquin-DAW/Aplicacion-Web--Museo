@@ -26,9 +26,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'), True)
 
 SECRET_KEY = env("SECRET_KEY")
 
-ADMIN_KEY = env('ADMIN_KEY')
-RESPONSABLE_KEY = env('RESPONSABLE_KEY')
-VISITANTE_KEY = env('VISITANTE_KEY')
+#ADMIN_KEY = env('ADMIN_KEY')
+#RESPONSABLE_KEY = env('RESPONSABLE_KEY')
+#VISITANTE_KEY = env('VISITANTE_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
