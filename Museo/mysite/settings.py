@@ -31,7 +31,7 @@ RESPONSABLE_KEY = env('RESPONSABLE_KEY')
 VISITANTE_KEY = env('VISITANTE_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com','0.0.0.0']
 

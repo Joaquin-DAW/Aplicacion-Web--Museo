@@ -7,4 +7,5 @@ urlpatterns = [
     path('obras',obra_list),
     path('exposiciones',exposicion_list),
     path('entradas',entrada_list),
+    path('museos/busqueda_simple/', museo_buscar_simple),
 ]
