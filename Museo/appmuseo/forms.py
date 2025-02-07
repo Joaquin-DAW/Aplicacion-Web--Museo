@@ -101,15 +101,11 @@ class BusquedaAvanzadaMuseoForm(forms.Form):
         fecha_hasta = self.cleaned_data.get('fecha_hasta')
 
         # Validación: al menos un campo debe estar lleno
-        if (nombre_descripcion == "" and ubicacion =="" and fecha_desde is None and fecha_hasta is None):
-            self.add_error('nombre_descripcion','Debe introducir al menos un valor en un campo del formulario')
-            self.add_error('ubicacion','Debe introducir al menos un valor en un campo del formulario')
-            self.add_error('fecha_desde','Debe introducir al menos un valor en un campo del formulario')
-            self.add_error('fecha_hasta','Debe introducir al menos un valor en un campo del formulario')
+        if not (nombre_descripcion or ubicacion or fecha_desde or fecha_hasta):
+            raise forms.ValidationError("Debe introducir al menos un valor en un campo del formulario")
 
         # Validación: fecha_hasta no puede ser menor que fecha_desde
-        if(not fecha_desde is None  and not fecha_hasta is None and fecha_hasta < fecha_desde):
-            self.add_error('fecha_desde', "La fecha hasta no puede ser menor que la fecha desde.")
+        if fecha_desde and fecha_hasta and fecha_hasta < fecha_desde:
             self.add_error('fecha_hasta', "La fecha hasta no puede ser menor que la fecha desde.")
 
         return self.cleaned_data
