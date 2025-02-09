@@ -653,6 +653,70 @@ class EntradaForm(forms.ModelForm):
                 self.fields['museo'].queryset = museos_disponibles
                 
                 
+class BusquedaAvanzadaEntradaForm(forms.Form):
+    codigo = forms.CharField(
+        required=False,
+        label="Código",
+        widget=forms.TextInput(attrs={"placeholder": "Código de la entrada"})
+    )
+    tipo = forms.ChoiceField(
+        choices=[('', 'Seleccione un tipo'), ('adulto', 'Adulto'), ('nino', 'Niño')],
+        required=False,
+        label="Tipo"
+    )
+    fecha_compra_desde = forms.DateField(
+        label="Fecha de compra desde",
+        required=False,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
+    )
+    fecha_compra_hasta = forms.DateField(
+        label="Fecha de compra hasta",
+        required=False,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
+    )
+    precio_min = forms.DecimalField(
+        required=False,
+        label="Precio mínimo",
+        max_digits=6, decimal_places=2
+    )
+    precio_max = forms.DecimalField(
+        required=False,
+        label="Precio máximo",
+        max_digits=6, decimal_places=2
+    )
+    visitante = forms.ModelChoiceField(
+        queryset=Visitante.objects.all(),
+        required=False,
+        label="Visitante",
+        empty_label="Seleccione un visitante"
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        codigo = cleaned_data.get('codigo')
+        tipo = cleaned_data.get('tipo')
+        fecha_compra_desde = cleaned_data.get('fecha_compra_desde')
+        fecha_compra_hasta = cleaned_data.get('fecha_compra_hasta')
+        precio_min = cleaned_data.get('precio_min')
+        precio_max = cleaned_data.get('precio_max')
+        visitante = cleaned_data.get('visitante')
+
+        # Validación: al menos un campo debe estar lleno
+        if not (codigo or tipo or fecha_compra_desde or fecha_compra_hasta or precio_min or precio_max or visitante):
+            raise forms.ValidationError("Debe introducir al menos un valor en algún campo del formulario.")
+
+        # Validación de fechas
+        if fecha_compra_desde and fecha_compra_hasta and fecha_compra_hasta < fecha_compra_desde:
+            self.add_error('fecha_compra_desde', "La fecha de compra hasta no puede ser menor que la fecha desde.")
+            self.add_error('fecha_compra_hasta', "La fecha de compra hasta no puede ser menor que la fecha desde.")
+
+        # Validación de precios
+        if precio_min and precio_max and precio_max < precio_min:
+            self.add_error('precio_min', "El precio máximo no puede ser menor que el precio mínimo.")
+            self.add_error('precio_max', "El precio máximo no puede ser menor que el precio mínimo.")
+
+        return cleaned_data
+                
                 
 # API REST
 
