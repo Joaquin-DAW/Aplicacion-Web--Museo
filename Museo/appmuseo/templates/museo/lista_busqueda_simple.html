@@ -1,0 +1,37 @@
+{% extends "principal.html" %}
+{% load django_bootstrap5 %}
+
+{% block contenido %}
+<h1>Búsqueda de Museos</h1>
+
+<form action="{% url 'museo_buscar_simple' %}" method="GET">
+    {% csrf_token %}
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.textoBusqueda show_label=True %}
+    </div>
+
+    {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+</form>
+
+{% if texto_busqueda %}
+    <p class="mt-3">{{ texto_busqueda }}</p>
+{% endif %}
+
+{% if museos %}
+    <h2 class="mt-4">Resultados:</h2>
+    <ul class="list-group">
+        {% for museo in museos %}
+            <li class="list-group-item">
+                <strong>{{ museo.nombre }}</strong> - {{ museo.ubicacion }}
+                <br>
+                <small>Fundado: {{ museo.fecha_fundacion }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="mt-3">No se encontraron museos con esos criterios de búsqueda.</p>
+{% endif %}
+
+{% endblock %}
+
