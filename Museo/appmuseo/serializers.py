@@ -40,3 +40,23 @@ class ArtistaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artista
         fields = '__all__'
+        
+class MuseoSerializerCreate(serializers.ModelSerializer):
+    class Meta:
+        model = Museo
+        fields = ['nombre', 'ubicacion', 'fecha_fundacion', 'descripcion']
+    
+    def validate_nombre(self, nombre):
+        if Museo.objects.filter(nombre=nombre).exists():
+            raise serializers.ValidationError("Ya existe un museo con ese nombre")
+        return nombre
+    
+    def validate_descripcion(self, descripcion):
+        if len(descripcion) < 10:
+            raise serializers.ValidationError("La descripción debe tener al menos 10 caracteres")
+        return descripcion
+    
+    def validate_fecha_fundacion(self, fecha_fundacion):
+        if fecha_fundacion > date.today():
+            raise serializers.ValidationError("La fecha de fundación no puede ser en el futuro")
+        return fecha_fundacion

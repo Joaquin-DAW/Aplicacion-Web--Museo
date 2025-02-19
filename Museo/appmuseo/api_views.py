@@ -83,6 +83,50 @@ def museo_buscar_avanzada(request):
     
     return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def museo_create(request):
+    print(request.data)
+    museo_serializer = MuseoSerializerCreate(data=request.data)
+    if museo_serializer.is_valid():
+        try:
+            museo_serializer.save()
+            return Response("Museo CREADO", status=status.HTTP_201_CREATED)
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            print(repr(error))
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(museo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def museo_obtener(request, museo_id):
+    try:
+        museo = Museo.objects.get(id=museo_id)
+        serializer = MuseoSerializerCreate(museo)  # Serializamos el museo existente
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Museo.DoesNotExist:
+        return Response({"error": "Museo no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    
+    
+@api_view(['PUT'])
+def museo_editar(request, museo_id):
+    try:
+        museo = Museo.objects.get(id=museo_id)
+    except Museo.DoesNotExist:
+        return Response({"error": "Museo no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+    museo_serializer = MuseoSerializerCreate(data=request.data, instance=museo)
+    if museo_serializer.is_valid():
+        try:
+            museo_serializer.save()
+            return Response({"mensaje": "Museo EDITADO"}, status=status.HTTP_200_OK)
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(museo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def obra_buscar_avanzada(request):
