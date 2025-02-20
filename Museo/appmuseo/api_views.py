@@ -111,6 +111,8 @@ def museo_obtener(request, museo_id):
     
 @api_view(['PUT'])
 def museo_editar(request, museo_id):
+    print("📥 Petición PUT recibida para museo:", museo_id)  # 🔹 Verifica si la API recibe la petición
+    print("📨 Datos recibidos:", request.data) 
     try:
         museo = Museo.objects.get(id=museo_id)
     except Museo.DoesNotExist:
@@ -127,6 +129,35 @@ def museo_editar(request, museo_id):
             return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(museo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PATCH'])
+def museo_editar_nombre(request, museo_id):
+    try:
+        museo = Museo.objects.get(id=museo_id)
+    except Museo.DoesNotExist:
+        return Response({"error": "Museo no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = MuseoSerializerEditarNombre(data=request.data, instance=museo)
+    if serializer.is_valid():
+        try:
+            serializer.save()
+            return Response({"mensaje": "Nombre del museo actualizado correctamente"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['DELETE'])
+def museo_eliminar(request, museo_id):
+    try:
+        museo = Museo.objects.get(id=museo_id)
+        museo.delete()
+        return Response({"mensaje": "Museo eliminado correctamente"}, status=status.HTTP_200_OK)
+    except Museo.DoesNotExist:
+        return Response({"error": "Museo no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as error:
+        return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['GET'])
 def obra_buscar_avanzada(request):

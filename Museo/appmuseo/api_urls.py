@@ -9,6 +9,8 @@ urlpatterns = [
     path('museos/crear', museo_create),
     path('museos/<int:museo_id>/', museo_obtener),
     path('museos/editar/<int:museo_id>', museo_editar),
+    path('museos/editar/nombre/<int:museo_id>', museo_editar_nombre, name='museo_editar_nombre'),
+    path('museos/eliminar/<int:museo_id>', museo_eliminar, name='museo_eliminar'),
 
     path('obras/busqueda_avanzada/', obra_buscar_avanzada),
     path('obras',obra_list),
