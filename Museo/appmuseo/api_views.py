@@ -233,6 +233,47 @@ def exposicion_buscar_avanzada(request):
     
     return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def exposicion_create(request):
+    print("📡 Datos recibidos en la API:", request.data)  # 🔍 Verifica los datos que llegan
+    
+    exposicion_serializer = ExposicionSerializerCreate(data=request.data)
+
+    if exposicion_serializer.is_valid():
+        try:
+            exposicion_serializer.save()
+            return Response({"mensaje": "Exposición CREADA"}, status=status.HTTP_201_CREATED)
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            print("❌ Error en el servidor:", repr(error))  # 🔍 Muestra el error exacto
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        print("❌ Errores de validación:", exposicion_serializer.errors)  # 🔍 Debug de validaciones
+        return Response(exposicion_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def exposicion_editar(request, exposicion_id):
+    print("📥 Petición PUT recibida para exposición:", exposicion_id)  # 🔹 Verifica si la API recibe la petición
+    print("📨 Datos recibidos:", request.data)
+
+    try:
+        exposicion = Exposicion.objects.get(id=exposicion_id)
+    except Exposicion.DoesNotExist:
+        return Response({"error": "Exposición no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+    exposicion_serializer = ExposicionSerializerCreate(data=request.data, instance=exposicion)
+    if exposicion_serializer.is_valid():
+        try:
+            exposicion_serializer.save()
+            return Response({"mensaje": "Exposición EDITADA"}, status=status.HTTP_200_OK)
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(exposicion_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 def entrada_buscar_avanzada(request):

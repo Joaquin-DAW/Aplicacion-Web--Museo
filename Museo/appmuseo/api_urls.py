@@ -12,12 +12,14 @@ urlpatterns = [
     path('museos/editar/nombre/<int:museo_id>', museo_editar_nombre, name='museo_editar_nombre'),
     path('museos/eliminar/<int:museo_id>', museo_eliminar, name='museo_eliminar'),
 
-    path('obras/busqueda_avanzada/', obra_buscar_avanzada),
     path('obras',obra_list),
+    path('obras/busqueda_avanzada/', obra_buscar_avanzada),
     
-    path('exposiciones/busqueda_avanzada/', exposicion_buscar_avanzada),
     path('exposiciones',exposicion_list),
+    path('exposiciones/busqueda_avanzada/', exposicion_buscar_avanzada),
+    path('exposiciones/crear', exposicion_create, name='exposicion_create'),
+    path('exposiciones/editar/<int:exposicion_id>', exposicion_editar, name="exposicion_editar"),
     
-    path('entradas/busqueda_avanzada/', entrada_buscar_avanzada),
     path('entradas',entrada_list),
+    path('entradas/busqueda_avanzada/', entrada_buscar_avanzada),
 ]
