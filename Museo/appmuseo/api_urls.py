@@ -18,8 +18,18 @@ urlpatterns = [
     path('exposiciones',exposicion_list),
     path('exposiciones/busqueda_avanzada/', exposicion_buscar_avanzada),
     path('exposiciones/crear', exposicion_create, name='exposicion_create'),
+    path('exposiciones/<int:exposicion_id>/', exposicion_obtener, name='exposicion_obtener'),
     path('exposiciones/editar/<int:exposicion_id>', exposicion_editar, name="exposicion_editar"),
+    path('exposiciones/editar/capacidad/<int:exposicion_id>/', exposicion_editar_capacidad, name='exposicion_editar_capacidad'),
+    path('exposiciones/eliminar/<int:exposicion_id>', exposicion_eliminar, name='exposicion_eliminar'),
     
     path('entradas',entrada_list),
     path('entradas/busqueda_avanzada/', entrada_buscar_avanzada),
+    
+    path('guias/', guia_list, name='guia_list'),
+    path('visitantes/', visitante_list, name='visitante_list'),
+    
+    path('visitasguiadas/', visita_guiada_list, name='visita_guiada_list'),
+    path('visitasguiadas/crear', visita_guiada_create, name='visita_guiada_create'),
+
 ]

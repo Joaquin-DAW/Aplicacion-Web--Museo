@@ -38,6 +38,25 @@ def entrada_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def guia_list(request):
+    guias = Guia.objects.all()
+    serializer = GuiaSerializer(guias, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def visitante_list(request):
+    visitantes = Visitante.objects.all()
+    serializer = VisitanteSerializer(visitantes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def visita_guiada_list(request):
+    visitas = VisitaGuiada.objects.prefetch_related('guias', 'visitantes').all()
+    serializer = VisitaGuiadaSerializer(visitas, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def museo_buscar_simple(request):
     formulario = BusquedaMuseoForm(request.query_params)
 
@@ -251,6 +270,19 @@ def exposicion_create(request):
     else:
         print("❌ Errores de validación:", exposicion_serializer.errors)  # 🔍 Debug de validaciones
         return Response(exposicion_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def exposicion_obtener(request, exposicion_id):
+    """
+    Obtiene los detalles de una exposición específica por su ID.
+    """
+    try:
+        exposicion = Exposicion.objects.get(id=exposicion_id)
+        serializer = ExposicionSerializerCreate(exposicion)  # Usa el serializador correcto
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exposicion.DoesNotExist:
+        return Response({"error": "Exposición no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['PUT'])
 def exposicion_editar(request, exposicion_id):
@@ -274,6 +306,22 @@ def exposicion_editar(request, exposicion_id):
     else:
         return Response(exposicion_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PATCH'])
+def exposicion_editar_capacidad(request, exposicion_id):
+    try:
+        exposicion = Exposicion.objects.get(id=exposicion_id)
+    except Exposicion.DoesNotExist:
+        return Response({"error": "Exposición no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ExposicionSerializerEditarCapacidad(data=request.data, instance=exposicion)
+    if serializer.is_valid():
+        try:
+            serializer.save()
+            return Response({"mensaje": "Capacidad de la exposición actualizada correctamente"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def entrada_buscar_avanzada(request):
@@ -312,3 +360,36 @@ def entrada_buscar_avanzada(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def exposicion_eliminar(request, exposicion_id):
+    try:
+        exposicion = Exposicion.objects.get(id=exposicion_id)
+        exposicion.delete()
+        return Response({"mensaje": "Exposición eliminada correctamente"}, status=status.HTTP_200_OK)
+    except Exposicion.DoesNotExist:
+        return Response({"error": "Exposición no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as error:
+        return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
+@api_view(['POST'])
+def visita_guiada_create(request):
+    print("📡 Datos recibidos en la API:", request.data)  # 🔍 Verifica los datos que llegan
+    
+    visita_serializer = VisitaGuiadaSerializerCreate(data=request.data)
+
+    if visita_serializer.is_valid():
+        try:
+            visita_serializer.save()
+            print("✅ Visita Guiada creada con éxito")
+            return Response({"mensaje": "Visita Guiada CREADA"}, status=status.HTTP_201_CREATED)
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            print("❌ Error en el servidor:", repr(error))  # 🔍 Muestra el error exacto
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        print("❌ Errores de validación:", visita_serializer.errors)  # 🔍 Debug de validaciones
+        return Response(visita_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

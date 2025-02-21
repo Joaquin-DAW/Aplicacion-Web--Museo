@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from .forms import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,6 +33,27 @@ class EntradaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Entrada
         fields = '__all__'
+        
+class GuiaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Guia
+        fields = '__all__'
+
+class VisitanteSerializer(serializers.ModelSerializer):
+    usuario = serializers.StringRelatedField()  # Para que devuelva el nombre de usuario
+
+    class Meta:
+        model = Visitante
+        fields = '__all__'
+        
+class VisitaGuiadaSerializer(serializers.ModelSerializer):
+    guias = serializers.StringRelatedField(many=True)
+    visitantes = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = VisitaGuiada
+        fields = ['id', 'nombre_visita_guia', 'duracion', 'capacidad_maxima', 'idioma', 'guias', 'visitantes']
+
         
 class ObraSerializer(serializers.ModelSerializer):
     artista = serializers.StringRelatedField()
@@ -117,4 +138,56 @@ class ExposicionSerializerCreate(serializers.ModelSerializer):
     def validate_capacidad(self, capacidad):
         if capacidad <= 0:
             raise serializers.ValidationError("La capacidad debe ser mayor que cero")
+        return capacidad
+    
+class ExposicionSerializerEditarCapacidad(serializers.ModelSerializer):
+    class Meta:
+        model = Exposicion
+        fields = ['capacidad']
+
+    def validate_capacidad(self, capacidad):
+        if capacidad <= 0:
+            raise serializers.ValidationError("La capacidad debe ser mayor que cero.")
+        return capacidad
+
+class VisitaGuiadaSerializerCreate(serializers.ModelSerializer):
+    guias = serializers.PrimaryKeyRelatedField(
+        queryset=Guia.objects.all(),  # ✅ Permitir solo IDs válidos de Guías
+        many=True
+    )
+    visitantes = serializers.PrimaryKeyRelatedField(
+        queryset=Visitante.objects.all(),  # ✅ Permitir solo IDs válidos de Visitantes
+        many=True
+    )
+
+    class Meta:
+        model = VisitaGuiada
+        fields = ['id', 'nombre_visita_guia', 'duracion', 'capacidad_maxima', 'idioma', 'guias', 'visitantes']
+
+    def validate_nombre_visita_guia(self, nombre):
+        """
+        Valida que no haya dos visitas guiadas con el mismo nombre.
+        """
+        if self.instance:  # Si estamos editando...
+            if VisitaGuiada.objects.exclude(id=self.instance.id).filter(nombre_visita_guia=nombre).exists():
+                raise serializers.ValidationError("Ya existe una visita guiada con ese nombre.")
+        else:  # Si estamos creando...
+            if VisitaGuiada.objects.filter(nombre_visita_guia=nombre).exists():
+                raise serializers.ValidationError("Ya existe una visita guiada con ese nombre.")
+        return nombre
+    
+    def validate_duracion(self, value):
+        """
+        Valida que la duración esté en el formato correcto.
+        """
+        if not isinstance(value, timedelta):
+            raise serializers.ValidationError("Formato incorrecto. Use HH:MM:SS")
+        return value
+
+    def validate_capacidad_maxima(self, capacidad):
+        """
+        Valida que la capacidad máxima sea un número positivo.
+        """
+        if capacidad <= 0:
+            raise serializers.ValidationError("La capacidad debe ser mayor que cero.")
         return capacidad
