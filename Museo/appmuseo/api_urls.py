@@ -31,5 +31,17 @@ urlpatterns = [
     
     path('visitasguiadas/', visita_guiada_list, name='visita_guiada_list'),
     path('visitasguiadas/crear', visita_guiada_create, name='visita_guiada_create'),
-
+    path('visitasguiadas/<int:visita_id>/', visita_guiada_obtener, name="visita_guiada_obtener"),
+    path('visitasguiadas/editar/<int:visita_id>/', visita_guiada_editar, name="visita_guiada_editar"),
+    path('visitasguiadas/editar/capacidad/<int:visita_id>/', visita_guiada_editar_capacidad, name='visita_guiada_editar_capacidad'),
+    path('visitasguiadas/eliminar/<int:visita_id>', visita_guiada_eliminar, name='visita_guiada_eliminar'),
+    
+    path('tiendas/', tienda_list, name='tienda_list'),
+    
+    path('productos/', producto_list, name='producto_list'),
+    path('productos/crear', producto_create, name='producto_create'),
+    path('productos/<int:producto_id>/', producto_obtener, name="producto_obtener"),
+    path('productos/editar/<int:producto_id>/', producto_editar, name="producto_editar"),
+    path('productos/editar/stock/<int:producto_id>/', producto_editar_stock, name='producto_editar_stock'),
+    path('productos/eliminar/<int:producto_id>', producto_eliminar, name='producto_eliminar'),
 ]

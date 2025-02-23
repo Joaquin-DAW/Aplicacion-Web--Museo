@@ -13,11 +13,6 @@ class ResponsableSerializer(serializers.ModelSerializer):
         model = Responsable
         fields = '__all__'
         
-class MuseoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Museo
-        fields = '__all__'
-        
 class ExposicionSerializer(serializers.ModelSerializer):
     museo = serializers.SerializerMethodField()  # 🔹 Agregamos este campo personalizado
 
@@ -28,6 +23,13 @@ class ExposicionSerializer(serializers.ModelSerializer):
     def get_museo(self, obj):
         """ Devuelve el nombre del museo en lugar de su ID """
         return obj.museo.nombre if obj.museo else "Sin Museo"  # Maneja casos sin museo
+    
+class MuseoSerializer(serializers.ModelSerializer):
+    exposiciones = ExposicionSerializer(many=True, read_only=True) 
+
+    class Meta:
+        model = Museo
+        fields = ['id', 'nombre', 'ubicacion', 'fecha_fundacion', 'descripcion', 'exposiciones']
         
 class EntradaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,6 +47,11 @@ class VisitanteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visitante
         fields = '__all__'
+        
+class TiendaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tienda
+        fields = ['id', 'nombre', 'ubicacion']
         
 class VisitaGuiadaSerializer(serializers.ModelSerializer):
     guias = serializers.StringRelatedField(many=True)
@@ -191,3 +198,92 @@ class VisitaGuiadaSerializerCreate(serializers.ModelSerializer):
         if capacidad <= 0:
             raise serializers.ValidationError("La capacidad debe ser mayor que cero.")
         return capacidad
+    
+class VisitaGuiadaSerializerEditarCapacidad(serializers.ModelSerializer):
+    class Meta:
+        model = VisitaGuiada
+        fields = ['capacidad_maxima']
+
+    def validate_capacidad_maxima(self, capacidad):
+        if capacidad <= 0:
+            raise serializers.ValidationError("La capacidad debe ser mayor que cero.")
+        return capacidad
+    
+    
+class TiendaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tienda
+        fields = ['id', 'nombre', 'ubicacion']
+        
+class InventarioSerializer(serializers.ModelSerializer):
+    producto = serializers.StringRelatedField() 
+    tienda = serializers.CharField(source="tienda.nombre") 
+
+    class Meta:
+        model = Inventario
+        fields = ['producto', 'tienda', 'cantidad_vendida', 'fecha_ultima_venta', 'stock_inicial', 'ubicacion_almacen']
+
+class ProductoSerializer(serializers.ModelSerializer):
+    inventario = InventarioSerializer(source='inventario_producto', many=True, read_only=True)  # 🔹 Relación intermedia
+
+    class Meta:
+        model = Producto
+        fields = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'inventario']
+        
+        
+class ProductoSerializerCreate(serializers.ModelSerializer):
+    tiendas = serializers.PrimaryKeyRelatedField(
+        queryset=Tienda.objects.all(),  
+        many=True
+    )
+    descripcion = serializers.CharField(required=False, allow_blank=True, default="")
+    stock_inicial = serializers.IntegerField(write_only=True, min_value=1)
+    cantidad_vendida = serializers.IntegerField(write_only=True, min_value=0)
+    fecha_ultima_venta = serializers.DateField(write_only=True, required=False, allow_null=True)
+    ubicacion_almacen = serializers.CharField(write_only=True, required=False, allow_blank=True)
+
+    class Meta:
+        model = Producto
+        fields = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'tiendas', 'stock_inicial', 'cantidad_vendida', 'fecha_ultima_venta', 'ubicacion_almacen']
+
+    def validate_nombre(self, nombre):
+        if self.instance:
+            if Producto.objects.exclude(id=self.instance.id).filter(nombre=nombre).exists():
+                raise serializers.ValidationError("Ya existe un producto con este nombre.")
+        else:
+            if Producto.objects.filter(nombre=nombre).exists():
+                raise serializers.ValidationError("Ya existe un producto con este nombre.")
+        return nombre
+
+    def create(self, validated_data):
+        tiendas = validated_data.pop("tiendas", [])  
+        stock_inicial = validated_data.pop("stock_inicial", 0)
+        cantidad_vendida = validated_data.pop("cantidad_vendida", 0)
+        fecha_ultima_venta = validated_data.pop("fecha_ultima_venta", None)
+        ubicacion_almacen = validated_data.pop("ubicacion_almacen", "")
+        
+        validated_data["descripcion"] = validated_data.get("descripcion", "")
+        
+        producto = Producto.objects.create(**validated_data)
+
+        for tienda in tiendas:
+            Inventario.objects.create(
+                producto=producto,
+                tienda=tienda,
+                stock_inicial=stock_inicial,
+                cantidad_vendida=cantidad_vendida,
+                fecha_ultima_venta=fecha_ultima_venta,
+                ubicacion_almacen=ubicacion_almacen
+            )
+
+        return producto
+    
+class ProductoSerializerEditarStock(serializers.ModelSerializer):
+    class Meta:
+        model = Producto
+        fields = ['stock']
+
+    def validate_stock(self, stock):
+        if stock < 0:
+            raise serializers.ValidationError("El stock no puede ser negativo.")
+        return stock

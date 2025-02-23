@@ -99,7 +99,7 @@ class Tienda(models.Model):
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField(blank=True)
+    descripcion = models.TextField(blank=True, default="")
     precio = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     stock = models.IntegerField(default=0)
     tiendas = models.ManyToManyField(Tienda, through='Inventario', related_name="productos_tienda")  # ManyToMany con Tienda a través de Inventario

@@ -9,7 +9,7 @@ from .forms import *
 
 @api_view(['GET'])
 def museo_list(request):
-    museos = Museo.objects.all()
+    museos = Museo.objects.prefetch_related('exposiciones').all()
     serializer = MuseoSerializer(museos, many=True)
     return Response(serializer.data)
 
@@ -53,6 +53,21 @@ def visitante_list(request):
 def visita_guiada_list(request):
     visitas = VisitaGuiada.objects.prefetch_related('guias', 'visitantes').all()
     serializer = VisitaGuiadaSerializer(visitas, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def tienda_list(request):
+    tiendas = Tienda.objects.all()
+    serializer = TiendaSerializer(tiendas, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def producto_list(request):
+    """
+    Obtiene la lista de productos junto con la información de las tiendas y el inventario asociado.
+    """
+    productos = Producto.objects.prefetch_related('inventario_producto').all()  # 🔹 Relación con Inventario
+    serializer = ProductoSerializer(productos, many=True)
     return Response(serializer.data)
 
 
@@ -393,3 +408,199 @@ def visita_guiada_create(request):
     else:
         print("❌ Errores de validación:", visita_serializer.errors)  # 🔍 Debug de validaciones
         return Response(visita_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def visita_guiada_obtener(request, visita_id):
+    try:
+        visita = VisitaGuiada.objects.get(id=visita_id)
+        serializer = VisitaGuiadaSerializerCreate(visita)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except VisitaGuiada.DoesNotExist:
+        return Response({"error": "Visita guiada no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['PUT'])
+def visita_guiada_editar(request, visita_id):
+    print("📥 Petición PUT recibida para visita guiada:", visita_id)  # 🔹 Debug
+    print("📨 Datos recibidos:", request.data)
+
+    try:
+        visita = VisitaGuiada.objects.get(id=visita_id)
+    except VisitaGuiada.DoesNotExist:
+        return Response({"error": "Visita guiada no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+    visita_serializer = VisitaGuiadaSerializerCreate(instance=visita, data=request.data, partial=True)
+
+    if visita_serializer.is_valid():
+        try:
+            visita_actualizada = visita_serializer.save()  # Guardamos los campos básicos
+
+            # 🔹 Actualizamos las relaciones ManyToMany manualmente
+            if "guias" in request.data:
+                visita_actualizada.guias.set(request.data["guias"])  # ✅ Actualiza ManyToMany
+            if "visitantes" in request.data:
+                visita_actualizada.visitantes.set(request.data["visitantes"])  # ✅ Actualiza ManyToMany
+
+            return Response({"mensaje": "Visita guiada EDITADA"}, status=status.HTTP_200_OK)
+
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    else:
+        return Response(visita_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PATCH'])
+def visita_guiada_editar_capacidad(request, visita_id):
+    try:
+        visita = VisitaGuiada.objects.get(id=visita_id)
+    except VisitaGuiada.DoesNotExist:
+        return Response({"error": "Visita guiada no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = VisitaGuiadaSerializerEditarCapacidad(data=request.data, instance=visita)
+    if serializer.is_valid():
+        try:
+            serializer.save()
+            return Response({"mensaje": "Capacidad de la visita guiada actualizada correctamente"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def visita_guiada_eliminar(request, visita_id):
+    try:
+        visita = VisitaGuiada.objects.get(id=visita_id)
+        visita.delete()
+        return Response({"mensaje": "Visita guiada eliminada correctamente"}, status=status.HTTP_200_OK)
+    except VisitaGuiada.DoesNotExist:
+        return Response({"error": "Visita guiada no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as error:
+        return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(['POST'])
+def producto_create(request):
+    print("📡 Datos recibidos en la API:", request.data)  
+    
+    producto_serializer = ProductoSerializerCreate(data=request.data)
+
+    if producto_serializer.is_valid():
+        try:
+            producto_serializer.save()
+            print("✅ Producto creado con éxito")
+            return Response({"mensaje": "Producto CREADO"}, status=status.HTTP_201_CREATED)
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            print("❌ Error en el servidor:", repr(error))
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        print("❌ Errores de validación:", producto_serializer.errors)  
+        return Response(producto_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def producto_obtener(request, producto_id):
+    try:
+        producto = Producto.objects.get(id=producto_id)
+        serializer = ProductoSerializerCreate(producto)
+        
+        # Convertimos los datos del producto a diccionario
+        producto_data = serializer.data
+
+        # Agregamos manualmente la información de inventario
+        inventario_data = Inventario.objects.filter(producto=producto)
+        producto_data["inventario"] = [
+            {
+                "tienda_id": item.tienda.id,
+                "tienda_nombre": item.tienda.nombre,
+                "stock_inicial": item.stock_inicial,
+                "cantidad_vendida": item.cantidad_vendida,
+                "fecha_ultima_venta": item.fecha_ultima_venta.strftime("%Y-%m-%d") if item.fecha_ultima_venta else None,
+                "ubicacion_almacen": item.ubicacion_almacen
+            }
+            for item in inventario_data
+        ]
+
+        return Response(producto_data, status=status.HTTP_200_OK)
+    
+    except Producto.DoesNotExist:
+        return Response({"error": "Producto no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['PUT'])
+def producto_editar(request, producto_id):
+    print("📥 Petición PUT recibida para producto:", producto_id)  # 🔹 Debug
+    print("📨 Datos recibidos:", request.data)
+
+    try:
+        producto = Producto.objects.get(id=producto_id)
+    except Producto.DoesNotExist:
+        return Response({"error": "Producto no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+    producto_serializer = ProductoSerializerCreate(instance=producto, data=request.data, partial=True)
+
+    if producto_serializer.is_valid():
+        try:
+            producto_actualizado = producto_serializer.save()  # Guardamos los campos básicos
+
+            # 🔹 Actualizar la relación ManyToMany manualmente a través de Inventario
+            if "tiendas" in request.data:
+                tiendas_nuevas = request.data["tiendas"]
+                stock_inicial = request.data.get("stock_inicial", 0)
+                cantidad_vendida = request.data.get("cantidad_vendida", 0)
+                fecha_ultima_venta = request.data.get("fecha_ultima_venta", None)
+                ubicacion_almacen = request.data.get("ubicacion_almacen", "")
+
+                # Eliminar Inventario antiguo y reemplazar con el nuevo
+                producto_actualizado.inventario_producto.all().delete()
+
+                for tienda_id in tiendas_nuevas:
+                    Inventario.objects.create(
+                        producto=producto_actualizado,
+                        tienda=Tienda.objects.get(id=tienda_id),
+                        stock_inicial=stock_inicial,
+                        cantidad_vendida=cantidad_vendida,
+                        fecha_ultima_venta=fecha_ultima_venta,
+                        ubicacion_almacen=ubicacion_almacen
+                    )
+
+            return Response({"mensaje": "Producto EDITADO"}, status=status.HTTP_200_OK)
+
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    else:
+        return Response(producto_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['PATCH'])
+def producto_editar_stock(request, producto_id):
+    try:
+        producto = Producto.objects.get(id=producto_id)
+    except Producto.DoesNotExist:
+        return Response({"error": "Producto no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ProductoSerializerEditarStock(data=request.data, instance=producto, partial=True)
+    if serializer.is_valid():
+        try:
+            serializer.save()
+            return Response({"mensaje": "Stock del producto actualizado correctamente"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def producto_eliminar(request, producto_id):
+    try:
+        producto = Producto.objects.get(id=producto_id)
+        producto.delete()
+        return Response({"mensaje": "Producto eliminado correctamente"}, status=status.HTTP_200_OK)
+    except Producto.DoesNotExist:
+        return Response({"error": "Producto no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as error:
+        return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
