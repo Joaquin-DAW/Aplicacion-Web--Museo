@@ -44,4 +44,7 @@ urlpatterns = [
     path('productos/editar/<int:producto_id>/', producto_editar, name="producto_editar"),
     path('productos/editar/stock/<int:producto_id>/', producto_editar_stock, name='producto_editar_stock'),
     path('productos/eliminar/<int:producto_id>', producto_eliminar, name='producto_eliminar'),
+    
+    path('registrar/usuario/', RegistrarUsuarioView.as_view(), name="registrar_usuario"),
+    path('usuario/token/<str:token>/', obtener_usuario_token, name="obtener_usuario_token"),
 ]

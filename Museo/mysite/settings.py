@@ -53,8 +53,10 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'django_bootstrap_icons',
     'rest_framework',
+    'rest_framework.authtoken',
     'oauth2_provider',
     'rest_framework_simplejwt',
+    'corsheaders',
 ]
 
 OAUTH2_PROVIDER = {
@@ -82,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -168,3 +171,15 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8001",  # Permite peticiones desde el cliente en 8001
+    "http://localhost:8001",  # También permite localhost
+]
+
+CORS_ALLOW_CREDENTIALS = True  # Permite enviar cookies y credenciales de sesión si se necesita
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+]

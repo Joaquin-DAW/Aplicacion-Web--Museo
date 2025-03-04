@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from .models import *
 from .forms import *
+from django.contrib.auth.models import Group
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -287,3 +290,18 @@ class ProductoSerializerEditarStock(serializers.ModelSerializer):
         if stock < 0:
             raise serializers.ValidationError("El stock no puede ser negativo.")
         return stock
+
+
+class UsuarioSerializerRegistro(serializers.Serializer):
+    username = serializers.CharField()
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
+    email = serializers.EmailField()
+    rol = serializers.IntegerField()
+
+    def validate_username(self, username):
+        """ Verifica que no exista un usuario con ese username """
+        usuario = Usuario.objects.filter(username=username).first()
+        if usuario:
+            raise serializers.ValidationError("Ya existe un usuario con ese nombre.")
+        return username

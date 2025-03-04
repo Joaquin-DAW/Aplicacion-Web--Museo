@@ -1,9 +1,13 @@
 from .models import *
 from .serializers import *
-from django.db.models import Q,Prefetch
+from django.db.models import Q
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,authentication_classes,permission_classes
-from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status, generics
+from rest_framework.permissions import IsAuthenticated
+
+from rest_framework.permissions import AllowAny
+from django.contrib.auth.decorators import login_required
 from .forms import *
 
 
@@ -33,7 +37,12 @@ def exposicion_list(request):
 
 @api_view(['GET'])
 def entrada_list(request):
-    entradas = Entrada.objects.select_related('visitante').all()
+    #Hacemos que un usuario solo pueda ver sus propias entradas.
+    if request.user.is_authenticated and request.user.rol == Usuario.VISITANTE:
+        entradas = Entrada.objects.filter(visitante__usuario=request.user)
+    else:
+        entradas = Entrada.objects.none()  # No devolver nada si no es visitante
+        
     serializer = EntradaSerializer(entradas, many=True)
     return Response(serializer.data)
 
@@ -51,7 +60,11 @@ def visitante_list(request):
 
 @api_view(['GET'])
 def visita_guiada_list(request):
-    visitas = VisitaGuiada.objects.prefetch_related('guias', 'visitantes').all()
+    if request.user.is_authenticated and request.user.rol == Usuario.VISITANTE:
+        visitas = VisitaGuiada.objects.filter(visitantes__usuario=request.user)
+    else:
+        visitas = VisitaGuiada.objects.none()  
+        
     serializer = VisitaGuiadaSerializer(visitas, many=True)
     return Response(serializer.data)
 
@@ -118,12 +131,16 @@ def museo_buscar_avanzada(request):
     return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@login_required  # Solo usuarios autenticados pueden acceder
 def museo_create(request):
+    # Verificar si el usuario es un Responsable
+    if request.user.rol != Usuario.RESPONSABLE:
+        return Response({"error": "No tienes permisos para crear museos."}, status=status.HTTP_403_FORBIDDEN)
     print(request.data)
     museo_serializer = MuseoSerializerCreate(data=request.data)
     if museo_serializer.is_valid():
         try:
-            museo_serializer.save()
+            museo_serializer.save(creado_por=request.user)
             return Response("Museo CREADO", status=status.HTTP_201_CREATED)
         except serializers.ValidationError as error:
             return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
@@ -604,3 +621,57 @@ def producto_eliminar(request, producto_id):
         return Response({"error": "Producto no encontrado"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as error:
         return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class RegistrarUsuarioView(generics.CreateAPIView):
+    serializer_class = UsuarioSerializerRegistro
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = UsuarioSerializerRegistro(data=request.data)
+        if serializer.is_valid():
+            try:
+                rol = request.data.get('rol')
+
+                # Crear usuario
+                user = Usuario.objects.create_user(
+                    username=serializer.validated_data.get("username"),
+                    email=serializer.validated_data.get("email"),
+                    password=serializer.validated_data.get("password1"),
+                    rol=rol,
+                )
+
+                # Asignar usuario a un grupo y crear instancia del rol correspondiente
+                if rol == Usuario.VISITANTE:
+                    grupo, _ = Group.objects.get_or_create(name="Visitantes")
+                    grupo.user_set.add(user)
+                    visitante = Visitante.objects.create(usuario=user)
+                    visitante.save()
+                elif rol == Usuario.RESPONSABLE:
+                    grupo, _ = Group.objects.get_or_create(name="Responsables")
+                    grupo.user_set.add(user)
+                    responsable = Responsable.objects.create(usuario=user)
+                    responsable.save()
+
+                return Response({"mensaje": "Usuario registrado correctamente"}, status=status.HTTP_201_CREATED)
+
+            except Exception as error:
+                print(repr(error))
+                return Response({"error": "Error interno del servidor"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+from oauth2_provider.models import AccessToken
+    
+@api_view(['GET'])
+def obtener_usuario_token(request, token):
+    try:
+        modelo_token = AccessToken.objects.get(token=token)
+        usuario = Usuario.objects.get(id=modelo_token.user_id)
+        serializer = UsuarioSerializer(usuario)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except AccessToken.DoesNotExist:
+        return Response({"error": "Token inválido o expirado"}, status=status.HTTP_401_UNAUTHORIZED)
+    except Usuario.DoesNotExist:
+        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
