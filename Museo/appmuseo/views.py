@@ -826,7 +826,7 @@ def registrar_usuario(request):
 
 
 
-@permission_required('appmuseo.add_entrada')  
+@permission_required('appmuseo.add_entrada')
 def entrada_crear(request):
     if request.method == 'POST':
         form = EntradaForm(request.POST)

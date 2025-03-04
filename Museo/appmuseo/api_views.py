@@ -131,11 +131,10 @@ def museo_buscar_avanzada(request):
     return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@login_required  # Solo usuarios autenticados pueden acceder
 def museo_create(request):
-    # Verificar si el usuario es un Responsable
-    if request.user.rol != Usuario.RESPONSABLE:
-        return Response({"error": "No tienes permisos para crear museos."}, status=status.HTTP_403_FORBIDDEN)
+    if not request.user.has_perm("appmuseo.add_museo"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
+    
     print(request.data)
     museo_serializer = MuseoSerializerCreate(data=request.data)
     if museo_serializer.is_valid():
@@ -631,7 +630,8 @@ class RegistrarUsuarioView(generics.CreateAPIView):
         serializer = UsuarioSerializerRegistro(data=request.data)
         if serializer.is_valid():
             try:
-                rol = request.data.get('rol')
+                rol_str = request.data.get('rol')
+                rol=int(rol_str) if rol_str else None
 
                 # Crear usuario
                 user = Usuario.objects.create_user(
