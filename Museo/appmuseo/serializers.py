@@ -56,6 +56,11 @@ class TiendaSerializer(serializers.ModelSerializer):
         model = Tienda
         fields = ['id', 'nombre', 'ubicacion']
         
+class GuiaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Guia
+        fields = ['id', 'nombre', 'idioma']
+        
 class VisitaGuiadaSerializer(serializers.ModelSerializer):
     guias = serializers.StringRelatedField(many=True)
     visitantes = serializers.StringRelatedField(many=True)
@@ -111,10 +116,43 @@ class MuseoSerializerEditarNombre(serializers.ModelSerializer):
             raise serializers.ValidationError("Ya existe un museo con ese nombre.")
         return nombre
     
+class EntradaSerializerCreate(serializers.ModelSerializer):
+    visitante = serializers.PrimaryKeyRelatedField(
+        queryset=Visitante.objects.all(),  # ✅ Filtra solo visitantes válidos
+        required=True
+    )
+    
+    class Meta:
+        model = Entrada
+        fields = ['codigo', 'precio', 'tipo', 'visitante', 'fecha_compra', 'creado_por']
+        read_only_fields = ['fecha_compra', 'creado_por']  # ❌ Evita que estos campos sean editados
+    
+    def validate_codigo(self, codigo):
+        """
+        Valida que el código de la entrada sea único.
+        """
+        if Entrada.objects.filter(codigo=codigo).exists():
+            raise serializers.ValidationError("Ya existe una entrada con este código.")
+        return codigo
+    
+    def validate_precio(self, precio):
+        if precio <= 0:
+            raise serializers.ValidationError("El precio debe ser un valor positivo.")
+        return precio
+    
+    def create(self, validated_data):
+        """
+        Asigna automáticamente el usuario autenticado al campo `creado_por`.
+        """
+        request = self.context.get('request')
+        if request and request.user:
+            validated_data['creado_por'] = request.user  # ✅ Se asigna el usuario autenticado
+        return super().create(validated_data)
+
     
 class ExposicionSerializerCreate(serializers.ModelSerializer):
     museo = serializers.PrimaryKeyRelatedField(
-        queryset=Museo.objects.all()  # ✅ Filtra solo IDs de museos válidos
+        queryset=Museo.objects.all()  # Filtra solo IDs de museos válidos
     )
 
     class Meta:
@@ -162,17 +200,23 @@ class ExposicionSerializerEditarCapacidad(serializers.ModelSerializer):
 
 class VisitaGuiadaSerializerCreate(serializers.ModelSerializer):
     guias = serializers.PrimaryKeyRelatedField(
-        queryset=Guia.objects.all(),  # ✅ Permitir solo IDs válidos de Guías
+        queryset=Guia.objects.all(),  # Permitir solo IDs válidos de Guías
         many=True
     )
     visitantes = serializers.PrimaryKeyRelatedField(
-        queryset=Visitante.objects.all(),  # ✅ Permitir solo IDs válidos de Visitantes
+        queryset=Visitante.objects.all(),  # Permitir solo IDs válidos de Visitantes
         many=True
     )
 
     class Meta:
         model = VisitaGuiada
         fields = ['id', 'nombre_visita_guia', 'duracion', 'capacidad_maxima', 'idioma', 'guias', 'visitantes']
+        
+    def create(self, validated_data):
+        request = self.context.get('request')
+        if request and request.user:
+            validated_data['creador'] = request.user  # Asigna el usuario autenticado
+        return super().create(validated_data)
 
     def validate_nombre_visita_guia(self, nombre):
         """

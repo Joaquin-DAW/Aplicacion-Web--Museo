@@ -76,7 +76,7 @@ class Visitante(models.Model):
     #correo_electronico = models.EmailField(unique=True)
     edad = models.IntegerField(null=True)
     fecha_visita = models.DateField(null=True, blank=True)
-    museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="visitantes")  # ManyToOne con Museo
+    museo = models.ForeignKey(Museo, on_delete=models.CASCADE, related_name="visitantes", null=True, blank=True)  # ManyToOne con Museo
 
     def __str__(self):
         return self.usuario.get_full_name() or self.usuario.username

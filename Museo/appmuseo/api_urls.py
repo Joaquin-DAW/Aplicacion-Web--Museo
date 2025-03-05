@@ -25,6 +25,7 @@ urlpatterns = [
     
     path('entradas',entrada_list),
     path('entradas/busqueda_avanzada/', entrada_buscar_avanzada),
+    path('entradas/crear/', entrada_create, name='entrada_create'),
     
     path('guias/', guia_list, name='guia_list'),
     path('visitantes/', visitante_list, name='visitante_list'),

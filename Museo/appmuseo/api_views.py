@@ -31,18 +31,41 @@ def artista_list(request):
 
 @api_view(['GET'])
 def exposicion_list(request):
+    
     exposiciones = Exposicion.objects.select_related('museo').all()
     serializer = ExposicionSerializer(exposiciones, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def entrada_list(request):
-    #Hacemos que un usuario solo pueda ver sus propias entradas.
-    if request.user.is_authenticated and request.user.rol == Usuario.VISITANTE:
-        entradas = Entrada.objects.filter(visitante__usuario=request.user)
+    user = request.user
+
+    print(f"Usuario autenticado: {user}")  # Ver qué usuario está autenticado
+    print(f"Usuario ID: {user.id}")  # Ver ID del usuario
+    print(f"Rol del usuario: {user.rol}")  # Ver rol del usuario
+
+
+    # Bloquear acceso a usuarios no autenticados
+    if not user.is_authenticated:
+        return Response({"error": "Debes estar autenticado para ver las entradas."}, status=status.HTTP_401_UNAUTHORIZED)
+
+    # Si el usuario es un responsable, puede ver todas las entradas
+    if user.rol == Usuario.RESPONSABLE:
+        entradas = Entrada.objects.all()
+
+    # Si el usuario es un visitante, solo puede ver su propia entrada
+    elif user.rol == Usuario.VISITANTE:
+        entradas = Entrada.objects.filter(visitante__usuario=user)
+
+    # Si no es responsable ni visitante, denegar el acceso
     else:
-        entradas = Entrada.objects.none()  # No devolver nada si no es visitante
-        
+        return Response({"error": "No tienes permisos para ver entradas."}, status=status.HTTP_403_FORBIDDEN)
+
+    # Si no hay entradas, devolver mensaje en lugar de error
+    if not entradas.exists():
+        return Response({"mensaje": "No tienes entradas registradas."}, status=status.HTTP_204_NO_CONTENT)
+
     serializer = EntradaSerializer(entradas, many=True)
     return Response(serializer.data)
 
@@ -59,12 +82,9 @@ def visitante_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def visita_guiada_list(request):
-    if request.user.is_authenticated and request.user.rol == Usuario.VISITANTE:
-        visitas = VisitaGuiada.objects.filter(visitantes__usuario=request.user)
-    else:
-        visitas = VisitaGuiada.objects.none()  
-        
+    visitas = VisitaGuiada.objects.all()  # Un responsable puede ver todas
     serializer = VisitaGuiadaSerializer(visitas, many=True)
     return Response(serializer.data)
 
@@ -161,6 +181,8 @@ def museo_obtener(request, museo_id):
     
 @api_view(['PUT'])
 def museo_editar(request, museo_id):
+    if not request.user.has_perm("appmuseo.change_museo"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     print("📥 Petición PUT recibida para museo:", museo_id)  # 🔹 Verifica si la API recibe la petición
     print("📨 Datos recibidos:", request.data) 
     try:
@@ -182,6 +204,8 @@ def museo_editar(request, museo_id):
     
 @api_view(['PATCH'])
 def museo_editar_nombre(request, museo_id):
+    if not request.user.has_perm("appmuseo.change_museo"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     try:
         museo = Museo.objects.get(id=museo_id)
     except Museo.DoesNotExist:
@@ -199,6 +223,8 @@ def museo_editar_nombre(request, museo_id):
     
 @api_view(['DELETE'])
 def museo_eliminar(request, museo_id):
+    if not request.user.has_perm("appmuseo.delete_museo"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     try:
         museo = Museo.objects.get(id=museo_id)
         museo.delete()
@@ -285,6 +311,8 @@ def exposicion_buscar_avanzada(request):
 
 @api_view(['POST'])
 def exposicion_create(request):
+    if not request.user.has_perm("appmuseo.add_exposicion"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     print("📡 Datos recibidos en la API:", request.data)  # 🔍 Verifica los datos que llegan
     
     exposicion_serializer = ExposicionSerializerCreate(data=request.data)
@@ -317,6 +345,8 @@ def exposicion_obtener(request, exposicion_id):
 
 @api_view(['PUT'])
 def exposicion_editar(request, exposicion_id):
+    if not request.user.has_perm("appmuseo.change_exposicion"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     print("📥 Petición PUT recibida para exposición:", exposicion_id)  # 🔹 Verifica si la API recibe la petición
     print("📨 Datos recibidos:", request.data)
 
@@ -339,6 +369,8 @@ def exposicion_editar(request, exposicion_id):
 
 @api_view(['PATCH'])
 def exposicion_editar_capacidad(request, exposicion_id):
+    if not request.user.has_perm("appmuseo.change_exposicion"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     try:
         exposicion = Exposicion.objects.get(id=exposicion_id)
     except Exposicion.DoesNotExist:
@@ -353,6 +385,44 @@ def exposicion_editar_capacidad(request, exposicion_id):
             return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['DELETE'])
+def exposicion_eliminar(request, exposicion_id):
+    if not request.user.has_perm("appmuseo.delete_exposicion"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
+    try:
+        exposicion = Exposicion.objects.get(id=exposicion_id)
+        exposicion.delete()
+        return Response({"mensaje": "Exposición eliminada correctamente"}, status=status.HTTP_200_OK)
+    except Exposicion.DoesNotExist:
+        return Response({"error": "Exposición no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as error:
+        return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])  # ✅ Requiere autenticación
+def entrada_create(request):
+    if not request.user.has_perm("appmuseo.add_entrada"):
+        return Response({"error": "No tienes permiso para crear entradas."}, status=403)
+    
+    print("📡 Datos recibidos en la API:", request.data)  # 🔍 Verifica los datos que llegan
+    
+    entrada_serializer = EntradaSerializerCreate(data=request.data, context={'request': request})
+    
+    if entrada_serializer.is_valid():
+        try:
+            entrada_serializer.save()
+            return Response({"mensaje": "Entrada CREADA"}, status=status.HTTP_201_CREATED)
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            print("❌ Error en el servidor:", repr(error))  # 🔍 Muestra el error exacto
+            return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        print("❌ Errores de validación:", entrada_serializer.errors)  # 🔍 Debug de validaciones
+        return Response(entrada_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 @api_view(['GET'])
 def entrada_buscar_avanzada(request):
@@ -392,37 +462,53 @@ def entrada_buscar_avanzada(request):
     
     return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['DELETE'])
-def exposicion_eliminar(request, exposicion_id):
+def entrada_eliminar(request, entrada_id):
+    if not request.user.has_perm("appmuseo.delete_entrada"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
+    user = request.user
     try:
-        exposicion = Exposicion.objects.get(id=exposicion_id)
-        exposicion.delete()
-        return Response({"mensaje": "Exposición eliminada correctamente"}, status=status.HTTP_200_OK)
-    except Exposicion.DoesNotExist:
-        return Response({"error": "Exposición no encontrada"}, status=status.HTTP_404_NOT_FOUND)
-    except Exception as error:
-        return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        entrada = Entrada.objects.get(id=entrada_id)
+        
+        # Solo el dueño de la entrada puede eliminarla
+        if entrada.visitante.usuario != user:
+            return Response({"error": "No tienes permiso para eliminar esta entrada."}, status=status.HTTP_403_FORBIDDEN)
+
+        entrada.delete()
+        return Response({"mensaje": "Entrada eliminada correctamente."}, status=status.HTTP_204_NO_CONTENT)
+
+    except Entrada.DoesNotExist:
+        return Response({"error": "Entrada no encontrada."}, status=status.HTTP_404_NOT_FOUND)
     
     
 @api_view(['POST'])
 def visita_guiada_create(request):
-    print("📡 Datos recibidos en la API:", request.data)  # 🔍 Verifica los datos que llegan
+    if not request.user.has_perm("appmuseo.add_visitaguiada"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
+    print("Datos recibidos en la API:", request.data)  # Verifica los datos que llegan
+    
+    user = request.user
+
+    if user.rol != Usuario.VISITANTE:
+        return Response({"error": "Solo los visitantes pueden reservar visitas."}, status=status.HTTP_403_FORBIDDEN)
+
+    data = request.data.copy()
+    data["creador"] = [request.user.id]  #Se asigna automáticamente el usuario en la lista de visitantes
     
     visita_serializer = VisitaGuiadaSerializerCreate(data=request.data)
 
     if visita_serializer.is_valid():
         try:
             visita_serializer.save()
-            print("✅ Visita Guiada creada con éxito")
+            print("Visita Guiada creada con éxito")
             return Response({"mensaje": "Visita Guiada CREADA"}, status=status.HTTP_201_CREATED)
         except serializers.ValidationError as error:
             return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
-            print("❌ Error en el servidor:", repr(error))  # 🔍 Muestra el error exacto
+            print("Error en el servidor:", repr(error))  # 🔍 Muestra el error exacto
             return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
-        print("❌ Errores de validación:", visita_serializer.errors)  # 🔍 Debug de validaciones
+        print("Errores de validación:", visita_serializer.errors)  # 🔍 Debug de validaciones
         return Response(visita_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
@@ -436,6 +522,8 @@ def visita_guiada_obtener(request, visita_id):
     
 @api_view(['PUT'])
 def visita_guiada_editar(request, visita_id):
+    if not request.user.has_perm("appmuseo.change_visita_guiada"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     print("📥 Petición PUT recibida para visita guiada:", visita_id)  # 🔹 Debug
     print("📨 Datos recibidos:", request.data)
 
@@ -468,6 +556,8 @@ def visita_guiada_editar(request, visita_id):
     
 @api_view(['PATCH'])
 def visita_guiada_editar_capacidad(request, visita_id):
+    if not request.user.has_perm("appmuseo.change_visita_guiada"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     try:
         visita = VisitaGuiada.objects.get(id=visita_id)
     except VisitaGuiada.DoesNotExist:
@@ -485,6 +575,8 @@ def visita_guiada_editar_capacidad(request, visita_id):
 
 @api_view(['DELETE'])
 def visita_guiada_eliminar(request, visita_id):
+    if not request.user.has_perm("appmuseo.delete_visita_guiada"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     try:
         visita = VisitaGuiada.objects.get(id=visita_id)
         visita.delete()
@@ -497,6 +589,8 @@ def visita_guiada_eliminar(request, visita_id):
 
 @api_view(['POST'])
 def producto_create(request):
+    if not request.user.has_perm("appmuseo.add_producto"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     print("📡 Datos recibidos en la API:", request.data)  
     
     producto_serializer = ProductoSerializerCreate(data=request.data)
@@ -546,6 +640,8 @@ def producto_obtener(request, producto_id):
 
 @api_view(['PUT'])
 def producto_editar(request, producto_id):
+    if not request.user.has_perm("appmuseo.change_producto"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     print("📥 Petición PUT recibida para producto:", producto_id)  # 🔹 Debug
     print("📨 Datos recibidos:", request.data)
 
@@ -594,6 +690,8 @@ def producto_editar(request, producto_id):
 
 @api_view(['PATCH'])
 def producto_editar_stock(request, producto_id):
+    if not request.user.has_perm("appmuseo.change_producto"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     try:
         producto = Producto.objects.get(id=producto_id)
     except Producto.DoesNotExist:
@@ -612,6 +710,8 @@ def producto_editar_stock(request, producto_id):
 
 @api_view(['DELETE'])
 def producto_eliminar(request, producto_id):
+    if not request.user.has_perm("appmuseo.delete_producto"):
+        return Response({"error": "No tienes permiso para crear museos."}, status=403)
     try:
         producto = Producto.objects.get(id=producto_id)
         producto.delete()
@@ -621,6 +721,8 @@ def producto_eliminar(request, producto_id):
     except Exception as error:
         return Response({"error": repr(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 
 class RegistrarUsuarioView(generics.CreateAPIView):
     serializer_class = UsuarioSerializerRegistro
@@ -645,7 +747,7 @@ class RegistrarUsuarioView(generics.CreateAPIView):
                 if rol == Usuario.VISITANTE:
                     grupo, _ = Group.objects.get_or_create(name="Visitantes")
                     grupo.user_set.add(user)
-                    visitante = Visitante.objects.create(usuario=user)
+                    visitante = Visitante.objects.create(usuario=user, museo=None)
                     visitante.save()
                 elif rol == Usuario.RESPONSABLE:
                     grupo, _ = Group.objects.get_or_create(name="Responsables")
@@ -653,7 +755,27 @@ class RegistrarUsuarioView(generics.CreateAPIView):
                     responsable = Responsable.objects.create(usuario=user)
                     responsable.save()
 
-                return Response({"mensaje": "Usuario registrado correctamente"}, status=status.HTTP_201_CREATED)
+                # AUTENTICAR AL USUARIO RECIÉN REGISTRADO
+                user = authenticate(username=user.username, password=request.data.get("password1"))
+
+                if user:
+                    # CREAR TOKEN PARA EL USUARIO
+                    token, created = Token.objects.get_or_create(user=user)
+                    
+                    # IMPRIMIR INFO EN LA TERMINAL
+                    print(f"Token generado para {user.username}: {token.key}")
+                    print(f"Usuario autenticado: {user}")  
+                    print(f"Usuario ID: {user.id}")  
+                    print(f"Rol del usuario: {user.rol}")
+
+                    return Response({
+                        "mensaje": "Usuario registrado correctamente",
+                        "token": token.key,
+                        "username": user.username,
+                        "rol": user.rol
+                    }, status=status.HTTP_201_CREATED)
+                else:
+                    return Response({"error": "No se pudo autenticar al usuario."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             except Exception as error:
                 print(repr(error))
